@@ -23,7 +23,7 @@
 
 ## 📱 Screenshots
 
-| Welcome page | Home (Schedule) |  Homework Management
+| Welcome page | Home (Schedule) |
 |:---:|:---:|
 | ![Home](screenshots/wcm.png) | ![Homework](screenshots/home.png) |
 
