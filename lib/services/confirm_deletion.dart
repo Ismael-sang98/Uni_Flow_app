@@ -19,7 +19,9 @@ Future<bool> confirmDeletion(BuildContext context, String title) async {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context, false),
+          onPressed: () {
+            Navigator.pop(context, false);
+          },
           child: Text(l10n.rejet, style: TextStyle(color: Colors.grey)),
         ),
         ElevatedButton(

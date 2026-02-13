@@ -16,19 +16,25 @@
 * 👤 **Student Profile:** Customize your name, school, class, and profile picture.
 * 🎨 **Dynamic Themes:** Full support for **Dark Mode** and **Light Mode**.
 * 🌍 **Multilingual:** Available in **French 🇫🇷**, **English 🇺🇸**, and **Turkish 🇹🇷**.
+* 🔔 **Notification:** Alert 10 minutes before class.
 * 💾 **100% Offline:** All data is persistent thanks to the Hive database.
 
 ---
 
 ## 📱 Screenshots
 
-| Home (Schedule) | Homework Management |
+| Welcome page | Home (Schedule) |  Homework Management
 |:---:|:---:|
-| ![Home](screenshots/home.png) | ![Homework](screenshots/tasks.png) |
+| ![Home](screenshots/wcm.png) | ![Homework](screenshots/home.png) |
+
+| Course details page | Homework Management |
+|:---:|:---:|
+| ![Profil](screenshots/detail.png) | ![Dark Mode](screenshots/tasks.png) |
 
 | Student Profile | Dark Mode |
 |:---:|:---:|
 | ![Profil](screenshots/profile.png) | ![Dark Mode](screenshots/dark_mode.png) |
+
 
 ---
 
@@ -59,7 +65,7 @@ If you want to clone and modify this project:
 
 1. **Clone the repository:**
 ```bash
-git clone [https://github.com/YOUR_USERNAME/student_planner_app.git](https://github.com/YOUR_USERNAME/student_planner_app.git)
+git clone [https://github.com/Ismael-sang98/Uni_Flow_app.git](https://github.com/Ismael-sang98/Uni_Flow_app.git)
 ```
 
 2. **Install dependencies:**

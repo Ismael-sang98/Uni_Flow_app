@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +26,30 @@ class _HomePageState extends State<HomePage> {
   // Index de l'onglet sélectionné dans la barre de navigation
   int _selectedIndex = 0;
   final ScrollController _scrollController = ScrollController();
+
+  // --- FONCTION POUR DEMANDER LA PERMISSION DE NOTIFICATION (ROBUSTE) ---
+  @override
+  void initState() {
+    super.initState();
+    _checkAndRequestNotificationPermission(); // Appel de notre fonction robuste
+  }
+
+  Future<void> _checkAndRequestNotificationPermission() async {
+    // On vérifie le statut actuel
+    PermissionStatus status = await Permission.notification.status;
+
+    if (status.isDenied) {
+      // Si c'est refusé (ou pas encore demandé), on FORCE la demande
+      status = await Permission.notification.request();
+      //print("Résultat de la demande : $status",); // Pour voir ce qui se passe dans la console
+    }
+
+    if (status.isPermanentlyDenied) {
+      // Si Android l'a bloqué définitivement, on propose d'ouvrir les paramètres
+      //print("Permission bloquée définitivement par Android.");
+      openAppSettings();
+    }
+  }
 
   @override
   void dispose() {
@@ -57,11 +81,36 @@ class _HomePageState extends State<HomePage> {
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(20),
           ),
-          title: Text(
-            l10n.addTask,
-            style: TextStyle(fontWeight: FontWeight.bold),
+          titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+          contentPadding: const EdgeInsets.fromLTRB(20, 16, 20, 4),
+          actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          title: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(
+                    context,
+                  // ignore: deprecated_member_use
+                  ).colorScheme.primary.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.playlist_add_check_rounded,
+                  size: 20,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  l10n.addTask,
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                ),
+              ),
+            ],
           ),
           content: SingleChildScrollView(
             child: Column(
@@ -69,32 +118,43 @@ class _HomePageState extends State<HomePage> {
               children: [
                 TextField(
                   controller: titleController,
+                  textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     labelText: l10n.taskTitle,
+                    prefixIcon: const Icon(Icons.title_rounded),
                     filled: true,
                     fillColor: Theme.of(
                       context,
                     ).colorScheme.surfaceContainerHighest,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(14),
                       borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 14,
                     ),
                   ),
                   autofocus: true,
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 14),
                 DropdownButtonFormField<String>(
                   initialValue: selectedCourseTitle,
                   decoration: InputDecoration(
                     //les textes sont désormais localisés grâce à AppLocalizations
                     labelText: l10n.mt,
+                    prefixIcon: const Icon(Icons.school_rounded),
                     filled: true,
                     fillColor: Theme.of(
                       context,
                     ).colorScheme.surfaceContainerHighest,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(14),
                       borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 14,
                     ),
                   ),
                   // Si aucune matière n'est définie, on affiche un message dans le dropdown ou on le laisse vide
@@ -116,23 +176,9 @@ class _HomePageState extends State<HomePage> {
                       ? Text(l10n.noSubjectsDefined)
                       : null,
                 ),
-                const SizedBox(height: 15),
-                ListTile(
-                  tileColor: Theme.of(
-                    context,
-                  ).colorScheme.surfaceContainerHighest,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  leading: const Icon(
-                    Icons.calendar_today_rounded,
-                    color: Color(0xFF6C63FF),
-                  ),
-                  title: Text(l10n.dueDate),
-                  trailing: Text(
-                    DateFormat('dd/MM').format(selectedDate),
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
+                const SizedBox(height: 14),
+                InkWell(
+                  borderRadius: BorderRadius.circular(14),
                   onTap: () async {
                     final DateTime? picked = await showDatePicker(
                       context: context,
@@ -144,6 +190,28 @@ class _HomePageState extends State<HomePage> {
                       setDialogState(() => selectedDate = picked);
                     }
                   },
+                  child: InputDecorator(
+                    decoration: InputDecoration(
+                      labelText: l10n.dueDate,
+                      prefixIcon: const Icon(Icons.calendar_today_rounded),
+                      filled: true,
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 14,
+                      ),
+                    ),
+                    child: Text(
+                      DateFormat('dd/MM').format(selectedDate),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -151,29 +219,41 @@ class _HomePageState extends State<HomePage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(l10n.rejet, style: TextStyle(color: Colors.grey)),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (titleController.text.isNotEmpty) {
-                  final newTask = TodoTask(
-                    id: const Uuid().v4(),
-                    title: titleController.text,
-                    dueDate: selectedDate,
-                    relatedCourseTitle: selectedCourseTitle,
-                  );
-                  context.read<TaskProvider>().addTask(newTask);
-                  Navigator.pop(context);
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF6C63FF),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+              child: Text(
+                l10n.rejet,
+                style: TextStyle(
+                  color: Theme.of(
+                    context,
+                  // ignore: deprecated_member_use
+                  ).colorScheme.onSurface.withOpacity(0.6),
                 ),
               ),
-              child: Text(l10n.ajt),
+            ),
+            SizedBox(
+              height: 44,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (titleController.text.isNotEmpty) {
+                    final newTask = TodoTask(
+                      id: const Uuid().v4(),
+                      title: titleController.text,
+                      dueDate: selectedDate,
+                      relatedCourseTitle: selectedCourseTitle,
+                    );
+                    context.read<TaskProvider>().addTask(newTask);
+                    Navigator.pop(context);
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                ),
+                child: Text(l10n.ajt),
+              ),
             ),
           ],
         ),
@@ -190,165 +270,110 @@ class _HomePageState extends State<HomePage> {
         final profile = box.get('profile') as StudentProfile?;
 
         return Scaffold(
-          body: CustomScrollView(
-            controller: _scrollController,
-            slivers: [
-              SliverAppBar(
-                expandedHeight: 100.0,
-                floating: false,
-                pinned: true,
-                snap: false,
-                backgroundColor: const Color(0xFF6C63FF),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(30),
-                  ),
-                ),
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          ?Theme.of(context).appBarTheme.backgroundColor,
-                          Color(0xFF8E84FF),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.vertical(
-                        bottom: Radius.circular(30),
-                      ),
-                    ),
-                    child: SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20,
-                          right: 20,
-                          top: 10,
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const ProfilePage(),
-                                ),
-                              ),
-                              child: Hero(
-                                tag: 'profile_pic',
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: Colors.white,
-                                      width: 3,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        // ignore: deprecated_member_use
-                                        color: Colors.black.withOpacity(0.1),
-                                        blurRadius: 10,
-                                      ),
-                                    ],
-                                  ),
-                                  child: CircleAvatar(
-                                    radius: 35,
-                                    backgroundColor: Colors.white24,
-                                    backgroundImage:
-                                        (profile?.profilePicturePath != null &&
-                                            profile!
-                                                .profilePicturePath!
-                                                .isNotEmpty)
-                                        ? FileImage(
-                                            File(profile.profilePicturePath!),
-                                          )
-                                        : null,
-                                    child:
-                                        (profile?.profilePicturePath == null ||
-                                            profile!
-                                                .profilePicturePath!
-                                                .isEmpty)
-                                        ? const Icon(
-                                            Icons.person,
-                                            color: Colors.white,
-                                            size: 35,
-                                          )
-                                        : null,
-                                  ),
-                                ),
-                              ),
+          appBar: AppBar(
+            backgroundColor:
+                Theme.of(context).appBarTheme.backgroundColor ??
+                const Color(0xFF6C63FF),
+            elevation: 2,
+            toolbarHeight: 80.0,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Avatar + Infos
+                  Expanded(
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const ProfilePage(),
                             ),
-                            const SizedBox(width: 15),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    profile != null
-                                        //  --- CORRECTION : Affichage du prénom si disponible ---
-                                        ? profile.name
-                                        //.split(' ')[0]
-                                        //  sinon "Bienvenue"
-                                        : l10n.bvn,
-                                    style: const TextStyle(
-                                      fontSize: 23,
-                                      fontWeight: FontWeight.bold,
+                          ),
+                          child: Hero(
+                            tag: 'profile_pic',
+                            child: CircleAvatar(
+                              radius: 28,
+                              backgroundColor: Colors.white24,
+                              backgroundImage:
+                                  (profile?.profilePicturePath != null &&
+                                      profile!.profilePicturePath!.isNotEmpty)
+                                  ? FileImage(File(profile.profilePicturePath!))
+                                  : null,
+                              child:
+                                  (profile?.profilePicturePath == null ||
+                                      profile!.profilePicturePath!.isEmpty)
+                                  ? const Icon(
+                                      Icons.person,
                                       color: Colors.white,
-                                    ),
-                                  ),
-                                  Text(
-                                    profile?.faculty ?? "",
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white70,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                      size: 24,
+                                    )
+                                  : null,
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                profile != null ? profile.name : l10n.bvn,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                profile?.faculty ?? "",
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white70,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                actions: [
-                  // --- BOUTON DE PARAMÈTRES ---
+                  // Bouton settings
                   IconButton(
                     onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => const ProfilePage()),
                     ),
-                    icon: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white24,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        Icons.settings,
-                        color: Colors.white,
-                        size: 20,
-                      ),
+                    icon: const Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(
+                      minWidth: 40,
+                      minHeight: 40,
                     ),
                   ),
-                  const SizedBox(width: 15),
                 ],
               ),
-              // --- CONTENU PRINCIPAL : PLANNING OU TÂCHES ---
-              SliverFillRemaining(
-                child: _selectedIndex == 0
-                    // --- VUE DU PLANNING HEBDOMADAIRE ---
-                    ? const WeeklyScheduleView()
-                    // --- VUE DES TÂCHES ---
-                    : const TasksView(),
-              ),
-            ],
+            ),
           ),
+          body: _selectedIndex == 0
+              ? const WeeklyScheduleView()
+              : const TasksView(),
           bottomNavigationBar: Container(
             margin: const EdgeInsets.all(20),
             decoration: BoxDecoration(

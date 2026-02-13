@@ -49,6 +49,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get labMdPr => 'Modifier le profil';
 
   @override
+  String get btMod => 'Modifier';
+
+  @override
   String get labNom => 'Nom complet';
 
   @override
@@ -64,7 +67,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get labSsMat => 'Saisissez vos matières';
 
   @override
-  String get hintAjoutMatiere => 'Ex: Algèbre, Droit...';
+  String get hintAjoutMatiere => 'Ex: Mathematique...';
 
   @override
   String get btnEnregistrerProfil => 'Enregistrer le profil';
@@ -119,7 +122,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get goBack => 'Retour';
 
   @override
-  String get location => 'Salle (Optionnel)';
+  String get location => 'Salle';
 
   @override
   String get day => 'Jour';
@@ -198,4 +201,121 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get labLocation => 'Salle non spécifié';
+
+  @override
+  String get hrs => 'Horaires';
+
+  @override
+  String get courseDetails => 'Détails du cours';
+
+  @override
+  String get save => 'Sauvegarder';
+
+  @override
+  String get editCours => 'Modifier le cours';
+
+  @override
+  String get courseUpdated => 'Cours modifié !';
+
+  @override
+  String get courseAdded => 'Cours ajouté !';
+
+  @override
+  String get exactAlarmTitle => 'Autoriser les alarmes exactes';
+
+  @override
+  String get exactAlarmMessage =>
+      'Pour garantir les rappels programmés, activez l\'autorisation \"Alarmes et rappels\" dans les réglages système.';
+
+  @override
+  String get notificationPermissionTitle => 'Autoriser les notifications';
+
+  @override
+  String get notificationPermissionMessage =>
+      'Pour recevoir les rappels, autorisez les notifications dans les réglages système.';
+
+  @override
+  String get later => 'Plus tard';
+
+  @override
+  String get openSettings => 'Ouvrir les réglages';
+
+  @override
+  String get courseReminderTitle => 'Rappel de cours !';
+
+  @override
+  String courseReminderBody(Object courseTitle, Object locationSuffix) {
+    return 'Votre cours de $courseTitle commence dans 10 minutes$locationSuffix.';
+  }
+
+  @override
+  String courseReminderLocationSuffix(Object room) {
+    return ' en salle $room';
+  }
+
+  @override
+  String get courseNotFound => 'Cours introuvable';
+
+  @override
+  String get deleteCourseMessage => 'Voulez-vous vraiment supprimer ce cours ?';
+
+  @override
+  String get testNotifButton => 'Tester notif';
+
+  @override
+  String get testInstantTitle => 'Test instantané';
+
+  @override
+  String get testInstantBody => 'Si vous voyez ceci, le canal fonctionne !';
+
+  @override
+  String versionLabel(Object version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get madeWithLoveBy => 'Fait avec amour par ';
+
+  @override
+  String get weeklyNotificationScheduled =>
+      '✓ Notification hebdomadaire programmée';
+
+  @override
+  String weeklyReminderMessage(Object courseName, Object date) {
+    return 'Rappel chaque semaine 10 min avant \"$courseName\" le $date';
+  }
+
+  @override
+  String get courseTooClose => 'Cours trop proche';
+
+  @override
+  String courseTooCloseMessage(Object courseName) {
+    return 'Le cours \"$courseName\" est trop proche pour programmer une notification.';
+  }
+
+  @override
+  String notificationError(Object error) {
+    return 'Erreur notification: $error';
+  }
+
+  @override
+  String notificationInMinutes(Object minutes) {
+    return 'dans $minutes min';
+  }
+
+  @override
+  String notificationInHoursMinutes(Object hours, Object minutes) {
+    return 'dans $hours h $minutes min';
+  }
+
+  @override
+  String notificationOnDate(
+    Object dayShort,
+    Object day,
+    Object month,
+    Object hour,
+    Object minute,
+  ) {
+    return '$dayShort $day/$month a $hour:$minute';
+  }
 }

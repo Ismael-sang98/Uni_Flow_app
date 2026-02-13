@@ -12,12 +12,13 @@
     "aucuneMatiere": "Aucune matière définie.",
     "labCrPr": "Créer mon profil",
     "labMdPr": "Modifier le profil",
+    "btMod": "Modifier",
     "labNom" : "Nom complet",
     "labFkt" : "Faculté",
     "labCl" : "Classe",
     "labEc" : "École",
     "labSsMat": "Saisissez vos matières",
-    "hintAjoutMatiere": "Ex: Algèbre, Droit...",
+    "hintAjoutMatiere": "Ex: Mathematique...",
     "btnEnregistrerProfil": "Enregistrer le profil",
     "addTask": "Nouveau Devoir",
     "taskTitle": "Titre",
@@ -35,7 +36,7 @@
     "noSubjectMnessage": "Aucune matière trouvée !",
     "noSubjectExplanation": "Vous devez d'abord définir vos matières dans votre Profil (icône stylo).",
     "goBack": "Retour",
-    "location": "Salle (Optionnel)",
+    "location": "Salle",
     "day": "Jour",
     "j1": "Lundi",
     "j2": "Mardi",
@@ -61,5 +62,87 @@
     "mess1": "Voulez-vous vraiment supprimer?",
     "mess2": "Cette action est irréversible.",
     "supp": "Supprimer",
-    "labLocation": "Salle non spécifié"
+    "labLocation": "Salle non spécifié",
+    "hrs": "Horaires",
+    "courseDetails": "Détails du cours",
+    "save": "Sauvegarder",
+    "editCours": "Modifier le cours",
+    "courseUpdated": "Cours modifié !",
+    "courseAdded": "Cours ajouté !",
+    "exactAlarmTitle": "Autoriser les alarmes exactes",
+    "exactAlarmMessage": "Pour garantir les rappels programmés, activez l'autorisation \"Alarmes et rappels\" dans les réglages système.",
+    "notificationPermissionTitle": "Autoriser les notifications",
+    "notificationPermissionMessage": "Pour recevoir les rappels, autorisez les notifications dans les réglages système.",
+    "later": "Plus tard",
+    "openSettings": "Ouvrir les réglages",
+    "courseReminderTitle": "Rappel de cours !",
+    "courseReminderBody": "Votre cours de {courseTitle} commence dans 10 minutes{locationSuffix}.",
+    "@courseReminderBody": {
+        "placeholders": {
+            "courseTitle": {},
+            "locationSuffix": {}
+        }
+    },
+    "courseReminderLocationSuffix": " en salle {room}",
+    "@courseReminderLocationSuffix": {
+        "placeholders": {
+            "room": {}
+        }
+    },
+    "courseNotFound": "Cours introuvable",
+    "deleteCourseMessage": "Voulez-vous vraiment supprimer ce cours ?",
+    "testNotifButton": "Tester notif",
+    "testInstantTitle": "Test instantané",
+    "testInstantBody": "Si vous voyez ceci, le canal fonctionne !",
+    "versionLabel": "Version {version}",
+    "@versionLabel": {
+        "placeholders": {
+            "version": {}
+        }
+    },
+    "madeWithLoveBy": "Fait avec amour par ",
+    "weeklyNotificationScheduled": "✓ Notification hebdomadaire programmée",
+    "weeklyReminderMessage": "Rappel chaque semaine 10 min avant \"{courseName}\" le {date}",
+    "@weeklyReminderMessage": {
+        "placeholders": {
+            "courseName": {},
+            "date": {}
+        }
+    },
+    "courseTooClose": "Cours trop proche",
+    "courseTooCloseMessage": "Le cours \"{courseName}\" est trop proche pour programmer une notification.",
+    "@courseTooCloseMessage": {
+        "placeholders": {
+            "courseName": {}
+        }
+    },
+    "notificationError": "Erreur notification: {error}",
+    "@notificationError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "notificationInMinutes": "dans {minutes} min",
+    "@notificationInMinutes": {
+        "placeholders": {
+            "minutes": {}
+        }
+    },
+    "notificationInHoursMinutes": "dans {hours} h {minutes} min",
+    "@notificationInHoursMinutes": {
+        "placeholders": {
+            "hours": {},
+            "minutes": {}
+        }
+    },
+    "notificationOnDate": "{dayShort} {day}/{month} a {hour}:{minute}",
+    "@notificationOnDate": {
+        "placeholders": {
+            "dayShort": {},
+            "day": {},
+            "month": {},
+            "hour": {},
+            "minute": {}
+        }
+    }
 }

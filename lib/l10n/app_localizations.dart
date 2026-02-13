@@ -178,6 +178,12 @@ abstract class AppLocalizations {
   /// **'Edit profile'**
   String get labMdPr;
 
+  /// No description provided for @btMod.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get btMod;
+
   /// No description provided for @labNom.
   ///
   /// In en, this message translates to:
@@ -211,7 +217,7 @@ abstract class AppLocalizations {
   /// No description provided for @hintAjoutMatiere.
   ///
   /// In en, this message translates to:
-  /// **'Examples: Mathematics, English...'**
+  /// **'Examples: Mathematics...'**
   String get hintAjoutMatiere;
 
   /// No description provided for @btnEnregistrerProfil.
@@ -319,7 +325,7 @@ abstract class AppLocalizations {
   /// No description provided for @location.
   ///
   /// In en, this message translates to:
-  /// **'Room (Optional)'**
+  /// **'Room'**
   String get location;
 
   /// No description provided for @day.
@@ -477,6 +483,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unspecified room'**
   String get labLocation;
+
+  /// No description provided for @hrs.
+  ///
+  /// In en, this message translates to:
+  /// **'Hour'**
+  String get hrs;
+
+  /// No description provided for @courseDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Course details'**
+  String get courseDetails;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @editCours.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit the course'**
+  String get editCours;
+
+  /// No description provided for @courseUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Course modified !'**
+  String get courseUpdated;
+
+  /// No description provided for @courseAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Course added !'**
+  String get courseAdded;
+
+  /// No description provided for @exactAlarmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow exact alarms'**
+  String get exactAlarmTitle;
+
+  /// No description provided for @exactAlarmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'To ensure scheduled reminders, enable the \"Alarms & reminders\" permission in system settings.'**
+  String get exactAlarmMessage;
+
+  /// No description provided for @notificationPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow notifications'**
+  String get notificationPermissionTitle;
+
+  /// No description provided for @notificationPermissionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'To receive reminders, allow notifications in system settings.'**
+  String get notificationPermissionMessage;
+
+  /// No description provided for @later.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get later;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get openSettings;
+
+  /// No description provided for @courseReminderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Course reminder!'**
+  String get courseReminderTitle;
+
+  /// No description provided for @courseReminderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your course of {courseTitle} starts in 10 minutes{locationSuffix}.'**
+  String courseReminderBody(Object courseTitle, Object locationSuffix);
+
+  /// No description provided for @courseReminderLocationSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **' in room {room}'**
+  String courseReminderLocationSuffix(Object room);
+
+  /// No description provided for @courseNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Course not found'**
+  String get courseNotFound;
+
+  /// No description provided for @deleteCourseMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you really want to delete this course?'**
+  String get deleteCourseMessage;
+
+  /// No description provided for @testNotifButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Test notification'**
+  String get testNotifButton;
+
+  /// No description provided for @testInstantTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant test'**
+  String get testInstantTitle;
+
+  /// No description provided for @testInstantBody.
+  ///
+  /// In en, this message translates to:
+  /// **'If you see this, the channel works!'**
+  String get testInstantBody;
+
+  /// No description provided for @versionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String versionLabel(Object version);
+
+  /// No description provided for @madeWithLoveBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Made with love by '**
+  String get madeWithLoveBy;
+
+  /// No description provided for @weeklyNotificationScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'✓ Weekly notification scheduled'**
+  String get weeklyNotificationScheduled;
+
+  /// No description provided for @weeklyReminderMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder every week 10 min before \"{courseName}\" on {date}'**
+  String weeklyReminderMessage(Object courseName, Object date);
+
+  /// No description provided for @courseTooClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Course too close'**
+  String get courseTooClose;
+
+  /// No description provided for @courseTooCloseMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The course \"{courseName}\" is too close to schedule a notification.'**
+  String courseTooCloseMessage(Object courseName);
+
+  /// No description provided for @notificationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification error: {error}'**
+  String notificationError(Object error);
+
+  /// No description provided for @notificationInMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'in {minutes} min'**
+  String notificationInMinutes(Object minutes);
+
+  /// No description provided for @notificationInHoursMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'in {hours} h {minutes} min'**
+  String notificationInHoursMinutes(Object hours, Object minutes);
+
+  /// No description provided for @notificationOnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'{dayShort} {day}/{month} at {hour}:{minute}'**
+  String notificationOnDate(
+    Object dayShort,
+    Object day,
+    Object month,
+    Object hour,
+    Object minute,
+  );
 }
 
 class _AppLocalizationsDelegate

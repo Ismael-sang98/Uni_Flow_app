@@ -49,6 +49,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get labMdPr => 'Profili düzenle';
 
   @override
+  String get btMod => 'Düzenleme';
+
+  @override
   String get labNom => 'Ad Soyad';
 
   @override
@@ -64,7 +67,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get labSsMat => 'Derslerinizi girin';
 
   @override
-  String get hintAjoutMatiere => 'Örnekler: Matematik, İngilizce...';
+  String get hintAjoutMatiere => 'Örnekler: Matematik...';
 
   @override
   String get btnEnregistrerProfil => 'Profili kaydet';
@@ -120,7 +123,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get goBack => 'Geri';
 
   @override
-  String get location => 'Sınıf (İsteğe bağlı)';
+  String get location => 'Sınıf';
 
   @override
   String get day => 'Gün';
@@ -199,4 +202,120 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get labLocation => 'Sınıf belirtilmemiş';
+
+  @override
+  String get hrs => 'Saat';
+
+  @override
+  String get courseDetails => 'Ders detayları';
+
+  @override
+  String get save => 'Kaydet';
+
+  @override
+  String get editCours => 'Ders düzenle';
+
+  @override
+  String get courseUpdated => 'Ders düzenledi !';
+
+  @override
+  String get courseAdded => 'Ders eklendi !';
+
+  @override
+  String get exactAlarmTitle => 'Kesin alarmlara izin verin';
+
+  @override
+  String get exactAlarmMessage =>
+      'Zamanlanmıs hatırlatmalar için \"Alarmlar ve hatırlatmalar\" iznini ayarlardan etkinlestirin.';
+
+  @override
+  String get notificationPermissionTitle => 'Bildirimlere izin ver';
+
+  @override
+  String get notificationPermissionMessage =>
+      'Hatırlatmaları almak için bildirimlere izin verin.';
+
+  @override
+  String get later => 'Sonra';
+
+  @override
+  String get openSettings => 'Ayarları açın';
+
+  @override
+  String get courseReminderTitle => 'Ders hatirlatması!';
+
+  @override
+  String courseReminderBody(Object courseTitle, Object locationSuffix) {
+    return '$courseTitle dersiniz 10 dakika sonra basliyor$locationSuffix.';
+  }
+
+  @override
+  String courseReminderLocationSuffix(Object room) {
+    return ' $room odasında';
+  }
+
+  @override
+  String get courseNotFound => 'Ders bulunamadı';
+
+  @override
+  String get deleteCourseMessage => 'Bu dersi silmek istiyor musunuz?';
+
+  @override
+  String get testNotifButton => 'Bildirim test';
+
+  @override
+  String get testInstantTitle => 'Anlik test';
+
+  @override
+  String get testInstantBody => 'Bunu görüyorsaniz kanal calisiyor!';
+
+  @override
+  String versionLabel(Object version) {
+    return 'Surum $version';
+  }
+
+  @override
+  String get madeWithLoveBy => 'Sevgiyle hazırlandı: ';
+
+  @override
+  String get weeklyNotificationScheduled => '✓ Haftalık bildirim programlandı';
+
+  @override
+  String weeklyReminderMessage(Object courseName, Object date) {
+    return '\"$courseName\" dersinden 10 dakika önce her hafta hatırlatma: $date';
+  }
+
+  @override
+  String get courseTooClose => 'Ders çok yakın';
+
+  @override
+  String courseTooCloseMessage(Object courseName) {
+    return '\"$courseName\" dersi bildirim planlamak için çok yakın.';
+  }
+
+  @override
+  String notificationError(Object error) {
+    return 'Bildirim hatası: $error';
+  }
+
+  @override
+  String notificationInMinutes(Object minutes) {
+    return '$minutes dk sonra';
+  }
+
+  @override
+  String notificationInHoursMinutes(Object hours, Object minutes) {
+    return '$hours saat $minutes dk sonra';
+  }
+
+  @override
+  String notificationOnDate(
+    Object dayShort,
+    Object day,
+    Object month,
+    Object hour,
+    Object minute,
+  ) {
+    return '$dayShort $day/$month saat $hour:$minute';
+  }
 }

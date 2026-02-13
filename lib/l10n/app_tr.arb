@@ -12,12 +12,13 @@
     "aucuneMatiere": "Tanımlanmış bir ders yok.",
     "labCrPr" : "Profilimi oluştur",
     "labMdPr": "Profili düzenle",
+    "btMod": "Düzenleme",
     "labNom" : "Ad Soyad",
     "labFkt" : "Bölüm",
     "labCl" : "Sınıf",
     "labEc" : "Okul",
     "labSsMat": "Derslerinizi girin",
-    "hintAjoutMatiere": "Örnekler: Matematik, İngilizce...",
+    "hintAjoutMatiere": "Örnekler: Matematik...",
     "btnEnregistrerProfil": "Profili kaydet",
     "addTask": "Yeni Görev",
     "taskTitle": "Başlık",
@@ -35,7 +36,7 @@
    "noSubjectMnessage": "Hiçbir dersi bulunamadı!",
     "noSubjectExplanation": "Öncelikle Profilinizde (kalem simgesi) ders konularınızı belirlemelisiniz.",
     "goBack": "Geri",
-    "location": "Sınıf (İsteğe bağlı)",
+    "location": "Sınıf",
     "day": "Gün",
     "j1": "Pazartesi",
     "j2": "Salı",
@@ -61,6 +62,87 @@
     "mess1": "Gerçekten silmek istiyor musunuz?",
     "mess2": "Bu işlem geri döndürülemez.",
     "supp": "Sil",
-    "labLocation": "Sınıf belirtilmemiş"
-
+    "labLocation": "Sınıf belirtilmemiş",
+    "hrs": "Saat",
+    "courseDetails": "Ders detayları",
+    "save": "Kaydet",
+    "editCours": "Ders düzenle",
+    "courseUpdated": "Ders düzenledi !",
+    "courseAdded": "Ders eklendi !",
+    "exactAlarmTitle": "Kesin alarmlara izin verin",
+    "exactAlarmMessage": "Zamanlanmıs hatırlatmalar için \"Alarmlar ve hatırlatmalar\" iznini ayarlardan etkinlestirin.",
+    "notificationPermissionTitle": "Bildirimlere izin ver",
+    "notificationPermissionMessage": "Hatırlatmaları almak için bildirimlere izin verin.",
+    "later": "Sonra",
+    "openSettings": "Ayarları açın",
+    "courseReminderTitle": "Ders hatirlatması!",
+    "courseReminderBody": "{courseTitle} dersiniz 10 dakika sonra basliyor{locationSuffix}.",
+    "@courseReminderBody": {
+        "placeholders": {
+            "courseTitle": {},
+            "locationSuffix": {}
+        }
+    },
+    "courseReminderLocationSuffix": " {room} odasında",
+    "@courseReminderLocationSuffix": {
+        "placeholders": {
+            "room": {}
+        }
+    },
+    "courseNotFound": "Ders bulunamadı",
+    "deleteCourseMessage": "Bu dersi silmek istiyor musunuz?",
+    "testNotifButton": "Bildirim test",
+    "testInstantTitle": "Anlik test",
+    "testInstantBody": "Bunu görüyorsaniz kanal calisiyor!",
+    "versionLabel": "Surum {version}",
+    "@versionLabel": {
+        "placeholders": {
+            "version": {}
+        }
+    },
+    "madeWithLoveBy": "Sevgiyle hazırlandı: ",
+    "weeklyNotificationScheduled": "✓ Haftalık bildirim programlandı",
+    "weeklyReminderMessage": "\"{courseName}\" dersinden 10 dakika önce her hafta hatırlatma: {date}",
+    "@weeklyReminderMessage": {
+        "placeholders": {
+            "courseName": {},
+            "date": {}
+        }
+    },
+    "courseTooClose": "Ders çok yakın",
+    "courseTooCloseMessage": "\"{courseName}\" dersi bildirim planlamak için çok yakın.",
+    "@courseTooCloseMessage": {
+        "placeholders": {
+            "courseName": {}
+        }
+    },
+    "notificationError": "Bildirim hatası: {error}",
+    "@notificationError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "notificationInMinutes": "{minutes} dk sonra",
+    "@notificationInMinutes": {
+        "placeholders": {
+            "minutes": {}
+        }
+    },
+    "notificationInHoursMinutes": "{hours} saat {minutes} dk sonra",
+    "@notificationInHoursMinutes": {
+        "placeholders": {
+            "hours": {},
+            "minutes": {}
+        }
+    },
+    "notificationOnDate": "{dayShort} {day}/{month} saat {hour}:{minute}",
+    "@notificationOnDate": {
+        "placeholders": {
+            "dayShort": {},
+            "day": {},
+            "month": {},
+            "hour": {},
+            "minute": {}
+        }
+    }
 }
