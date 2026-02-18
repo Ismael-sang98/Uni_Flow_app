@@ -15,6 +15,7 @@ import 'package:mon_temps/widgets/weekly_schedule_view.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/update_dialog.dart';
 
 // --- PAGE D'ACCUEIL PRINCIPALE ---
 class HomePage extends StatefulWidget {
@@ -34,6 +35,15 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _checkAndRequestNotificationPermission(); // Appel de notre fonction robuste
+    _checkForUpdates(); // Vérifier les mises à jour
+  }
+
+  /// Vérifie automatiquement les mises à jour au démarrage
+  Future<void> _checkForUpdates() async {
+    // Attendre 2 secondes pour laisser l'app se charger
+    await Future.delayed(const Duration(seconds: 2));
+    if (!mounted) return;
+    await UpdateDialog.checkAndShow(context);
   }
 
   Future<void> _checkAndRequestNotificationPermission() async {

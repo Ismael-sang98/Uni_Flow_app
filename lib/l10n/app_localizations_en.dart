@@ -385,4 +385,80 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get requiredField => 'Required *';
+
+  @override
+  String get updateAvailable => 'Update Available';
+
+  @override
+  String updateCurrentVersion(Object version) {
+    return 'Current version: $version';
+  }
+
+  @override
+  String updateNewVersion(Object version) {
+    return 'New version: $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'What\'s new:';
+
+  @override
+  String get updateLater => 'Later';
+
+  @override
+  String get updateDownload => 'Download';
+
+  @override
+  String get updateTestTitle => 'Update Test';
+
+  @override
+  String get updateReadyToTest => 'Ready to test';
+
+  @override
+  String get updateChecking => 'Checking...';
+
+  @override
+  String get updateAvailableStatus => '✅ Update available!';
+
+  @override
+  String get updateUpToDate => '✅ You have the latest version';
+
+  @override
+  String updateError(Object error) {
+    return '❌ Error: $error';
+  }
+
+  @override
+  String get updateInfo => '📱 Information';
+
+  @override
+  String get updateCurrentVersionLabel => 'Current version';
+
+  @override
+  String get updateLatestVersionLabel => 'Latest version';
+
+  @override
+  String get updateHowToTest => 'How to test?';
+
+  @override
+  String updateTestInstructions(Object version) {
+    return '1. Use \"Simulate\" to see the update dialog\n\n2. Or create a GitHub release with a version higher than $version and click \"Check\"';
+  }
+
+  @override
+  String get updateSimulate => '🧪 Simulate an update';
+
+  @override
+  String get updateCheckGitHub => '🔍 Check on GitHub';
+
+  @override
+  String get updateGitHubRelease => '📦 GitHub Release';
+
+  @override
+  String get updateReleaseInstructions =>
+      'To create a test release:\n1. github.com/Ismael-sang98/Uni_Flow_app/releases/new\n2. Tag: v1.5.6 (or higher)\n3. Upload an APK\n4. Publish';
+
+  @override
+  String get updateSimulationNote =>
+      'This is a simulation to test the update dialog.';
 }

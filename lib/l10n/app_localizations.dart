@@ -789,6 +789,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Required *'**
   String get requiredField;
+
+  /// No description provided for @updateAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Available'**
+  String get updateAvailable;
+
+  /// No description provided for @updateCurrentVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Current version: {version}'**
+  String updateCurrentVersion(Object version);
+
+  /// No description provided for @updateNewVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'New version: {version}'**
+  String updateNewVersion(Object version);
+
+  /// No description provided for @updateWhatsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new:'**
+  String get updateWhatsNew;
+
+  /// No description provided for @updateLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get updateLater;
+
+  /// No description provided for @updateDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get updateDownload;
+
+  /// No description provided for @updateTestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Test'**
+  String get updateTestTitle;
+
+  /// No description provided for @updateReadyToTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to test'**
+  String get updateReadyToTest;
+
+  /// No description provided for @updateChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking...'**
+  String get updateChecking;
+
+  /// No description provided for @updateAvailableStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Update available!'**
+  String get updateAvailableStatus;
+
+  /// No description provided for @updateUpToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'✅ You have the latest version'**
+  String get updateUpToDate;
+
+  /// No description provided for @updateError.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Error: {error}'**
+  String updateError(Object error);
+
+  /// No description provided for @updateInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'📱 Information'**
+  String get updateInfo;
+
+  /// No description provided for @updateCurrentVersionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current version'**
+  String get updateCurrentVersionLabel;
+
+  /// No description provided for @updateLatestVersionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest version'**
+  String get updateLatestVersionLabel;
+
+  /// No description provided for @updateHowToTest.
+  ///
+  /// In en, this message translates to:
+  /// **'How to test?'**
+  String get updateHowToTest;
+
+  /// No description provided for @updateTestInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Use \"Simulate\" to see the update dialog\n\n2. Or create a GitHub release with a version higher than {version} and click \"Check\"'**
+  String updateTestInstructions(Object version);
+
+  /// No description provided for @updateSimulate.
+  ///
+  /// In en, this message translates to:
+  /// **'🧪 Simulate an update'**
+  String get updateSimulate;
+
+  /// No description provided for @updateCheckGitHub.
+  ///
+  /// In en, this message translates to:
+  /// **'🔍 Check on GitHub'**
+  String get updateCheckGitHub;
+
+  /// No description provided for @updateGitHubRelease.
+  ///
+  /// In en, this message translates to:
+  /// **'📦 GitHub Release'**
+  String get updateGitHubRelease;
+
+  /// No description provided for @updateReleaseInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'To create a test release:\n1. github.com/Ismael-sang98/Uni_Flow_app/releases/new\n2. Tag: v1.5.6 (or higher)\n3. Upload an APK\n4. Publish'**
+  String get updateReleaseInstructions;
+
+  /// No description provided for @updateSimulationNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a simulation to test the update dialog.'**
+  String get updateSimulationNote;
 }
 
 class _AppLocalizationsDelegate

@@ -385,4 +385,80 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get requiredField => 'Requis *';
+
+  @override
+  String get updateAvailable => 'Mise à jour disponible';
+
+  @override
+  String updateCurrentVersion(Object version) {
+    return 'Version actuelle: $version';
+  }
+
+  @override
+  String updateNewVersion(Object version) {
+    return 'Nouvelle version: $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'Nouveautés:';
+
+  @override
+  String get updateLater => 'Plus tard';
+
+  @override
+  String get updateDownload => 'Télécharger';
+
+  @override
+  String get updateTestTitle => 'Test Mise à Jour';
+
+  @override
+  String get updateReadyToTest => 'Prêt à tester';
+
+  @override
+  String get updateChecking => 'Vérification en cours...';
+
+  @override
+  String get updateAvailableStatus => '✅ Mise à jour disponible!';
+
+  @override
+  String get updateUpToDate => '✅ Vous avez la dernière version';
+
+  @override
+  String updateError(Object error) {
+    return '❌ Erreur: $error';
+  }
+
+  @override
+  String get updateInfo => '📱 Informations';
+
+  @override
+  String get updateCurrentVersionLabel => 'Version actuelle';
+
+  @override
+  String get updateLatestVersionLabel => 'Dernière version';
+
+  @override
+  String get updateHowToTest => 'Comment tester ?';
+
+  @override
+  String updateTestInstructions(Object version) {
+    return '1. Utilise \"Simuler\" pour voir le dialogue de mise à jour\n\n2. Ou crée une release GitHub avec une version supérieure à $version et clique sur \"Vérifier\"';
+  }
+
+  @override
+  String get updateSimulate => '🧪 Simuler une mise à jour';
+
+  @override
+  String get updateCheckGitHub => '🔍 Vérifier sur GitHub';
+
+  @override
+  String get updateGitHubRelease => '📦 Release GitHub';
+
+  @override
+  String get updateReleaseInstructions =>
+      'Pour créer une release de test:\n1. github.com/Ismael-sang98/Uni_Flow_app/releases/new\n2. Tag: v1.5.6 (ou supérieur)\n3. Upload un APK\n4. Publier';
+
+  @override
+  String get updateSimulationNote =>
+      'Ceci est une simulation pour tester le dialogue de mise à jour.';
 }

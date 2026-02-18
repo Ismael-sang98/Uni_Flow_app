@@ -476,12 +476,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                   decoration: BoxDecoration(
                                     color: const Color(
                                       0xFF6C63FF,
-                                    // ignore: deprecated_member_use
+                                      // ignore: deprecated_member_use
                                     ).withOpacity(0.1),
                                     border: Border.all(
                                       color: const Color(
                                         0xFF6C63FF,
-                                      // ignore: deprecated_member_use
+                                        // ignore: deprecated_member_use
                                       ).withOpacity(0.3),
                                     ),
                                     borderRadius: BorderRadius.circular(20),

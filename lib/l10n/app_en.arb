@@ -179,5 +179,47 @@
             "count": {}
         }
     },
-    "requiredField": "Required *"
+    "requiredField": "Required *",
+    "updateAvailable": "Update Available",
+    "updateCurrentVersion": "Current version: {version}",
+    "@updateCurrentVersion": {
+        "placeholders": {
+            "version": {}
+        }
+    },
+    "updateNewVersion": "New version: {version}",
+    "@updateNewVersion": {
+        "placeholders": {
+            "version": {}
+        }
+    },
+    "updateWhatsNew": "What's new:",
+    "updateLater": "Later",
+    "updateDownload": "Download",
+    "updateTestTitle": "Update Test",
+    "updateReadyToTest": "Ready to test",
+    "updateChecking": "Checking...",
+    "updateAvailableStatus": "✅ Update available!",
+    "updateUpToDate": "✅ You have the latest version",
+    "updateError": "❌ Error: {error}",
+    "@updateError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "updateInfo": "📱 Information",
+    "updateCurrentVersionLabel": "Current version",
+    "updateLatestVersionLabel": "Latest version",
+    "updateHowToTest": "How to test?",
+    "updateTestInstructions": "1. Use \"Simulate\" to see the update dialog\n\n2. Or create a GitHub release with a version higher than {version} and click \"Check\"",
+    "@updateTestInstructions": {
+        "placeholders": {
+            "version": {}
+        }
+    },
+    "updateSimulate": "🧪 Simulate an update",
+    "updateCheckGitHub": "🔍 Check on GitHub",
+    "updateGitHubRelease": "📦 GitHub Release",
+    "updateReleaseInstructions": "To create a test release:\n1. github.com/Ismael-sang98/Uni_Flow_app/releases/new\n2. Tag: v1.5.6 (or higher)\n3. Upload an APK\n4. Publish",
+    "updateSimulationNote": "This is a simulation to test the update dialog."
 }

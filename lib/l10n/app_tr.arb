@@ -179,5 +179,47 @@
             "count": {}
         }
     },
-    "requiredField": "Gerekli *"
+    "requiredField": "Gerekli *",
+    "updateAvailable": "Güncelleme Mevcut",
+    "updateCurrentVersion": "Mevcut sürüm: {version}",
+    "@updateCurrentVersion": {
+        "placeholders": {
+            "version": {}
+        }
+    },
+    "updateNewVersion": "Yeni sürüm: {version}",
+    "@updateNewVersion": {
+        "placeholders": {
+            "version": {}
+        }
+    },
+    "updateWhatsNew": "Yenilikler:",
+    "updateLater": "Sonra",
+    "updateDownload": "İndir",
+    "updateTestTitle": "Güncelleme Testi",
+    "updateReadyToTest": "Test etmeye hazır",
+    "updateChecking": "Kontrol ediliyor...",
+    "updateAvailableStatus": "✅ Güncelleme mevcut!",
+    "updateUpToDate": "✅ En son sürüme sahipsiniz",
+    "updateError": "❌ Hata: {error}",
+    "@updateError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "updateInfo": "📱 Bilgiler",
+    "updateCurrentVersionLabel": "Mevcut sürüm",
+    "updateLatestVersionLabel": "Son sürüm",
+    "updateHowToTest": "Nasıl test edilir?",
+    "updateTestInstructions": "1. Güncelleme diyaloğunu görmek için \"Simüle Et\" kullanın\n\n2. Veya {version} sürümünden daha yüksek bir GitHub sürümü oluşturun ve \"Kontrol Et\"'e tıklayın",
+    "@updateTestInstructions": {
+        "placeholders": {
+            "version": {}
+        }
+    },
+    "updateSimulate": "🧪 Güncelleme simüle et",
+    "updateCheckGitHub": "🔍 GitHub'da kontrol et",
+    "updateGitHubRelease": "📦 GitHub Sürümü",
+    "updateReleaseInstructions": "Test sürümü oluşturmak için:\n1. github.com/Ismael-sang98/Uni_Flow_app/releases/new\n2. Etiket: v1.5.6 (veya daha yüksek)\n3. APK yükle\n4. Yayınla",
+    "updateSimulationNote": "Bu, güncelleme diyaloğunu test etmek için bir simülasyondur."
 }

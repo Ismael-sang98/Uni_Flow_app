@@ -385,4 +385,80 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get requiredField => 'Gerekli *';
+
+  @override
+  String get updateAvailable => 'Güncelleme Mevcut';
+
+  @override
+  String updateCurrentVersion(Object version) {
+    return 'Mevcut sürüm: $version';
+  }
+
+  @override
+  String updateNewVersion(Object version) {
+    return 'Yeni sürüm: $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'Yenilikler:';
+
+  @override
+  String get updateLater => 'Sonra';
+
+  @override
+  String get updateDownload => 'İndir';
+
+  @override
+  String get updateTestTitle => 'Güncelleme Testi';
+
+  @override
+  String get updateReadyToTest => 'Test etmeye hazır';
+
+  @override
+  String get updateChecking => 'Kontrol ediliyor...';
+
+  @override
+  String get updateAvailableStatus => '✅ Güncelleme mevcut!';
+
+  @override
+  String get updateUpToDate => '✅ En son sürüme sahipsiniz';
+
+  @override
+  String updateError(Object error) {
+    return '❌ Hata: $error';
+  }
+
+  @override
+  String get updateInfo => '📱 Bilgiler';
+
+  @override
+  String get updateCurrentVersionLabel => 'Mevcut sürüm';
+
+  @override
+  String get updateLatestVersionLabel => 'Son sürüm';
+
+  @override
+  String get updateHowToTest => 'Nasıl test edilir?';
+
+  @override
+  String updateTestInstructions(Object version) {
+    return '1. Güncelleme diyaloğunu görmek için \"Simüle Et\" kullanın\n\n2. Veya $version sürümünden daha yüksek bir GitHub sürümü oluşturun ve \"Kontrol Et\"\'e tıklayın';
+  }
+
+  @override
+  String get updateSimulate => '🧪 Güncelleme simüle et';
+
+  @override
+  String get updateCheckGitHub => '🔍 GitHub\'da kontrol et';
+
+  @override
+  String get updateGitHubRelease => '📦 GitHub Sürümü';
+
+  @override
+  String get updateReleaseInstructions =>
+      'Test sürümü oluşturmak için:\n1. github.com/Ismael-sang98/Uni_Flow_app/releases/new\n2. Etiket: v1.5.6 (veya daha yüksek)\n3. APK yükle\n4. Yayınla';
+
+  @override
+  String get updateSimulationNote =>
+      'Bu, güncelleme diyaloğunu test etmek için bir simülasyondur.';
 }
