@@ -238,6 +238,108 @@ abstract class AppLocalizations {
   /// **'Title'**
   String get taskTitle;
 
+  /// No description provided for @notesLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes Library'**
+  String get notesLibrary;
+
+  /// No description provided for @addNote.
+  ///
+  /// In en, this message translates to:
+  /// **'New Note'**
+  String get addNote;
+
+  /// No description provided for @noteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get noteTitle;
+
+  /// No description provided for @noteSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get noteSubject;
+
+  /// No description provided for @noteContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Content'**
+  String get noteContent;
+
+  /// No description provided for @noteTags.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags (comma separated)'**
+  String get noteTags;
+
+  /// No description provided for @noteRequiredFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Title and content are required.'**
+  String get noteRequiredFields;
+
+  /// No description provided for @noteImages.
+  ///
+  /// In en, this message translates to:
+  /// **'Images'**
+  String get noteImages;
+
+  /// No description provided for @addFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get addFromGallery;
+
+  /// No description provided for @addFromCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get addFromCamera;
+
+  /// No description provided for @noImagesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No images yet.'**
+  String get noImagesYet;
+
+  /// No description provided for @noteTagsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags help you group and search notes (e.g. exam, chapter).'**
+  String get noteTagsHelp;
+
+  /// No description provided for @notesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No notes yet.'**
+  String get notesEmpty;
+
+  /// No description provided for @noteDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Note details'**
+  String get noteDetails;
+
+  /// No description provided for @editNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit note'**
+  String get editNote;
+
+  /// No description provided for @noteCreatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Created on {date}'**
+  String noteCreatedAt(Object date);
+
+  /// No description provided for @noteUpdatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated on {date}'**
+  String noteUpdatedAt(Object date);
+
   /// No description provided for @mt.
   ///
   /// In en, this message translates to:
@@ -669,6 +771,24 @@ abstract class AppLocalizations {
     Object hour,
     Object minute,
   );
+
+  /// No description provided for @shareNoteImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Image from my note'**
+  String get shareNoteImage;
+
+  /// No description provided for @charactersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} characters'**
+  String charactersCount(Object count);
+
+  /// No description provided for @requiredField.
+  ///
+  /// In en, this message translates to:
+  /// **'Required *'**
+  String get requiredField;
 }
 
 class _AppLocalizationsDelegate

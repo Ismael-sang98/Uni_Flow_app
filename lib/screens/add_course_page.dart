@@ -313,8 +313,9 @@ class _AddCoursePageState extends State<AddCoursePage> {
     try {
       await _ensureNotificationPermissions();
 
+      // On programme la notification 15 minutes avant le début du cours
       final notificationTime = startDateTime.subtract(
-        const Duration(minutes: 15),
+        const Duration(minutes: 10),
       );
 
       final int notificationId = NotificationService.notificationIdFromCourseId(

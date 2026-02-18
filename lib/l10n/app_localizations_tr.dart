@@ -79,6 +79,62 @@ class AppLocalizationsTr extends AppLocalizations {
   String get taskTitle => 'Başlık';
 
   @override
+  String get notesLibrary => 'Notlar';
+
+  @override
+  String get addNote => 'Yeni Not';
+
+  @override
+  String get noteTitle => 'Başlık';
+
+  @override
+  String get noteSubject => 'Ders';
+
+  @override
+  String get noteContent => 'İçerik';
+
+  @override
+  String get noteTags => 'Etiketler (virgülle ayrılmış)';
+
+  @override
+  String get noteRequiredFields => 'Başlık ve İçerik zorunludur.';
+
+  @override
+  String get noteImages => 'Gorseller';
+
+  @override
+  String get addFromGallery => 'Galeri';
+
+  @override
+  String get addFromCamera => 'Kamera';
+
+  @override
+  String get noImagesYet => 'Henuz gorsel yok.';
+
+  @override
+  String get noteTagsHelp =>
+      'Etiketler notları gruplar ve aramayı kolaylaştırır (or: sınav, konu).';
+
+  @override
+  String get notesEmpty => 'Henuz not yok.';
+
+  @override
+  String get noteDetails => 'Not detayları';
+
+  @override
+  String get editNote => 'Notu düzenle';
+
+  @override
+  String noteCreatedAt(Object date) {
+    return 'Olusturma: $date';
+  }
+
+  @override
+  String noteUpdatedAt(Object date) {
+    return 'Güncelleme: $date';
+  }
+
+  @override
   String get mt => 'Ders';
 
   @override
@@ -318,4 +374,15 @@ class AppLocalizationsTr extends AppLocalizations {
   ) {
     return '$dayShort $day/$month saat $hour:$minute';
   }
+
+  @override
+  String get shareNoteImage => 'Notumdan görsel';
+
+  @override
+  String charactersCount(Object count) {
+    return '$count karakter';
+  }
+
+  @override
+  String get requiredField => 'Gerekli *';
 }

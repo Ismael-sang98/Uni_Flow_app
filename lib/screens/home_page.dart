@@ -1,14 +1,16 @@
 import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:mon_temps/screens/add_note_page.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:mon_temps/models/student_profile.dart';
-import 'package:mon_temps/models/todo_task.dart';
-import 'package:mon_temps/providers/task_provider.dart';
+import 'package:mon_temps/models/study_note.dart';
+import 'package:mon_temps/providers/notes_provider.dart';
 import 'package:mon_temps/screens/add_course_page.dart';
 import 'package:mon_temps/screens/profile_page.dart';
-import 'package:mon_temps/widgets/tasks_view.dart';
+import 'package:mon_temps/widgets/notes_library_view.dart';
 import 'package:mon_temps/widgets/weekly_schedule_view.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -57,19 +59,17 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  // Boîte de dialogue pour ajouter une nouvelle tâche
-  void _showAddTaskDialog(BuildContext context) {
-    // Contrôleur pour le champ de texte du titre
+  // Boîte de dialogue pour ajouter une nouvelle note
+  // ignore: unused_element
+  void _showAddNoteDialog(BuildContext context) {
     final titleController = TextEditingController();
-    // Date sélectionnée par défaut (aujourd'hui)
-    DateTime selectedDate = DateTime.now();
-    // Matière sélectionnée par défaut
-    String? selectedCourseTitle;
+    final contentController = TextEditingController();
+    final tagsController = TextEditingController();
+    String? selectedSubject;
+    final List<String> imagePaths = [];
 
-    // --- CORRECTION : Récupérer les matières depuis le Profil (Hive) ---
     final settingsBox = Hive.box('settings');
     final profile = settingsBox.get('profile') as StudentProfile?;
-    // On utilise la liste 'subjects' du profil, ou une liste vide si rien n'est trouvé
     final List<String> availableSubjects = profile?.subjects ?? [];
 
     // Affichage de la boîte de dialogue
@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                   color: Theme.of(
                     context,
-                  // ignore: deprecated_member_use
+                    // ignore: deprecated_member_use
                   ).colorScheme.primary.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  l10n.addTask,
+                  l10n.addNote,
                   style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
               ),
@@ -118,9 +118,9 @@ class _HomePageState extends State<HomePage> {
               children: [
                 TextField(
                   controller: titleController,
-                  textInputAction: TextInputAction.done,
+                  textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: l10n.taskTitle,
+                    labelText: l10n.noteTitle,
                     prefixIcon: const Icon(Icons.title_rounded),
                     filled: true,
                     fillColor: Theme.of(
@@ -139,10 +139,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 14),
                 DropdownButtonFormField<String>(
-                  initialValue: selectedCourseTitle,
+                  initialValue: selectedSubject,
                   decoration: InputDecoration(
-                    //les textes sont désormais localisés grâce à AppLocalizations
-                    labelText: l10n.mt,
+                    labelText: l10n.noteSubject,
                     prefixIcon: const Icon(Icons.school_rounded),
                     filled: true,
                     fillColor: Theme.of(
@@ -157,7 +156,6 @@ class _HomePageState extends State<HomePage> {
                       vertical: 14,
                     ),
                   ),
-                  // Si aucune matière n'est définie, on affiche un message dans le dropdown ou on le laisse vide
                   items: availableSubjects.isEmpty
                       ? null
                       : availableSubjects
@@ -169,50 +167,58 @@ class _HomePageState extends State<HomePage> {
                             )
                             .toList(),
                   onChanged: (val) =>
-                      setDialogState(() => selectedCourseTitle = val),
-                  // Petit message d'aide si la liste est vide
+                      setDialogState(() => selectedSubject = val),
                   hint: availableSubjects.isEmpty
-                      //pas de leçons définies
                       ? Text(l10n.noSubjectsDefined)
                       : null,
                 ),
                 const SizedBox(height: 14),
-                InkWell(
-                  borderRadius: BorderRadius.circular(14),
-                  onTap: () async {
-                    final DateTime? picked = await showDatePicker(
-                      context: context,
-                      initialDate: selectedDate,
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2101),
-                    );
-                    if (picked != null) {
-                      setDialogState(() => selectedDate = picked);
-                    }
-                  },
-                  child: InputDecorator(
-                    decoration: InputDecoration(
-                      labelText: l10n.dueDate,
-                      prefixIcon: const Icon(Icons.calendar_today_rounded),
-                      filled: true,
-                      fillColor: Theme.of(
-                        context,
-                      ).colorScheme.surfaceContainerHighest,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 14,
-                      ),
+                TextField(
+                  controller: contentController,
+                  textInputAction: TextInputAction.newline,
+                  minLines: 4,
+                  maxLines: 6,
+                  decoration: InputDecoration(
+                    labelText: l10n.noteContent,
+                    prefixIcon: const Icon(Icons.notes_rounded),
+                    filled: true,
+                    fillColor: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHighest,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: BorderSide.none,
                     ),
-                    child: Text(
-                      DateFormat('dd/MM').format(selectedDate),
-                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 14,
                     ),
                   ),
                 ),
+                const SizedBox(height: 14),
+                TextField(
+                  controller: tagsController,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    labelText: l10n.noteTags,
+                    helperText: l10n.noteTagsHelp,
+                    prefixIcon: const Icon(Icons.sell_rounded),
+                    filled: true,
+                    fillColor: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHighest,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 14,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 14),
+                _buildImagesSection(context, l10n, imagePaths, setDialogState),
               ],
             ),
           ),
@@ -224,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                   color: Theme.of(
                     context,
-                  // ignore: deprecated_member_use
+                    // ignore: deprecated_member_use
                   ).colorScheme.onSurface.withOpacity(0.6),
                 ),
               ),
@@ -233,16 +239,27 @@ class _HomePageState extends State<HomePage> {
               height: 44,
               child: ElevatedButton(
                 onPressed: () {
-                  if (titleController.text.isNotEmpty) {
-                    final newTask = TodoTask(
-                      id: const Uuid().v4(),
-                      title: titleController.text,
-                      dueDate: selectedDate,
-                      relatedCourseTitle: selectedCourseTitle,
-                    );
-                    context.read<TaskProvider>().addTask(newTask);
-                    Navigator.pop(context);
+                  if (titleController.text.trim().isEmpty ||
+                      contentController.text.trim().isEmpty) {
+                    return;
                   }
+                  final rawTags = tagsController.text.split(',');
+                  final tags = rawTags
+                      .map((tag) => tag.trim())
+                      .where((tag) => tag.isNotEmpty)
+                      .toList();
+
+                  final newNote = StudyNote(
+                    id: const Uuid().v4(),
+                    title: titleController.text.trim(),
+                    content: contentController.text.trim(),
+                    subject: selectedSubject,
+                    createdAt: DateTime.now(),
+                    tags: tags,
+                    imagePaths: imagePaths,
+                  );
+                  context.read<NotesProvider>().addNote(newNote);
+                  Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
@@ -259,6 +276,131 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Widget _buildImagesSection(
+    BuildContext context,
+    AppLocalizations l10n,
+    List<String> imagePaths,
+    StateSetter setDialogState,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                l10n.noteImages,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
+            ),
+            TextButton.icon(
+              onPressed: () async {
+                final newImages = await _pickImagesFromGallery();
+                if (newImages.isEmpty) return;
+                setDialogState(() => imagePaths.addAll(newImages));
+              },
+              icon: const Icon(Icons.photo_library_outlined, size: 18),
+              label: Text(l10n.addFromGallery),
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              tooltip: l10n.addFromCamera,
+              onPressed: () async {
+                final newImage = await _pickImageFromCamera();
+                if (newImage == null) return;
+                setDialogState(() => imagePaths.add(newImage));
+              },
+              icon: const Icon(Icons.photo_camera_outlined),
+            ),
+          ],
+        ),
+        if (imagePaths.isEmpty)
+          Text(
+            l10n.noImagesYet,
+            style: TextStyle(
+              // ignore: deprecated_member_use
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+            ),
+          )
+        else
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: imagePaths
+                .map(
+                  (path) => Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.file(
+                          File(path),
+                          width: 72,
+                          height: 72,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Positioned(
+                        top: 4,
+                        right: 4,
+                        child: InkWell(
+                          onTap: () =>
+                              setDialogState(() => imagePaths.remove(path)),
+                          child: Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: const BoxDecoration(
+                              color: Colors.black54,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.close,
+                              size: 12,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                .toList(),
+          ),
+      ],
+    );
+  }
+
+  Future<List<String>> _pickImagesFromGallery() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickMultiImage();
+    if (picked.isEmpty) return [];
+    return _copyImagesToAppDir(picked);
+  }
+
+  Future<String?> _pickImageFromCamera() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.camera);
+    if (picked == null) return null;
+    final copied = await _copyImagesToAppDir([picked]);
+    return copied.isEmpty ? null : copied.first;
+  }
+
+  Future<List<String>> _copyImagesToAppDir(List<XFile> files) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final notesDir = Directory('${directory.path}/notes');
+    if (!await notesDir.exists()) {
+      await notesDir.create(recursive: true);
+    }
+
+    final List<String> paths = [];
+    for (final file in files) {
+      final fileName = file.path.split('/').last;
+      final newPath =
+          '${notesDir.path}/${DateTime.now().millisecondsSinceEpoch}_$fileName';
+      final saved = await File(file.path).copy(newPath);
+      paths.add(saved.path);
+    }
+    return paths;
   }
 
   @override
@@ -373,7 +515,7 @@ class _HomePageState extends State<HomePage> {
           ),
           body: _selectedIndex == 0
               ? const WeeklyScheduleView()
-              : const TasksView(),
+              : const NotesLibraryView(),
           bottomNavigationBar: Container(
             margin: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -413,12 +555,12 @@ class _HomePageState extends State<HomePage> {
                     label: l10n.planning,
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.task_alt_outlined),
+                    icon: Icon(Icons.note_alt),
                     selectedIcon: Icon(
-                      Icons.task_alt,
+                      Icons.note_alt,
                       color: Color(0xFF6C63FF),
                     ),
-                    label: l10n.tasks,
+                    label: l10n.notesLibrary,
                   ),
                 ],
               ),
@@ -438,7 +580,10 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(builder: (_) => const AddCoursePage()),
                 );
               } else {
-                _showAddTaskDialog(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AddNotePage()),
+                );
               }
             },
             child: const Icon(Icons.add, size: 32),

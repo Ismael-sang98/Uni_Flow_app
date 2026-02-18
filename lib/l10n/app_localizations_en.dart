@@ -79,6 +79,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String get taskTitle => 'Title';
 
   @override
+  String get notesLibrary => 'Notes Library';
+
+  @override
+  String get addNote => 'New Note';
+
+  @override
+  String get noteTitle => 'Title';
+
+  @override
+  String get noteSubject => 'Subject';
+
+  @override
+  String get noteContent => 'Content';
+
+  @override
+  String get noteTags => 'Tags (comma separated)';
+
+  @override
+  String get noteRequiredFields => 'Title and content are required.';
+
+  @override
+  String get noteImages => 'Images';
+
+  @override
+  String get addFromGallery => 'Gallery';
+
+  @override
+  String get addFromCamera => 'Camera';
+
+  @override
+  String get noImagesYet => 'No images yet.';
+
+  @override
+  String get noteTagsHelp =>
+      'Tags help you group and search notes (e.g. exam, chapter).';
+
+  @override
+  String get notesEmpty => 'No notes yet.';
+
+  @override
+  String get noteDetails => 'Note details';
+
+  @override
+  String get editNote => 'Edit note';
+
+  @override
+  String noteCreatedAt(Object date) {
+    return 'Created on $date';
+  }
+
+  @override
+  String noteUpdatedAt(Object date) {
+    return 'Updated on $date';
+  }
+
+  @override
   String get mt => 'Lessons';
 
   @override
@@ -318,4 +374,15 @@ class AppLocalizationsEn extends AppLocalizations {
   ) {
     return '$dayShort $day/$month at $hour:$minute';
   }
+
+  @override
+  String get shareNoteImage => 'Image from my note';
+
+  @override
+  String charactersCount(Object count) {
+    return '$count characters';
+  }
+
+  @override
+  String get requiredField => 'Required *';
 }

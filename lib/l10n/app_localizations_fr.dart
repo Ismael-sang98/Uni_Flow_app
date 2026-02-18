@@ -79,6 +79,62 @@ class AppLocalizationsFr extends AppLocalizations {
   String get taskTitle => 'Titre';
 
   @override
+  String get notesLibrary => 'Bibliothèque de notes';
+
+  @override
+  String get addNote => 'Nouvelle note';
+
+  @override
+  String get noteTitle => 'Titre';
+
+  @override
+  String get noteSubject => 'Matière';
+
+  @override
+  String get noteContent => 'Contenu';
+
+  @override
+  String get noteTags => 'Tags (séparés par des virgules)';
+
+  @override
+  String get noteRequiredFields => 'Le titre et le contenu sont obligatoires.';
+
+  @override
+  String get noteImages => 'Images';
+
+  @override
+  String get addFromGallery => 'Galerie';
+
+  @override
+  String get addFromCamera => 'Caméra';
+
+  @override
+  String get noImagesYet => 'Aucune image pour l\'instant.';
+
+  @override
+  String get noteTagsHelp =>
+      'Les tags servent à classer et retrouver les notes (ex: examen, chapitre).';
+
+  @override
+  String get notesEmpty => 'Aucune note pour l\'instant.';
+
+  @override
+  String get noteDetails => 'Détails de la note';
+
+  @override
+  String get editNote => 'Modifier la note';
+
+  @override
+  String noteCreatedAt(Object date) {
+    return 'Créée le $date';
+  }
+
+  @override
+  String noteUpdatedAt(Object date) {
+    return 'Modifiée le $date';
+  }
+
+  @override
   String get mt => 'Matière';
 
   @override
@@ -318,4 +374,15 @@ class AppLocalizationsFr extends AppLocalizations {
   ) {
     return '$dayShort $day/$month a $hour:$minute';
   }
+
+  @override
+  String get shareNoteImage => 'Image de ma note';
+
+  @override
+  String charactersCount(Object count) {
+    return '$count caractères';
+  }
+
+  @override
+  String get requiredField => 'Requis *';
 }

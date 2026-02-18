@@ -22,6 +22,33 @@
     "btnEnregistrerProfil": "Enregistrer le profil",
     "addTask": "Nouveau Devoir",
     "taskTitle": "Titre",
+    "notesLibrary": "Bibliothèque de notes",
+    "addNote": "Nouvelle note",
+    "noteTitle": "Titre",
+    "noteSubject": "Matière",
+    "noteContent": "Contenu",
+    "noteTags": "Tags (séparés par des virgules)",
+    "noteRequiredFields": "Le titre et le contenu sont obligatoires.",
+    "noteImages": "Images",
+    "addFromGallery": "Galerie",
+    "addFromCamera": "Caméra",
+    "noImagesYet": "Aucune image pour l'instant.",
+    "noteTagsHelp": "Les tags servent à classer et retrouver les notes (ex: examen, chapitre).",
+    "notesEmpty": "Aucune note pour l'instant.",
+    "noteDetails": "Détails de la note",
+    "editNote": "Modifier la note",
+    "noteCreatedAt": "Créée le {date}",
+    "@noteCreatedAt": {
+        "placeholders": {
+            "date": {}
+        }
+    },
+    "noteUpdatedAt": "Modifiée le {date}",
+    "@noteUpdatedAt": {
+        "placeholders": {
+            "date": {}
+        }
+    },
     "mt": "Matière",
     "noSubjectsDefined": "Aucune matière définie dans le profil",
     "dueDate": "Pour le :",
@@ -144,5 +171,13 @@
             "hour": {},
             "minute": {}
         }
-    }
+    },
+    "shareNoteImage": "Image de ma note",
+    "charactersCount": "{count} caractères",
+    "@charactersCount": {
+        "placeholders": {
+            "count": {}
+        }
+    },
+    "requiredField": "Requis *"
 }

@@ -22,6 +22,33 @@
     "btnEnregistrerProfil": "Profili kaydet",
     "addTask": "Yeni Görev",
     "taskTitle": "Başlık",
+    "notesLibrary": "Notlar",
+    "addNote": "Yeni Not",
+    "noteTitle": "Başlık",
+    "noteSubject": "Ders",
+    "noteContent": "İçerik",
+    "noteTags": "Etiketler (virgülle ayrılmış)",
+    "noteRequiredFields": "Başlık ve İçerik zorunludur.",
+    "noteImages": "Gorseller",
+    "addFromGallery": "Galeri",
+    "addFromCamera": "Kamera",
+    "noImagesYet": "Henuz gorsel yok.",
+    "noteTagsHelp": "Etiketler notları gruplar ve aramayı kolaylaştırır (or: sınav, konu).",
+    "notesEmpty": "Henuz not yok.",
+    "noteDetails": "Not detayları",
+    "editNote": "Notu düzenle",
+    "noteCreatedAt": "Olusturma: {date}",
+    "@noteCreatedAt": {
+        "placeholders": {
+            "date": {}
+        }
+    },
+    "noteUpdatedAt": "Güncelleme: {date}",
+    "@noteUpdatedAt": {
+        "placeholders": {
+            "date": {}
+        }
+    },
     "mt": "Ders",
     "noSubjectsDefined": "Profilde tanımlanmış ders yok.",
     "dueDate": "Tarih :",
@@ -144,5 +171,13 @@
             "hour": {},
             "minute": {}
         }
-    }
+    },
+    "shareNoteImage": "Notumdan görsel",
+    "charactersCount": "{count} karakter",
+    "@charactersCount": {
+        "placeholders": {
+            "count": {}
+        }
+    },
+    "requiredField": "Gerekli *"
 }

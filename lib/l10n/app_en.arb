@@ -22,6 +22,33 @@
     "btnEnregistrerProfil": "Save profile",
     "addTask": "New Duty",
     "taskTitle": "Title",
+    "notesLibrary": "Notes Library",
+    "addNote": "New Note",
+    "noteTitle": "Title",
+    "noteSubject": "Subject",
+    "noteContent": "Content",
+    "noteTags": "Tags (comma separated)",
+    "noteRequiredFields": "Title and content are required.",
+    "noteImages": "Images",
+    "addFromGallery": "Gallery",
+    "addFromCamera": "Camera",
+    "noImagesYet": "No images yet.",
+    "noteTagsHelp": "Tags help you group and search notes (e.g. exam, chapter).",
+    "notesEmpty": "No notes yet.",
+    "noteDetails": "Note details",
+    "editNote": "Edit note",
+    "noteCreatedAt": "Created on {date}",
+    "@noteCreatedAt": {
+        "placeholders": {
+            "date": {}
+        }
+    },
+    "noteUpdatedAt": "Updated on {date}",
+    "@noteUpdatedAt": {
+        "placeholders": {
+            "date": {}
+        }
+    },
     "mt": "Lessons",
     "noSubjectsDefined": "No lessons defined in the profile",
     "dueDate": "For the :",
@@ -144,5 +171,13 @@
             "hour": {},
             "minute": {}
         }
-    }
+    },
+    "shareNoteImage": "Image from my note",
+    "charactersCount": "{count} characters",
+    "@charactersCount": {
+        "placeholders": {
+            "count": {}
+        }
+    },
+    "requiredField": "Required *"
 }
