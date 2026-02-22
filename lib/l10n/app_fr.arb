@@ -221,5 +221,39 @@
     "updateCheckGitHub": "🔍 Vérifier sur GitHub",
     "updateGitHubRelease": "📦 Release GitHub",
     "updateReleaseInstructions": "Pour créer une release de test:\n1. github.com/Ismael-sang98/Uni_Flow_app/releases/new\n2. Tag: v1.5.6 (ou supérieur)\n3. Upload un APK\n4. Publier",
-    "updateSimulationNote": "Ceci est une simulation pour tester le dialogue de mise à jour."
+    "updateSimulationNote": "Ceci est une simulation pour tester le dialogue de mise à jour.",
+    "notesCreateNotebook": "Créer un cahier",
+    "notesNotebook": "Cahier",
+    "notesNotebookName": "Nom du cahier",
+    "notesNotebookRequired": "Veuillez sélectionner un cahier",
+    "notesNoNotebook": "Aucun cahier disponible",
+    "notesDeleteNotebookPrompt": "Voulez-vous supprimer le cahier \"{name}\" ?",
+    "@notesDeleteNotebookPrompt": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "notesDeleteNotebookKeepPages": "Supprimer le cahier, garder les pages",
+    "notesDeleteNotebookDeleteAll": "Supprimer cahier + pages",
+    "notesPagesCount": "{count} {count, plural, =0{page} =1{page} other{pages}}",
+    "@notesPagesCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "noteFiles": "Fichiers",
+    "noteAddFile": "Ajouter fichier",
+    "noteNoFiles": "Aucun fichier ajouté.",
+    "noteImageCaptionTitle": "Légende de la photo",
+    "noteImageCaptionLabel": "Légende",
+    "optional": "optionnel",
+    "skip": "Ignorer",
+    "suggested": "Suggestions",
+    "notesOrCustomName": "Ou créer un cahier personnalisé",
+    "search": "Rechercher...",
+    "notesSearchEmpty": "Aucune note trouvée"
 }

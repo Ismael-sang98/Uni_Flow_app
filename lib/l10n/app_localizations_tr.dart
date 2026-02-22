@@ -461,4 +461,75 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get updateSimulationNote =>
       'Bu, güncelleme diyaloğunu test etmek için bir simülasyondur.';
+
+  @override
+  String get notesCreateNotebook => 'Defter oluştur';
+
+  @override
+  String get notesNotebook => 'Defter';
+
+  @override
+  String get notesNotebookName => 'Defter adı';
+
+  @override
+  String get notesNotebookRequired => 'Lütfen bir defter seçin';
+
+  @override
+  String get notesNoNotebook => 'Mevcut defter yok';
+
+  @override
+  String notesDeleteNotebookPrompt(String name) {
+    return '\"$name\" defterini silmek istiyor musunuz?';
+  }
+
+  @override
+  String get notesDeleteNotebookKeepPages => 'Defteri sil, sayfaları koru';
+
+  @override
+  String get notesDeleteNotebookDeleteAll => 'Defter + sayfaları sil';
+
+  @override
+  String notesPagesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'sayfa',
+      one: 'sayfa',
+      zero: 'sayfa',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String get noteFiles => 'Dosyalar';
+
+  @override
+  String get noteAddFile => 'Dosya ekle';
+
+  @override
+  String get noteNoFiles => 'Eklenmiş dosya yok.';
+
+  @override
+  String get noteImageCaptionTitle => 'Fotoğraf açıklaması';
+
+  @override
+  String get noteImageCaptionLabel => 'Açıklama';
+
+  @override
+  String get optional => 'isteğe bağlı';
+
+  @override
+  String get skip => 'Atla';
+
+  @override
+  String get suggested => 'Öneriler';
+
+  @override
+  String get notesOrCustomName => 'Veya özel bir defter oluşturun';
+
+  @override
+  String get search => 'Ara...';
+
+  @override
+  String get notesSearchEmpty => 'Hiç not bulunamadı';
 }

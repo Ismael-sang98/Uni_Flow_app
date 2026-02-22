@@ -461,4 +461,75 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get updateSimulationNote =>
       'This is a simulation to test the update dialog.';
+
+  @override
+  String get notesCreateNotebook => 'Create a notebook';
+
+  @override
+  String get notesNotebook => 'Notebook';
+
+  @override
+  String get notesNotebookName => 'Notebook name';
+
+  @override
+  String get notesNotebookRequired => 'Please select a notebook';
+
+  @override
+  String get notesNoNotebook => 'No notebook available';
+
+  @override
+  String notesDeleteNotebookPrompt(String name) {
+    return 'Do you want to delete the notebook \"$name\"?';
+  }
+
+  @override
+  String get notesDeleteNotebookKeepPages => 'Delete notebook, keep pages';
+
+  @override
+  String get notesDeleteNotebookDeleteAll => 'Delete notebook + pages';
+
+  @override
+  String notesPagesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'pages',
+      one: 'page',
+      zero: 'page',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String get noteFiles => 'Files';
+
+  @override
+  String get noteAddFile => 'Add file';
+
+  @override
+  String get noteNoFiles => 'No files added.';
+
+  @override
+  String get noteImageCaptionTitle => 'Photo caption';
+
+  @override
+  String get noteImageCaptionLabel => 'Caption';
+
+  @override
+  String get optional => 'optional';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get suggested => 'Suggestions';
+
+  @override
+  String get notesOrCustomName => 'Or create a custom notebook';
+
+  @override
+  String get search => 'Search...';
+
+  @override
+  String get notesSearchEmpty => 'No notes found';
 }

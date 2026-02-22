@@ -461,4 +461,76 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get updateSimulationNote =>
       'Ceci est une simulation pour tester le dialogue de mise à jour.';
+
+  @override
+  String get notesCreateNotebook => 'Créer un cahier';
+
+  @override
+  String get notesNotebook => 'Cahier';
+
+  @override
+  String get notesNotebookName => 'Nom du cahier';
+
+  @override
+  String get notesNotebookRequired => 'Veuillez sélectionner un cahier';
+
+  @override
+  String get notesNoNotebook => 'Aucun cahier disponible';
+
+  @override
+  String notesDeleteNotebookPrompt(String name) {
+    return 'Voulez-vous supprimer le cahier \"$name\" ?';
+  }
+
+  @override
+  String get notesDeleteNotebookKeepPages =>
+      'Supprimer le cahier, garder les pages';
+
+  @override
+  String get notesDeleteNotebookDeleteAll => 'Supprimer cahier + pages';
+
+  @override
+  String notesPagesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'pages',
+      one: 'page',
+      zero: 'page',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String get noteFiles => 'Fichiers';
+
+  @override
+  String get noteAddFile => 'Ajouter fichier';
+
+  @override
+  String get noteNoFiles => 'Aucun fichier ajouté.';
+
+  @override
+  String get noteImageCaptionTitle => 'Légende de la photo';
+
+  @override
+  String get noteImageCaptionLabel => 'Légende';
+
+  @override
+  String get optional => 'optionnel';
+
+  @override
+  String get skip => 'Ignorer';
+
+  @override
+  String get suggested => 'Suggestions';
+
+  @override
+  String get notesOrCustomName => 'Ou créer un cahier personnalisé';
+
+  @override
+  String get search => 'Rechercher...';
+
+  @override
+  String get notesSearchEmpty => 'Aucune note trouvée';
 }

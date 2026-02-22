@@ -921,6 +921,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This is a simulation to test the update dialog.'**
   String get updateSimulationNote;
+
+  /// No description provided for @notesCreateNotebook.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a notebook'**
+  String get notesCreateNotebook;
+
+  /// No description provided for @notesNotebook.
+  ///
+  /// In en, this message translates to:
+  /// **'Notebook'**
+  String get notesNotebook;
+
+  /// No description provided for @notesNotebookName.
+  ///
+  /// In en, this message translates to:
+  /// **'Notebook name'**
+  String get notesNotebookName;
+
+  /// No description provided for @notesNotebookRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a notebook'**
+  String get notesNotebookRequired;
+
+  /// No description provided for @notesNoNotebook.
+  ///
+  /// In en, this message translates to:
+  /// **'No notebook available'**
+  String get notesNoNotebook;
+
+  /// No description provided for @notesDeleteNotebookPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to delete the notebook \"{name}\"?'**
+  String notesDeleteNotebookPrompt(String name);
+
+  /// No description provided for @notesDeleteNotebookKeepPages.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete notebook, keep pages'**
+  String get notesDeleteNotebookKeepPages;
+
+  /// No description provided for @notesDeleteNotebookDeleteAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete notebook + pages'**
+  String get notesDeleteNotebookDeleteAll;
+
+  /// No description provided for @notesPagesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} {count, plural, =0{page} =1{page} other{pages}}'**
+  String notesPagesCount(int count);
+
+  /// No description provided for @noteFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Files'**
+  String get noteFiles;
+
+  /// No description provided for @noteAddFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Add file'**
+  String get noteAddFile;
+
+  /// No description provided for @noteNoFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'No files added.'**
+  String get noteNoFiles;
+
+  /// No description provided for @noteImageCaptionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo caption'**
+  String get noteImageCaptionTitle;
+
+  /// No description provided for @noteImageCaptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Caption'**
+  String get noteImageCaptionLabel;
+
+  /// No description provided for @optional.
+  ///
+  /// In en, this message translates to:
+  /// **'optional'**
+  String get optional;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @suggested.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestions'**
+  String get suggested;
+
+  /// No description provided for @notesOrCustomName.
+  ///
+  /// In en, this message translates to:
+  /// **'Or create a custom notebook'**
+  String get notesOrCustomName;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search...'**
+  String get search;
+
+  /// No description provided for @notesSearchEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No notes found'**
+  String get notesSearchEmpty;
 }
 
 class _AppLocalizationsDelegate

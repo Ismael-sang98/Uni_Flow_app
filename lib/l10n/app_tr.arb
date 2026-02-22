@@ -221,5 +221,39 @@
     "updateCheckGitHub": "🔍 GitHub'da kontrol et",
     "updateGitHubRelease": "📦 GitHub Sürümü",
     "updateReleaseInstructions": "Test sürümü oluşturmak için:\n1. github.com/Ismael-sang98/Uni_Flow_app/releases/new\n2. Etiket: v1.5.6 (veya daha yüksek)\n3. APK yükle\n4. Yayınla",
-    "updateSimulationNote": "Bu, güncelleme diyaloğunu test etmek için bir simülasyondur."
+    "updateSimulationNote": "Bu, güncelleme diyaloğunu test etmek için bir simülasyondur.",
+    "notesCreateNotebook": "Defter oluştur",
+    "notesNotebook": "Defter",
+    "notesNotebookName": "Defter adı",
+    "notesNotebookRequired": "Lütfen bir defter seçin",
+    "notesNoNotebook": "Mevcut defter yok",
+    "notesDeleteNotebookPrompt": "\"{name}\" defterini silmek istiyor musunuz?",
+    "@notesDeleteNotebookPrompt": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "notesDeleteNotebookKeepPages": "Defteri sil, sayfaları koru",
+    "notesDeleteNotebookDeleteAll": "Defter + sayfaları sil",
+    "notesPagesCount": "{count} {count, plural, =0{sayfa} =1{sayfa} other{sayfa}}",
+    "@notesPagesCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "noteFiles": "Dosyalar",
+    "noteAddFile": "Dosya ekle",
+    "noteNoFiles": "Eklenmiş dosya yok.",
+    "noteImageCaptionTitle": "Fotoğraf açıklaması",
+    "noteImageCaptionLabel": "Açıklama",
+    "optional": "isteğe bağlı",
+    "skip": "Atla",
+    "suggested": "Öneriler",
+    "notesOrCustomName": "Veya özel bir defter oluşturun",
+    "search": "Ara...",
+    "notesSearchEmpty": "Hiç not bulunamadı"
 }

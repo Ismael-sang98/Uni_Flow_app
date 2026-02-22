@@ -221,5 +221,39 @@
     "updateCheckGitHub": "🔍 Check on GitHub",
     "updateGitHubRelease": "📦 GitHub Release",
     "updateReleaseInstructions": "To create a test release:\n1. github.com/Ismael-sang98/Uni_Flow_app/releases/new\n2. Tag: v1.5.6 (or higher)\n3. Upload an APK\n4. Publish",
-    "updateSimulationNote": "This is a simulation to test the update dialog."
+    "updateSimulationNote": "This is a simulation to test the update dialog.",
+    "notesCreateNotebook": "Create a notebook",
+    "notesNotebook": "Notebook",
+    "notesNotebookName": "Notebook name",
+    "notesNotebookRequired": "Please select a notebook",
+    "notesNoNotebook": "No notebook available",
+    "notesDeleteNotebookPrompt": "Do you want to delete the notebook \"{name}\"?",
+    "@notesDeleteNotebookPrompt": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "notesDeleteNotebookKeepPages": "Delete notebook, keep pages",
+    "notesDeleteNotebookDeleteAll": "Delete notebook + pages",
+    "notesPagesCount": "{count} {count, plural, =0{page} =1{page} other{pages}}",
+    "@notesPagesCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "noteFiles": "Files",
+    "noteAddFile": "Add file",
+    "noteNoFiles": "No files added.",
+    "noteImageCaptionTitle": "Photo caption",
+    "noteImageCaptionLabel": "Caption",
+    "optional": "optional",
+    "skip": "Skip",
+    "suggested": "Suggestions",
+    "notesOrCustomName": "Or create a custom notebook",
+    "search": "Search...",
+    "notesSearchEmpty": "No notes found"
 }
