@@ -25,13 +25,15 @@ class StudyNoteAdapter extends TypeAdapter<StudyNote> {
       updatedAt: fields[5] as DateTime?,
       tags: (fields[6] as List).cast<String>(),
       imagePaths: (fields[7] as List?)?.cast<String>(),
+      attachmentPaths: (fields[8] as List?)?.cast<String>(),
+      imageCaptions: (fields[9] as Map?)?.cast<String, String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, StudyNote obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +49,11 @@ class StudyNoteAdapter extends TypeAdapter<StudyNote> {
       ..writeByte(6)
       ..write(obj.tags)
       ..writeByte(7)
-      ..write(obj.imagePaths);
+      ..write(obj.imagePaths)
+      ..writeByte(8)
+      ..write(obj.attachmentPaths)
+      ..writeByte(9)
+      ..write(obj.imageCaptions);
   }
 
   @override

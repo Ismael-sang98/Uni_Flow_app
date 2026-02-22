@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import '../constants/ui_constants.dart';
 import '../l10n/app_localizations.dart';
@@ -33,6 +35,8 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
   String? _selectedSubject;
   bool _isEditing = false;
   List<String> _imagePaths = [];
+  List<String> _attachmentPaths = [];
+  Map<String, String> _imageCaptions = {};
 
   @override
   void initState() {
@@ -42,6 +46,8 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
     _tagsController = TextEditingController(text: widget.note.tags.join(', '));
     _selectedSubject = widget.note.subject;
     _imagePaths = List<String>.from(widget.note.imagePaths);
+    _attachmentPaths = List<String>.from(widget.note.attachmentPaths);
+    _imageCaptions = Map<String, String>.from(widget.note.imageCaptions);
     initFormValidation();
     isValidNotifier.value = true;
     contentLengthNotifier.value = _contentController.text.length;
@@ -76,6 +82,8 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
       return;
     }
 
+    // Note: Image captions are now optional - validation removed
+
     final tags = _tagsController.text
         .split(',')
         .map((tag) => tag.trim())
@@ -91,6 +99,8 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
       updatedAt: DateTime.now(),
       tags: tags,
       imagePaths: _imagePaths,
+      attachmentPaths: _attachmentPaths,
+      imageCaptions: _imageCaptions,
     );
 
     await context.read<NotesProvider>().updateNote(updatedNote);
@@ -112,7 +122,11 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
     final l10n = AppLocalizations.of(context)!;
     final settingsBox = Hive.box('settings');
     final profile = settingsBox.get('profile') as StudentProfile?;
-    final List<String> availableSubjects = profile?.subjects ?? [];
+    final providerNotebooks = context.watch<NotesProvider>().notebooks;
+    final availableSubjects = <String>{
+      ...(profile?.subjects ?? <String>[]),
+      ...providerNotebooks,
+    }.toList()..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
     final createdAt = DateFormat('dd/MM/yyyy').format(widget.note.createdAt);
     final updatedAt = widget.note.updatedAt == null
         ? null
@@ -171,11 +185,16 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
                 const SizedBox(height: 16),
                 ImageGridWidget(
                   imagePaths: _imagePaths,
+                  imageCaptions: _imageCaptions,
                   isEditable: false,
                   emptyMessage: l10n.noImagesYet,
                   onImageTap: _showImagePreview,
                   onShareTap: _shareImage,
                 ),
+              ],
+              if (_attachmentPaths.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                _buildAttachmentsViewer(l10n),
               ],
             ],
           ],
@@ -256,7 +275,7 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
         DropdownButtonFormField<String>(
           initialValue: _selectedSubject,
           decoration: InputDecoration(
-            labelText: l10n.noteSubject,
+            labelText: l10n.notesNotebook,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
           ),
           items: availableSubjects.isEmpty
@@ -268,7 +287,7 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
                     )
                     .toList(),
           onChanged: (val) => setState(() => _selectedSubject = val),
-          hint: availableSubjects.isEmpty ? Text(l10n.noSubjectsDefined) : null,
+          hint: availableSubjects.isEmpty ? Text(l10n.notesNoNotebook) : null,
         ),
       ],
     );
@@ -416,7 +435,14 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
               onPressed: () async {
                 final newImages = await _imageManager.pickImagesFromGallery();
                 if (newImages.isEmpty) return;
-                setState(() => _imagePaths.addAll(newImages));
+                for (final path in newImages) {
+                  final caption = await _promptCaptionDialog(path);
+                  if (caption == null) continue; // User clicked Cancel
+                  _imageCaptions[path] = caption; // caption can be empty
+                  _imagePaths.add(path);
+                }
+                if (!mounted) return;
+                setState(() {});
               },
               icon: const Icon(
                 Icons.photo_library_outlined,
@@ -430,26 +456,75 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
               onPressed: () async {
                 final newImage = await _imageManager.pickImageFromCamera();
                 if (newImage == null) return;
-                setState(() => _imagePaths.add(newImage));
+                final caption = await _promptCaptionDialog(newImage);
+                if (caption == null) return; // User clicked Cancel
+                setState(() {
+                  _imageCaptions[newImage] = caption; // caption can be empty
+                  _imagePaths.add(newImage);
+                });
               },
               icon: const Icon(Icons.photo_camera_outlined),
+            ),
+            TextButton.icon(
+              onPressed: () async {
+                final files = await _imageManager.pickAttachments();
+                if (files.isEmpty) return;
+                setState(() => _attachmentPaths.addAll(files));
+              },
+              icon: const Icon(Icons.attach_file),
+              label: Text(l10n.noteAddFile),
             ),
           ],
         ),
         const SizedBox(height: UIConstants.spacing8),
         ImageGridWidget(
           imagePaths: _imagePaths,
+          imageCaptions: _imageCaptions,
           isEditable: true,
           emptyMessage: l10n.noImagesYet,
-          onDeleteTap: (path) => setState(() => _imagePaths.remove(path)),
+          onDeleteTap: (path) => setState(() {
+            _imagePaths.remove(path);
+            _imageCaptions.remove(path);
+          }),
           onImageTap: _showImagePreview,
+          onEditCaptionTap: (path) async {
+            final updated = await _promptCaptionDialog(
+              path,
+              initialCaption: _imageCaptions[path],
+            );
+            if (updated == null) return; // User clicked Cancel
+            setState(
+              () => _imageCaptions[path] = updated,
+            ); // caption can be empty
+          },
           onShareTap: _shareImage,
         ),
+        if (_attachmentPaths.isNotEmpty)
+          ..._attachmentPaths.map(
+            (path) => ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.insert_drive_file_outlined),
+              title: Text(
+                p.basename(path),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: IconButton(
+                onPressed: () => setState(() => _attachmentPaths.remove(path)),
+                icon: const Icon(Icons.delete_outline),
+              ),
+            ),
+          ),
       ],
     );
   }
 
   void _showImagePreview(String path) {
+    final initialIndex = _imagePaths.indexOf(path);
+    final pageController = PageController(
+      initialPage: initialIndex < 0 ? 0 : initialIndex,
+    );
+
     showDialog(
       context: context,
       useSafeArea: false,
@@ -464,12 +539,35 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
             elevation: 0,
           ),
           backgroundColor: Colors.black,
-          body: Center(
-            child: InteractiveViewer(
-              maxScale: 5.0,
-              minScale: 1.0,
-              child: Image.file(File(path), fit: BoxFit.contain),
-            ),
+          body: PageView.builder(
+            controller: pageController,
+            itemCount: _imagePaths.length,
+            itemBuilder: (context, index) {
+              final imagePath = _imagePaths[index];
+              return Column(
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: InteractiveViewer(
+                        maxScale: 5.0,
+                        minScale: 1.0,
+                        child: Image.file(File(imagePath), fit: BoxFit.contain),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    color: Colors.black87,
+                    child: Text(
+                      _imageCaptions[imagePath] ?? '',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -504,5 +602,79 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
   void _shareImage(String path) {
     final l10n = AppLocalizations.of(context)!;
     _imageManager.shareImage(path, text: l10n.shareNoteImage);
+  }
+
+  Future<String?> _promptCaptionDialog(
+    String imagePath, {
+    String? initialCaption,
+  }) async {
+    final l10n = AppLocalizations.of(context)!;
+    final controller = TextEditingController(text: initialCaption ?? '');
+    return showDialog<String>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.noteImageCaptionTitle),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${l10n.noteImageCaptionLabel} (${l10n.optional})',
+              style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: controller,
+              autofocus: true,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                hintText: 'Ex: Graphique des résultats...',
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, ''),
+            child: Text(l10n.skip),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final value = controller.text.trim();
+              Navigator.pop(dialogContext, value);
+            },
+            child: Text(l10n.save),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAttachmentsViewer(AppLocalizations l10n) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.noteFiles,
+          style: const TextStyle(fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(height: 8),
+        ..._attachmentPaths.map(
+          (path) => ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.insert_drive_file_outlined),
+            title: Text(
+              p.basename(path),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            trailing: const Icon(Icons.open_in_new),
+            onTap: () => OpenFilex.open(path),
+          ),
+        ),
+      ],
+    );
   }
 }

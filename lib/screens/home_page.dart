@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:mon_temps/screens/add_note_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +66,146 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  Future<void> _showCreateNotebookDialog() async {
+    final l10n = AppLocalizations.of(context)!;
+
+    // Get available subjects from profile
+    final settingsBox = Hive.box('settings');
+    final profile = settingsBox.get('profile') as StudentProfile?;
+    final profileSubjects = profile?.subjects ?? <String>[];
+
+    // Get existing notebooks
+    final notesProvider = context.read<NotesProvider>();
+    final existingNotebooks = notesProvider.notebooks;
+
+    // Available subjects = profile subjects not yet used as notebooks
+    final availableSubjects = profileSubjects
+        .where((subject) => !existingNotebooks.contains(subject))
+        .toList();
+
+    String? selectedSubject;
+    final customNameController = TextEditingController();
+
+    if (availableSubjects.isEmpty) {
+      // No subjects available - show simple text input
+      await showDialog<void>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          title: Text(l10n.notesCreateNotebook),
+          content: TextField(
+            controller: customNameController,
+            autofocus: true,
+            decoration: InputDecoration(
+              labelText: l10n.notesNotebookName,
+              hintText: 'Mon cahier...',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: Text(l10n.rejet),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final name = customNameController.text.trim();
+                if (name.isEmpty) return;
+                await context.read<NotesProvider>().createNotebook(name);
+                if (!dialogContext.mounted) return;
+                Navigator.pop(dialogContext);
+              },
+              child: Text(l10n.ajt),
+            ),
+          ],
+        ),
+      );
+    } else {
+      // Show selection dialog with subjects first
+      await showDialog<void>(
+        context: context,
+        builder: (dialogContext) => StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            title: Text(l10n.notesCreateNotebook),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Show available subjects
+                Text(
+                  '${l10n.notesNotebook} (${l10n.suggested})',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: availableSubjects.map((subject) {
+                    final isSelected = selectedSubject == subject;
+                    return ChoiceChip(
+                      label: Text(subject),
+                      selected: isSelected,
+                      onSelected: (selected) {
+                        setState(() {
+                          selectedSubject = selected ? subject : null;
+                          customNameController.clear();
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 16),
+                const Divider(),
+                const SizedBox(height: 8),
+                // Or custom name
+                Text(
+                  l10n.notesOrCustomName,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: customNameController,
+                  autofocus: selectedSubject == null,
+                  onChanged: (_) {
+                    setState(() => selectedSubject = null);
+                  },
+                  decoration: InputDecoration(
+                    labelText: l10n.notesNotebookName,
+                    hintText: 'Mon cahier perso...',
+                    enabled: selectedSubject == null,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: Text(l10n.rejet),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  final name = (selectedSubject ?? customNameController.text)
+                      .trim();
+                  if (name.isEmpty) return;
+                  await context.read<NotesProvider>().createNotebook(name);
+                  if (!dialogContext.mounted) return;
+                  Navigator.pop(dialogContext);
+                },
+                child: Text(l10n.ajt),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   // Boîte de dialogue pour ajouter une nouvelle note
@@ -590,10 +729,7 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(builder: (_) => const AddCoursePage()),
                 );
               } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const AddNotePage()),
-                );
+                _showCreateNotebookDialog();
               }
             },
             child: const Icon(Icons.add, size: 32),

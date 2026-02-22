@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../constants/ui_constants.dart';
@@ -15,7 +16,9 @@ import '../widgets/image_grid_widget.dart';
 // ignore_for_file: deprecated_member_use
 
 class AddNotePage extends StatefulWidget {
-  const AddNotePage({super.key});
+  final String? initialNotebook;
+
+  const AddNotePage({super.key, this.initialNotebook});
 
   @override
   State<AddNotePage> createState() => _AddNotePageState();
@@ -26,12 +29,15 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _tagsController = TextEditingController();
   final List<String> _imagePaths = [];
+  final List<String> _attachmentPaths = [];
+  final Map<String, String> _imageCaptions = {};
   final ImageManager _imageManager = ImageManager();
   String? _selectedSubject;
 
   @override
   void initState() {
     super.initState();
+    _selectedSubject = widget.initialNotebook;
     initFormValidation();
     _titleController.addListener(_onFormChanged);
     _contentController.addListener(_onFormChanged);
@@ -72,20 +78,29 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
       return;
     }
 
+    if (_selectedSubject == null || _selectedSubject!.trim().isEmpty) {
+      _showErrorSnackBar(l10n.notesNotebookRequired);
+      return;
+    }
+
     final tags = _tagsController.text
         .split(',')
         .map((tag) => tag.trim())
         .where((tag) => tag.isNotEmpty)
         .toList();
 
+    // Note: Image captions are now optional - validation removed
+
     final newNote = StudyNote(
       id: const Uuid().v4(),
       title: title,
       content: content,
-      subject: _selectedSubject,
+      subject: _selectedSubject!.trim(),
       createdAt: DateTime.now(),
       tags: tags,
       imagePaths: _imagePaths,
+      attachmentPaths: _attachmentPaths,
+      imageCaptions: _imageCaptions,
     );
 
     await context.read<NotesProvider>().addNote(newNote);
@@ -98,7 +113,11 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
     final l10n = AppLocalizations.of(context)!;
     final settingsBox = Hive.box('settings');
     final profile = settingsBox.get('profile') as StudentProfile?;
-    final List<String> availableSubjects = profile?.subjects ?? [];
+    final providerNotebooks = context.watch<NotesProvider>().notebooks;
+    final availableSubjects = <String>{
+      ...(profile?.subjects ?? <String>[]),
+      ...providerNotebooks,
+    }.toList()..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.addNote)),
@@ -150,7 +169,7 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
             DropdownButtonFormField<String>(
               initialValue: _selectedSubject,
               decoration: InputDecoration(
-                labelText: l10n.noteSubject,
+                labelText: l10n.notesNotebook,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(
                     UIConstants.borderRadius14,
@@ -169,7 +188,7 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
                         .toList(),
               onChanged: (val) => setState(() => _selectedSubject = val),
               hint: availableSubjects.isEmpty
-                  ? Text(l10n.noSubjectsDefined)
+                  ? Text(l10n.notesNoNotebook)
                   : null,
             ),
             const SizedBox(height: UIConstants.spacing16),
@@ -256,6 +275,8 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
               ),
             ),
             const SizedBox(height: UIConstants.spacing16),
+            _buildAttachmentsSection(l10n),
+            const SizedBox(height: UIConstants.spacing16),
             _buildImagesSection(l10n),
           ],
         ),
@@ -310,7 +331,14 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
               onPressed: () async {
                 final newImages = await _imageManager.pickImagesFromGallery();
                 if (newImages.isEmpty) return;
-                setState(() => _imagePaths.addAll(newImages));
+                for (final path in newImages) {
+                  final caption = await _promptCaptionDialog(path);
+                  if (caption == null) continue; // User clicked Cancel
+                  _imageCaptions[path] = caption; // caption can be empty
+                  _imagePaths.add(path);
+                }
+                if (!mounted) return;
+                setState(() {});
               },
               icon: const Icon(
                 Icons.photo_library_outlined,
@@ -324,7 +352,12 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
               onPressed: () async {
                 final newImage = await _imageManager.pickImageFromCamera();
                 if (newImage == null) return;
-                setState(() => _imagePaths.add(newImage));
+                final caption = await _promptCaptionDialog(newImage);
+                if (caption == null || caption.trim().isEmpty) return;
+                setState(() {
+                  _imageCaptions[newImage] = caption.trim();
+                  _imagePaths.add(newImage);
+                });
               },
               icon: const Icon(Icons.photo_camera_outlined),
             ),
@@ -333,17 +366,136 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
         const SizedBox(height: UIConstants.spacing8),
         ImageGridWidget(
           imagePaths: _imagePaths,
+          imageCaptions: _imageCaptions,
           isEditable: true,
           emptyMessage: l10n.noImagesYet,
-          onDeleteTap: (path) => setState(() => _imagePaths.remove(path)),
-          onImageTap: _showImagePreview,
+          onDeleteTap: (path) => setState(() {
+            _imagePaths.remove(path);
+            _imageCaptions.remove(path);
+          }),
+          onImageTap: (path) => _showImagePreview(path),
+          onEditCaptionTap: (path) async {
+            final updated = await _promptCaptionDialog(
+              path,
+              initialCaption: _imageCaptions[path],
+            );
+            if (updated == null || updated.trim().isEmpty) return;
+            setState(() => _imageCaptions[path] = updated.trim());
+          },
           onShareTap: _shareImage,
         ),
       ],
     );
   }
 
+  Widget _buildAttachmentsSection(AppLocalizations l10n) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                l10n.noteFiles,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
+            ),
+            TextButton.icon(
+              onPressed: () async {
+                final files = await _imageManager.pickAttachments();
+                if (files.isEmpty) return;
+                setState(() => _attachmentPaths.addAll(files));
+              },
+              icon: const Icon(Icons.attach_file),
+              label: Text(l10n.noteAddFile),
+            ),
+          ],
+        ),
+        if (_attachmentPaths.isEmpty)
+          Text(
+            l10n.noteNoFiles,
+            style: TextStyle(
+              fontSize: UIConstants.fontSize12,
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withOpacity(UIConstants.opacity60),
+            ),
+          )
+        else
+          ..._attachmentPaths.map(
+            (path) => ListTile(
+              dense: true,
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.insert_drive_file_outlined),
+              title: Text(
+                p.basename(path),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: IconButton(
+                onPressed: () => setState(() => _attachmentPaths.remove(path)),
+                icon: const Icon(Icons.delete_outline),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Future<String?> _promptCaptionDialog(
+    String imagePath, {
+    String? initialCaption,
+  }) async {
+    final l10n = AppLocalizations.of(context)!;
+    final controller = TextEditingController(text: initialCaption ?? '');
+    return showDialog<String>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.noteImageCaptionTitle),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${l10n.noteImageCaptionLabel} (${l10n.optional})',
+              style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: controller,
+              autofocus: true,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                hintText: 'Ex: Graphique des résultats...',
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, ''),
+            child: Text(l10n.skip),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final value = controller.text.trim();
+              Navigator.pop(dialogContext, value);
+            },
+            child: Text(l10n.save),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showImagePreview(String path) {
+    final initialIndex = _imagePaths.indexOf(path);
+    final pageController = PageController(
+      initialPage: initialIndex < 0 ? 0 : initialIndex,
+    );
+
     showDialog(
       context: context,
       useSafeArea: false,
@@ -358,12 +510,35 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
             elevation: 0,
           ),
           backgroundColor: Colors.black,
-          body: Center(
-            child: InteractiveViewer(
-              maxScale: 5.0,
-              minScale: 1.0,
-              child: Image.file(File(path), fit: BoxFit.contain),
-            ),
+          body: PageView.builder(
+            controller: pageController,
+            itemCount: _imagePaths.length,
+            itemBuilder: (context, index) {
+              final imagePath = _imagePaths[index];
+              return Column(
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: InteractiveViewer(
+                        maxScale: 5.0,
+                        minScale: 1.0,
+                        child: Image.file(File(imagePath), fit: BoxFit.contain),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    color: Colors.black87,
+                    child: Text(
+                      _imageCaptions[imagePath] ?? '',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

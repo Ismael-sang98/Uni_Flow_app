@@ -28,6 +28,12 @@ class StudyNote {
   @HiveField(7)
   final List<String> imagePaths;
 
+  @HiveField(8)
+  final List<String> attachmentPaths;
+
+  @HiveField(9)
+  final Map<String, String> imageCaptions;
+
   StudyNote({
     required this.id,
     required this.title,
@@ -37,5 +43,35 @@ class StudyNote {
     this.updatedAt,
     this.tags = const [],
     List<String>? imagePaths,
-  }) : imagePaths = imagePaths ?? const [];
+    List<String>? attachmentPaths,
+    Map<String, String>? imageCaptions,
+  }) : imagePaths = imagePaths ?? const [],
+       attachmentPaths = attachmentPaths ?? const [],
+       imageCaptions = imageCaptions ?? const {};
+
+  StudyNote copyWith({
+    String? id,
+    String? title,
+    String? content,
+    String? subject,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    List<String>? tags,
+    List<String>? imagePaths,
+    List<String>? attachmentPaths,
+    Map<String, String>? imageCaptions,
+  }) {
+    return StudyNote(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      subject: subject ?? this.subject,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      tags: tags ?? this.tags,
+      imagePaths: imagePaths ?? this.imagePaths,
+      attachmentPaths: attachmentPaths ?? this.attachmentPaths,
+      imageCaptions: imageCaptions ?? this.imageCaptions,
+    );
+  }
 }
