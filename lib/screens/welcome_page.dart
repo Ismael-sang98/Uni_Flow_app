@@ -11,7 +11,7 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    const String appVersion = "1.7.0";
+    const String appVersion = "2.0.0";
     final screenSize = MediaQuery.of(context).size;
     final isLandscape = screenSize.width > screenSize.height;
     final isMediumScreen = screenSize.height >= 600 && screenSize.height < 800;
