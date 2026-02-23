@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
             autofocus: true,
             decoration: InputDecoration(
               labelText: l10n.notesNotebookName,
-              hintText: 'Mon cahier...',
+              // hintText: 'Mon cahier...',
             ),
           ),
           actions: [
@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   decoration: InputDecoration(
                     labelText: l10n.notesNotebookName,
-                    hintText: 'Mon cahier perso...',
+                    // hintText: 'Mon cahier perso...',
                     enabled: selectedSubject == null,
                   ),
                 ),

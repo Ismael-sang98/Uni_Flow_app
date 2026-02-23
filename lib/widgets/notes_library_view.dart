@@ -120,7 +120,7 @@ class NotesLibraryView extends StatelessWidget {
                   },
                   decoration: InputDecoration(
                     labelText: l10n.notesNotebookName,
-                    hintText: 'Mon cahier perso...',
+                    //hintText: 'Mon cahier perso...',
                     enabled: selectedSubject == null,
                   ),
                 ),
