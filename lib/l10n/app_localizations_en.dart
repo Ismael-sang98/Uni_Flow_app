@@ -540,4 +540,220 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notesSearchEmpty => 'No notes found';
+
+  @override
+  String get apiSettingsTitle => 'API settings';
+
+  @override
+  String get apiSettingsBaseUrlLabel => 'Backend base URL';
+
+  @override
+  String get apiSettingsBaseUrlHint => 'https://my-app.onrender.com';
+
+  @override
+  String get apiSettingsApiKeyLabel => 'API key (X-API-Key)';
+
+  @override
+  String get apiSettingsApiKeyHint => 'Your API key';
+
+  @override
+  String get apiSettingsInvalidUrl =>
+      'Enter a valid URL starting with http:// or https://';
+
+  @override
+  String get apiSettingsSaved => 'API settings saved';
+
+  @override
+  String apiSettingsLoadError(Object error) {
+    return 'Could not load API settings: $error';
+  }
+
+  @override
+  String apiSettingsSaveError(Object error) {
+    return 'Could not save API settings: $error';
+  }
+
+  @override
+  String get apiSettingsTestButton => 'Test connection';
+
+  @override
+  String get apiSettingsTestSuccess => 'Connection successful';
+
+  @override
+  String get apiSettingsTestInvalidKey => 'Invalid API key';
+
+  @override
+  String apiSettingsTestHttpError(Object statusCode) {
+    return 'Server error ($statusCode)';
+  }
+
+  @override
+  String apiSettingsTestNetworkError(Object error) {
+    return 'Backend unreachable: $error';
+  }
+
+  @override
+  String get fullSyncButton => 'Synchronize';
+
+  @override
+  String get fullSyncProfileUpdated => 'Profile updated';
+
+  @override
+  String get fullSyncProfileNotUpdated => 'Profile unchanged';
+
+  @override
+  String fullSyncSubjectsCount(Object count) {
+    return '$count subject(s) synced';
+  }
+
+  @override
+  String fullSyncCoursesCount(Object created, Object updated) {
+    return '$created course(s) created, $updated updated';
+  }
+
+  @override
+  String scheduleSyncSkippedInfo(Object skipped) {
+    return '$skipped entry(ies) ignored (unexpected format)';
+  }
+
+  @override
+  String get scheduleSyncSampleDialogTitle => 'Ignored entry (raw data)';
+
+  @override
+  String get scheduleSyncSampleDialogHint =>
+      'This is the JSON received for one of the ignored entries. Share this with the developer so the expected format can be fixed.';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get onboardingChoiceTitle => 'How do you want to get started?';
+
+  @override
+  String get onboardingChoiceObsTitle => 'Set up from my OBS account';
+
+  @override
+  String get onboardingChoiceObsDescription =>
+      'Automatically import your profile, subjects and class schedule.';
+
+  @override
+  String get onboardingChoiceManualTitle => 'Manual setup';
+
+  @override
+  String get onboardingChoiceManualDescription =>
+      'Fill in your profile and courses yourself.';
+
+  @override
+  String get obsSetupTitle => 'OBS account';
+
+  @override
+  String get obsSetupDescription =>
+      'Enter your backend URL and API key to automatically sync your profile, subjects and class schedule.';
+
+  @override
+  String get obsSetupConnectButton => 'Connect and sync';
+
+  @override
+  String get obsSetupNoProfileError =>
+      'Could not retrieve your profile from this account. Check the URL and API key.';
+
+  @override
+  String get completeProfileTitle => 'Last step';
+
+  @override
+  String get completeProfileDescription =>
+      'Enter your school and class to finish setting up.';
+
+  @override
+  String get completeProfileContinueButton => 'Finish';
+
+  @override
+  String get syncStepProfile => 'Profile';
+
+  @override
+  String get syncStepSubjects => 'Subjects';
+
+  @override
+  String get syncStepSchedule => 'Class schedule';
+
+  @override
+  String get syncErrorInvalidApiKey =>
+      'Invalid API key, check your settings configuration';
+
+  @override
+  String get syncErrorSessionExpired =>
+      'The OBS session expired on the server side, a manual re-sync is needed on your end';
+
+  @override
+  String get syncErrorObsUnreachable =>
+      'The university system isn\'t responding right now, try again later';
+
+  @override
+  String get syncErrorDatabaseUnavailable =>
+      'The backend server has a temporary issue, try again later';
+
+  @override
+  String get syncErrorTimeout =>
+      'The server is taking a while to respond (it may have been asleep), try again in a minute.';
+
+  @override
+  String get syncErrorNetwork =>
+      'Could not reach the server, check your connection and the configured URL';
+
+  @override
+  String get syncErrorMissingConfig =>
+      'The backend URL and API key must be configured.';
+
+  @override
+  String get syncErrorInvalidResponse => 'Unreadable server response.';
+
+  @override
+  String get syncErrorInvalidFormat =>
+      'Unexpected response format from the server.';
+
+  @override
+  String get syncProgressProfile => 'Syncing profile...';
+
+  @override
+  String get syncProgressSubjects => 'Syncing subjects...';
+
+  @override
+  String get syncProgressSchedule => 'Syncing class schedule...';
+
+  @override
+  String lastSyncLabel(Object value) {
+    return 'Last sync: $value';
+  }
+
+  @override
+  String get lastSyncNever => 'never';
+
+  @override
+  String get lastSyncJustNow => 'just now';
+
+  @override
+  String lastSyncMinutesAgo(Object minutes) {
+    return '$minutes min ago';
+  }
+
+  @override
+  String lastSyncHoursAgo(Object hours) {
+    return '$hours h ago';
+  }
+
+  @override
+  String lastSyncDaysAgo(Object days) {
+    return '$days d ago';
+  }
+
+  @override
+  String get subjectsEmptyStateMessage =>
+      'No subjects yet — sync your OBS account or add one manually';
+
+  @override
+  String get subjectsEmptyStateManualButton => 'Add manually';
+
+  @override
+  String get scheduleEmptyStateMessage =>
+      'No classes imported yet — sync your OBS account to fill in your class schedule';
 }

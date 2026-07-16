@@ -262,5 +262,120 @@
     "suggested": "Öneriler",
     "notesOrCustomName": "Veya özel bir defter oluşturun",
     "search": "Ara...",
-    "notesSearchEmpty": "Hiç not bulunamadı"
+    "notesSearchEmpty": "Hiç not bulunamadı",
+    "apiSettingsTitle": "API ayarları",
+    "apiSettingsBaseUrlLabel": "Backend temel URL'si",
+    "apiSettingsBaseUrlHint": "https://uygulamam.onrender.com",
+    "apiSettingsApiKeyLabel": "API anahtarı (X-API-Key)",
+    "apiSettingsApiKeyHint": "API anahtarınız",
+    "apiSettingsInvalidUrl": "http:// veya https:// ile başlayan geçerli bir URL girin",
+    "apiSettingsSaved": "API ayarları kaydedildi",
+    "apiSettingsLoadError": "API ayarları yüklenemedi: {error}",
+    "@apiSettingsLoadError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "apiSettingsSaveError": "API ayarları kaydedilemedi: {error}",
+    "@apiSettingsSaveError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "apiSettingsTestButton": "Bağlantıyı test et",
+    "apiSettingsTestSuccess": "Bağlantı başarılı",
+    "apiSettingsTestInvalidKey": "Geçersiz API anahtarı",
+    "apiSettingsTestHttpError": "Sunucu hatası ({statusCode})",
+    "@apiSettingsTestHttpError": {
+        "placeholders": {
+            "statusCode": {}
+        }
+    },
+    "apiSettingsTestNetworkError": "Backend'e ulaşılamıyor: {error}",
+    "@apiSettingsTestNetworkError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "fullSyncButton": "Senkronize et",
+    "fullSyncProfileUpdated": "Profil güncellendi",
+    "fullSyncProfileNotUpdated": "Profil değişmedi",
+    "fullSyncSubjectsCount": "{count} ders senkronize edildi",
+    "@fullSyncSubjectsCount": {
+        "placeholders": {
+            "count": {}
+        }
+    },
+    "fullSyncCoursesCount": "{created} ders oluşturuldu, {updated} güncellendi",
+    "@fullSyncCoursesCount": {
+        "placeholders": {
+            "created": {},
+            "updated": {}
+        }
+    },
+    "scheduleSyncSkippedInfo": "{skipped} giriş yok sayıldı (beklenmeyen format)",
+    "@scheduleSyncSkippedInfo": {
+        "placeholders": {
+            "skipped": {}
+        }
+    },
+    "scheduleSyncSampleDialogTitle": "Yok sayılan giriş (ham veri)",
+    "scheduleSyncSampleDialogHint": "Yok sayılan girişlerden birine ait JSON verisi. Beklenen formatın düzeltilmesi için bunu geliştiriciyle paylaş.",
+    "close": "Kapat",
+    "onboardingChoiceTitle": "Nasıl başlamak istersin?",
+    "onboardingChoiceObsTitle": "OBS hesabımdan yapılandır",
+    "onboardingChoiceObsDescription": "Profilini, derslerini ve ders programını otomatik olarak içe aktar.",
+    "onboardingChoiceManualTitle": "Manuel yapılandırma",
+    "onboardingChoiceManualDescription": "Profilini ve derslerini kendin gir.",
+    "obsSetupTitle": "OBS hesabı",
+    "obsSetupDescription": "Profilini, derslerini ve ders programını otomatik senkronize etmek için backend URL'ni ve API anahtarını gir.",
+    "obsSetupConnectButton": "Bağlan ve senkronize et",
+    "obsSetupNoProfileError": "Bu hesaptan profilin alınamadı. URL'yi ve API anahtarını kontrol et.",
+    "completeProfileTitle": "Son adım",
+    "completeProfileDescription": "Yapılandırmayı tamamlamak için okulunu ve sınıfını gir.",
+    "completeProfileContinueButton": "Bitir",
+    "syncStepProfile": "Profil",
+    "syncStepSubjects": "Dersler",
+    "syncStepSchedule": "Ders programı",
+    "syncErrorInvalidApiKey": "Geçersiz API anahtarı, ayarlarındaki yapılandırmanı kontrol et",
+    "syncErrorSessionExpired": "OBS oturumu sunucu tarafında sona erdi, senin tarafında manuel bir yeniden senkronizasyon gerekiyor",
+    "syncErrorObsUnreachable": "Üniversite sistemi şu anda yanıt vermiyor, daha sonra tekrar dene",
+    "syncErrorDatabaseUnavailable": "Backend sunucusunda geçici bir sorun var, daha sonra tekrar dene",
+    "syncErrorTimeout": "Sunucu yanıt vermekte gecikiyor (uykuda olabilir), bir dakika içinde tekrar dene.",
+    "syncErrorNetwork": "Sunucuya ulaşılamadı, bağlantını ve yapılandırılan URL'yi kontrol et",
+    "syncErrorMissingConfig": "Backend URL'si ve API anahtarı yapılandırılmalıdır.",
+    "syncErrorInvalidResponse": "Sunucu yanıtı okunamıyor.",
+    "syncErrorInvalidFormat": "Sunucudan beklenmeyen yanıt formatı.",
+    "syncProgressProfile": "Profil senkronize ediliyor...",
+    "syncProgressSubjects": "Dersler senkronize ediliyor...",
+    "syncProgressSchedule": "Ders programı senkronize ediliyor...",
+    "lastSyncLabel": "Son senkronizasyon: {value}",
+    "@lastSyncLabel": {
+        "placeholders": {
+            "value": {}
+        }
+    },
+    "lastSyncNever": "hiçbir zaman",
+    "lastSyncJustNow": "az önce",
+    "lastSyncMinutesAgo": "{minutes} dakika önce",
+    "@lastSyncMinutesAgo": {
+        "placeholders": {
+            "minutes": {}
+        }
+    },
+    "lastSyncHoursAgo": "{hours} saat önce",
+    "@lastSyncHoursAgo": {
+        "placeholders": {
+            "hours": {}
+        }
+    },
+    "lastSyncDaysAgo": "{days} gün önce",
+    "@lastSyncDaysAgo": {
+        "placeholders": {
+            "days": {}
+        }
+    },
+    "subjectsEmptyStateMessage": "Henüz ders yok — OBS hesabını senkronize et veya manuel olarak ekle",
+    "subjectsEmptyStateManualButton": "Manuel ekle",
+    "scheduleEmptyStateMessage": "Henüz ders programı içe aktarılmadı — ders programını doldurmak için OBS hesabını senkronize et"
 }

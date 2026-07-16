@@ -85,18 +85,27 @@ class _AddCoursePageState extends State<AddCoursePage> {
   void _loadSubjectsFromProfile() {
     final box = Hive.box('settings');
     final profile = box.get('profile') as StudentProfile?;
+    final subjects = <String>[...?profile?.subjects];
 
-    if (profile != null && profile.subjects.isNotEmpty) {
-      setState(() {
-        _availableSubjects = profile.subjects;
-
-        if (widget.courseToEdit == null) {
-          // Si on est en mode création, on sélectionne la première matière par défaut
-          _selectedSubject =
-              _availableSubjects[0]; // Sélectionner le premier par défaut
-        }
-      });
+    // Un cours synchronisé (ou modifié) peut avoir un titre absent des
+    // matières du profil (ex: importé depuis un backend externe). On
+    // l'ajoute toujours à la liste pour que le dropdown ait bien une entrée
+    // correspondant à _selectedSubject, sinon DropdownButtonFormField plante
+    // ("There should be exactly one item with [DropdownButton]'s value").
+    final editingTitle = widget.courseToEdit?.title;
+    if (editingTitle != null && !subjects.contains(editingTitle)) {
+      subjects.insert(0, editingTitle);
     }
+
+    setState(() {
+      _availableSubjects = subjects;
+
+      if (widget.courseToEdit == null && _availableSubjects.isNotEmpty) {
+        // Si on est en mode création, on sélectionne la première matière par défaut
+        _selectedSubject =
+            _availableSubjects[0]; // Sélectionner le premier par défaut
+      }
+    });
   }
 
   @override

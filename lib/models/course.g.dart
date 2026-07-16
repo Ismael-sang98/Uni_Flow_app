@@ -24,13 +24,14 @@ class CourseAdapter extends TypeAdapter<Course> {
       dayOfWeeks: fields[4] as int,
       startTime: fields[5] as DateTime,
       endTime: fields[6] as DateTime,
+      externalCode: fields[7] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Course obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class CourseAdapter extends TypeAdapter<Course> {
       ..writeByte(5)
       ..write(obj.startTime)
       ..writeByte(6)
-      ..write(obj.endTime);
+      ..write(obj.endTime)
+      ..writeByte(7)
+      ..write(obj.externalCode);
   }
 
   @override

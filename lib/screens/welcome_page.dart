@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mon_temps/screens/profile_page.dart';
+import 'package:mon_temps/screens/onboarding_choice_page.dart';
 import 'package:mon_temps/services/notification_service.dart';
 import '../l10n/app_localizations.dart';
 
@@ -103,7 +103,8 @@ class WelcomePage extends StatelessWidget {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => const ProfilePage(),
+                                    builder: (_) =>
+                                        const OnboardingChoicePage(),
                                   ),
                                 );
                               }
@@ -230,7 +231,8 @@ class WelcomePage extends StatelessWidget {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => const ProfilePage(),
+                                    builder: (_) =>
+                                        const OnboardingChoicePage(),
                                   ),
                                 );
                               }

@@ -541,4 +541,220 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get notesSearchEmpty => 'Aucune note trouvée';
+
+  @override
+  String get apiSettingsTitle => 'Réglages API';
+
+  @override
+  String get apiSettingsBaseUrlLabel => 'URL de base du backend';
+
+  @override
+  String get apiSettingsBaseUrlHint => 'https://mon-app.onrender.com';
+
+  @override
+  String get apiSettingsApiKeyLabel => 'Clé API (X-API-Key)';
+
+  @override
+  String get apiSettingsApiKeyHint => 'Votre clé API';
+
+  @override
+  String get apiSettingsInvalidUrl =>
+      'Saisissez une URL valide commençant par http:// ou https://';
+
+  @override
+  String get apiSettingsSaved => 'Réglages API enregistrés';
+
+  @override
+  String apiSettingsLoadError(Object error) {
+    return 'Impossible de charger les réglages API : $error';
+  }
+
+  @override
+  String apiSettingsSaveError(Object error) {
+    return 'Impossible d\'enregistrer les réglages API : $error';
+  }
+
+  @override
+  String get apiSettingsTestButton => 'Tester la connexion';
+
+  @override
+  String get apiSettingsTestSuccess => 'Connexion réussie';
+
+  @override
+  String get apiSettingsTestInvalidKey => 'Clé API invalide';
+
+  @override
+  String apiSettingsTestHttpError(Object statusCode) {
+    return 'Erreur serveur ($statusCode)';
+  }
+
+  @override
+  String apiSettingsTestNetworkError(Object error) {
+    return 'Backend injoignable : $error';
+  }
+
+  @override
+  String get fullSyncButton => 'Synchroniser';
+
+  @override
+  String get fullSyncProfileUpdated => 'Profil mis à jour';
+
+  @override
+  String get fullSyncProfileNotUpdated => 'Profil non modifié';
+
+  @override
+  String fullSyncSubjectsCount(Object count) {
+    return '$count matière(s) synchronisée(s)';
+  }
+
+  @override
+  String fullSyncCoursesCount(Object created, Object updated) {
+    return '$created cours créé(s), $updated mis à jour';
+  }
+
+  @override
+  String scheduleSyncSkippedInfo(Object skipped) {
+    return '$skipped entrée(s) ignorée(s) (format inattendu)';
+  }
+
+  @override
+  String get scheduleSyncSampleDialogTitle => 'Entrée ignorée (données brutes)';
+
+  @override
+  String get scheduleSyncSampleDialogHint =>
+      'Voici le JSON reçu pour une des entrées ignorées. Partage-le avec le développeur pour corriger le format attendu.';
+
+  @override
+  String get close => 'Fermer';
+
+  @override
+  String get onboardingChoiceTitle => 'Comment veux-tu commencer ?';
+
+  @override
+  String get onboardingChoiceObsTitle => 'Configurer depuis mon compte OBS';
+
+  @override
+  String get onboardingChoiceObsDescription =>
+      'Importe automatiquement ton profil, tes matières et ton emploi du temps.';
+
+  @override
+  String get onboardingChoiceManualTitle => 'Configuration manuelle';
+
+  @override
+  String get onboardingChoiceManualDescription =>
+      'Renseigne toi-même ton profil et tes cours.';
+
+  @override
+  String get obsSetupTitle => 'Compte OBS';
+
+  @override
+  String get obsSetupDescription =>
+      'Renseigne l\'URL de ton backend et ta clé API pour synchroniser automatiquement ton profil, tes matières et ton emploi du temps.';
+
+  @override
+  String get obsSetupConnectButton => 'Se connecter et synchroniser';
+
+  @override
+  String get obsSetupNoProfileError =>
+      'Impossible de récupérer ton profil depuis ce compte. Vérifie l\'URL et la clé API.';
+
+  @override
+  String get completeProfileTitle => 'Dernière étape';
+
+  @override
+  String get completeProfileDescription =>
+      'Renseigne ton école et ta classe pour terminer la configuration.';
+
+  @override
+  String get completeProfileContinueButton => 'Terminer';
+
+  @override
+  String get syncStepProfile => 'Profil';
+
+  @override
+  String get syncStepSubjects => 'Matières';
+
+  @override
+  String get syncStepSchedule => 'Emploi du temps';
+
+  @override
+  String get syncErrorInvalidApiKey =>
+      'Clé API invalide, vérifie ta configuration dans les réglages';
+
+  @override
+  String get syncErrorSessionExpired =>
+      'La session OBS a expiré côté serveur, une resynchronisation manuelle est nécessaire de ton côté';
+
+  @override
+  String get syncErrorObsUnreachable =>
+      'L\'université ne répond pas actuellement, réessaie plus tard';
+
+  @override
+  String get syncErrorDatabaseUnavailable =>
+      'Le serveur backend rencontre un problème temporaire, réessaie plus tard';
+
+  @override
+  String get syncErrorTimeout =>
+      'Le serveur met du temps à répondre (il était peut-être en veille), réessaie dans une minute.';
+
+  @override
+  String get syncErrorNetwork =>
+      'Impossible de contacter le serveur, vérifie ta connexion et l\'URL configurée';
+
+  @override
+  String get syncErrorMissingConfig =>
+      'L\'URL du backend et la clé API doivent être configurées.';
+
+  @override
+  String get syncErrorInvalidResponse => 'Réponse du serveur illisible.';
+
+  @override
+  String get syncErrorInvalidFormat =>
+      'Format de réponse inattendu du serveur.';
+
+  @override
+  String get syncProgressProfile => 'Synchronisation du profil...';
+
+  @override
+  String get syncProgressSubjects => 'Synchronisation des matières...';
+
+  @override
+  String get syncProgressSchedule => 'Synchronisation de l\'emploi du temps...';
+
+  @override
+  String lastSyncLabel(Object value) {
+    return 'Dernière synchronisation : $value';
+  }
+
+  @override
+  String get lastSyncNever => 'jamais';
+
+  @override
+  String get lastSyncJustNow => 'à l\'instant';
+
+  @override
+  String lastSyncMinutesAgo(Object minutes) {
+    return 'il y a $minutes min';
+  }
+
+  @override
+  String lastSyncHoursAgo(Object hours) {
+    return 'il y a $hours h';
+  }
+
+  @override
+  String lastSyncDaysAgo(Object days) {
+    return 'il y a $days j';
+  }
+
+  @override
+  String get subjectsEmptyStateMessage =>
+      'Aucune matière — synchronise ton compte OBS ou ajoute-en une manuellement';
+
+  @override
+  String get subjectsEmptyStateManualButton => 'Ajouter manuellement';
+
+  @override
+  String get scheduleEmptyStateMessage =>
+      'Aucun cours importé — synchronise ton compte OBS pour remplir ton emploi du temps';
 }

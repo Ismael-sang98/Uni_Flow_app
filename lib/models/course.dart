@@ -21,6 +21,12 @@ class Course {
   @HiveField(6)
   final DateTime endTime;
 
+  /// Code externe optionnel (identifiant de cours renvoyé par un backend de
+  /// synchronisation), distinct du [title] affiché. Null pour les cours créés
+  /// manuellement dans l'app.
+  @HiveField(7)
+  final String? externalCode;
+
   Course({
     required this.id,
     required this.title,
@@ -29,5 +35,6 @@ class Course {
     required this.dayOfWeeks,
     required this.startTime,
     required this.endTime,
+    this.externalCode,
   });
 }

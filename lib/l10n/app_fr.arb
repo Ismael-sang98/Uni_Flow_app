@@ -262,5 +262,120 @@
     "suggested": "Suggestions",
     "notesOrCustomName": "Ou créer un cahier personnalisé",
     "search": "Rechercher...",
-    "notesSearchEmpty": "Aucune note trouvée"
+    "notesSearchEmpty": "Aucune note trouvée",
+    "apiSettingsTitle": "Réglages API",
+    "apiSettingsBaseUrlLabel": "URL de base du backend",
+    "apiSettingsBaseUrlHint": "https://mon-app.onrender.com",
+    "apiSettingsApiKeyLabel": "Clé API (X-API-Key)",
+    "apiSettingsApiKeyHint": "Votre clé API",
+    "apiSettingsInvalidUrl": "Saisissez une URL valide commençant par http:// ou https://",
+    "apiSettingsSaved": "Réglages API enregistrés",
+    "apiSettingsLoadError": "Impossible de charger les réglages API : {error}",
+    "@apiSettingsLoadError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "apiSettingsSaveError": "Impossible d'enregistrer les réglages API : {error}",
+    "@apiSettingsSaveError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "apiSettingsTestButton": "Tester la connexion",
+    "apiSettingsTestSuccess": "Connexion réussie",
+    "apiSettingsTestInvalidKey": "Clé API invalide",
+    "apiSettingsTestHttpError": "Erreur serveur ({statusCode})",
+    "@apiSettingsTestHttpError": {
+        "placeholders": {
+            "statusCode": {}
+        }
+    },
+    "apiSettingsTestNetworkError": "Backend injoignable : {error}",
+    "@apiSettingsTestNetworkError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "fullSyncButton": "Synchroniser",
+    "fullSyncProfileUpdated": "Profil mis à jour",
+    "fullSyncProfileNotUpdated": "Profil non modifié",
+    "fullSyncSubjectsCount": "{count} matière(s) synchronisée(s)",
+    "@fullSyncSubjectsCount": {
+        "placeholders": {
+            "count": {}
+        }
+    },
+    "fullSyncCoursesCount": "{created} cours créé(s), {updated} mis à jour",
+    "@fullSyncCoursesCount": {
+        "placeholders": {
+            "created": {},
+            "updated": {}
+        }
+    },
+    "scheduleSyncSkippedInfo": "{skipped} entrée(s) ignorée(s) (format inattendu)",
+    "@scheduleSyncSkippedInfo": {
+        "placeholders": {
+            "skipped": {}
+        }
+    },
+    "scheduleSyncSampleDialogTitle": "Entrée ignorée (données brutes)",
+    "scheduleSyncSampleDialogHint": "Voici le JSON reçu pour une des entrées ignorées. Partage-le avec le développeur pour corriger le format attendu.",
+    "close": "Fermer",
+    "onboardingChoiceTitle": "Comment veux-tu commencer ?",
+    "onboardingChoiceObsTitle": "Configurer depuis mon compte OBS",
+    "onboardingChoiceObsDescription": "Importe automatiquement ton profil, tes matières et ton emploi du temps.",
+    "onboardingChoiceManualTitle": "Configuration manuelle",
+    "onboardingChoiceManualDescription": "Renseigne toi-même ton profil et tes cours.",
+    "obsSetupTitle": "Compte OBS",
+    "obsSetupDescription": "Renseigne l'URL de ton backend et ta clé API pour synchroniser automatiquement ton profil, tes matières et ton emploi du temps.",
+    "obsSetupConnectButton": "Se connecter et synchroniser",
+    "obsSetupNoProfileError": "Impossible de récupérer ton profil depuis ce compte. Vérifie l'URL et la clé API.",
+    "completeProfileTitle": "Dernière étape",
+    "completeProfileDescription": "Renseigne ton école et ta classe pour terminer la configuration.",
+    "completeProfileContinueButton": "Terminer",
+    "syncStepProfile": "Profil",
+    "syncStepSubjects": "Matières",
+    "syncStepSchedule": "Emploi du temps",
+    "syncErrorInvalidApiKey": "Clé API invalide, vérifie ta configuration dans les réglages",
+    "syncErrorSessionExpired": "La session OBS a expiré côté serveur, une resynchronisation manuelle est nécessaire de ton côté",
+    "syncErrorObsUnreachable": "L'université ne répond pas actuellement, réessaie plus tard",
+    "syncErrorDatabaseUnavailable": "Le serveur backend rencontre un problème temporaire, réessaie plus tard",
+    "syncErrorTimeout": "Le serveur met du temps à répondre (il était peut-être en veille), réessaie dans une minute.",
+    "syncErrorNetwork": "Impossible de contacter le serveur, vérifie ta connexion et l'URL configurée",
+    "syncErrorMissingConfig": "L'URL du backend et la clé API doivent être configurées.",
+    "syncErrorInvalidResponse": "Réponse du serveur illisible.",
+    "syncErrorInvalidFormat": "Format de réponse inattendu du serveur.",
+    "syncProgressProfile": "Synchronisation du profil...",
+    "syncProgressSubjects": "Synchronisation des matières...",
+    "syncProgressSchedule": "Synchronisation de l'emploi du temps...",
+    "lastSyncLabel": "Dernière synchronisation : {value}",
+    "@lastSyncLabel": {
+        "placeholders": {
+            "value": {}
+        }
+    },
+    "lastSyncNever": "jamais",
+    "lastSyncJustNow": "à l'instant",
+    "lastSyncMinutesAgo": "il y a {minutes} min",
+    "@lastSyncMinutesAgo": {
+        "placeholders": {
+            "minutes": {}
+        }
+    },
+    "lastSyncHoursAgo": "il y a {hours} h",
+    "@lastSyncHoursAgo": {
+        "placeholders": {
+            "hours": {}
+        }
+    },
+    "lastSyncDaysAgo": "il y a {days} j",
+    "@lastSyncDaysAgo": {
+        "placeholders": {
+            "days": {}
+        }
+    },
+    "subjectsEmptyStateMessage": "Aucune matière — synchronise ton compte OBS ou ajoute-en une manuellement",
+    "subjectsEmptyStateManualButton": "Ajouter manuellement",
+    "scheduleEmptyStateMessage": "Aucun cours importé — synchronise ton compte OBS pour remplir ton emploi du temps"
 }

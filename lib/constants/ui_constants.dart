@@ -1,11 +1,13 @@
 class UIConstants {
   // Spacing
   static const double spacing8 = 8.0;
+  static const double spacing12 = 12.0;
   static const double spacing16 = 16.0;
   static const double spacing24 = 24.0;
 
   // Sizes
   static const double imageThumbnailSize = 96.0;
+  static const double emptyStateIconSize = 56.0;
   static const double borderRadius14 = 14.0;
   static const double borderRadius16 = 16.0;
   static const double borderRadius18 = 18.0;

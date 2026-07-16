@@ -1053,6 +1053,360 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No notes found'**
   String get notesSearchEmpty;
+
+  /// No description provided for @apiSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'API settings'**
+  String get apiSettingsTitle;
+
+  /// No description provided for @apiSettingsBaseUrlLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Backend base URL'**
+  String get apiSettingsBaseUrlLabel;
+
+  /// No description provided for @apiSettingsBaseUrlHint.
+  ///
+  /// In en, this message translates to:
+  /// **'https://my-app.onrender.com'**
+  String get apiSettingsBaseUrlHint;
+
+  /// No description provided for @apiSettingsApiKeyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'API key (X-API-Key)'**
+  String get apiSettingsApiKeyLabel;
+
+  /// No description provided for @apiSettingsApiKeyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your API key'**
+  String get apiSettingsApiKeyHint;
+
+  /// No description provided for @apiSettingsInvalidUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid URL starting with http:// or https://'**
+  String get apiSettingsInvalidUrl;
+
+  /// No description provided for @apiSettingsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'API settings saved'**
+  String get apiSettingsSaved;
+
+  /// No description provided for @apiSettingsLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load API settings: {error}'**
+  String apiSettingsLoadError(Object error);
+
+  /// No description provided for @apiSettingsSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save API settings: {error}'**
+  String apiSettingsSaveError(Object error);
+
+  /// No description provided for @apiSettingsTestButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Test connection'**
+  String get apiSettingsTestButton;
+
+  /// No description provided for @apiSettingsTestSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection successful'**
+  String get apiSettingsTestSuccess;
+
+  /// No description provided for @apiSettingsTestInvalidKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid API key'**
+  String get apiSettingsTestInvalidKey;
+
+  /// No description provided for @apiSettingsTestHttpError.
+  ///
+  /// In en, this message translates to:
+  /// **'Server error ({statusCode})'**
+  String apiSettingsTestHttpError(Object statusCode);
+
+  /// No description provided for @apiSettingsTestNetworkError.
+  ///
+  /// In en, this message translates to:
+  /// **'Backend unreachable: {error}'**
+  String apiSettingsTestNetworkError(Object error);
+
+  /// No description provided for @fullSyncButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Synchronize'**
+  String get fullSyncButton;
+
+  /// No description provided for @fullSyncProfileUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated'**
+  String get fullSyncProfileUpdated;
+
+  /// No description provided for @fullSyncProfileNotUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile unchanged'**
+  String get fullSyncProfileNotUpdated;
+
+  /// No description provided for @fullSyncSubjectsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} subject(s) synced'**
+  String fullSyncSubjectsCount(Object count);
+
+  /// No description provided for @fullSyncCoursesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{created} course(s) created, {updated} updated'**
+  String fullSyncCoursesCount(Object created, Object updated);
+
+  /// No description provided for @scheduleSyncSkippedInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'{skipped} entry(ies) ignored (unexpected format)'**
+  String scheduleSyncSkippedInfo(Object skipped);
+
+  /// No description provided for @scheduleSyncSampleDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ignored entry (raw data)'**
+  String get scheduleSyncSampleDialogTitle;
+
+  /// No description provided for @scheduleSyncSampleDialogHint.
+  ///
+  /// In en, this message translates to:
+  /// **'This is the JSON received for one of the ignored entries. Share this with the developer so the expected format can be fixed.'**
+  String get scheduleSyncSampleDialogHint;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @onboardingChoiceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How do you want to get started?'**
+  String get onboardingChoiceTitle;
+
+  /// No description provided for @onboardingChoiceObsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up from my OBS account'**
+  String get onboardingChoiceObsTitle;
+
+  /// No description provided for @onboardingChoiceObsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically import your profile, subjects and class schedule.'**
+  String get onboardingChoiceObsDescription;
+
+  /// No description provided for @onboardingChoiceManualTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual setup'**
+  String get onboardingChoiceManualTitle;
+
+  /// No description provided for @onboardingChoiceManualDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in your profile and courses yourself.'**
+  String get onboardingChoiceManualDescription;
+
+  /// No description provided for @obsSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'OBS account'**
+  String get obsSetupTitle;
+
+  /// No description provided for @obsSetupDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your backend URL and API key to automatically sync your profile, subjects and class schedule.'**
+  String get obsSetupDescription;
+
+  /// No description provided for @obsSetupConnectButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect and sync'**
+  String get obsSetupConnectButton;
+
+  /// No description provided for @obsSetupNoProfileError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not retrieve your profile from this account. Check the URL and API key.'**
+  String get obsSetupNoProfileError;
+
+  /// No description provided for @completeProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Last step'**
+  String get completeProfileTitle;
+
+  /// No description provided for @completeProfileDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your school and class to finish setting up.'**
+  String get completeProfileDescription;
+
+  /// No description provided for @completeProfileContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get completeProfileContinueButton;
+
+  /// No description provided for @syncStepProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get syncStepProfile;
+
+  /// No description provided for @syncStepSubjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Subjects'**
+  String get syncStepSubjects;
+
+  /// No description provided for @syncStepSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Class schedule'**
+  String get syncStepSchedule;
+
+  /// No description provided for @syncErrorInvalidApiKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid API key, check your settings configuration'**
+  String get syncErrorInvalidApiKey;
+
+  /// No description provided for @syncErrorSessionExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'The OBS session expired on the server side, a manual re-sync is needed on your end'**
+  String get syncErrorSessionExpired;
+
+  /// No description provided for @syncErrorObsUnreachable.
+  ///
+  /// In en, this message translates to:
+  /// **'The university system isn\'t responding right now, try again later'**
+  String get syncErrorObsUnreachable;
+
+  /// No description provided for @syncErrorDatabaseUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The backend server has a temporary issue, try again later'**
+  String get syncErrorDatabaseUnavailable;
+
+  /// No description provided for @syncErrorTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'The server is taking a while to respond (it may have been asleep), try again in a minute.'**
+  String get syncErrorTimeout;
+
+  /// No description provided for @syncErrorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not reach the server, check your connection and the configured URL'**
+  String get syncErrorNetwork;
+
+  /// No description provided for @syncErrorMissingConfig.
+  ///
+  /// In en, this message translates to:
+  /// **'The backend URL and API key must be configured.'**
+  String get syncErrorMissingConfig;
+
+  /// No description provided for @syncErrorInvalidResponse.
+  ///
+  /// In en, this message translates to:
+  /// **'Unreadable server response.'**
+  String get syncErrorInvalidResponse;
+
+  /// No description provided for @syncErrorInvalidFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected response format from the server.'**
+  String get syncErrorInvalidFormat;
+
+  /// No description provided for @syncProgressProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing profile...'**
+  String get syncProgressProfile;
+
+  /// No description provided for @syncProgressSubjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing subjects...'**
+  String get syncProgressSubjects;
+
+  /// No description provided for @syncProgressSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing class schedule...'**
+  String get syncProgressSchedule;
+
+  /// No description provided for @lastSyncLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last sync: {value}'**
+  String lastSyncLabel(Object value);
+
+  /// No description provided for @lastSyncNever.
+  ///
+  /// In en, this message translates to:
+  /// **'never'**
+  String get lastSyncNever;
+
+  /// No description provided for @lastSyncJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'just now'**
+  String get lastSyncJustNow;
+
+  /// No description provided for @lastSyncMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min ago'**
+  String lastSyncMinutesAgo(Object minutes);
+
+  /// No description provided for @lastSyncHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h ago'**
+  String lastSyncHoursAgo(Object hours);
+
+  /// No description provided for @lastSyncDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} d ago'**
+  String lastSyncDaysAgo(Object days);
+
+  /// No description provided for @subjectsEmptyStateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No subjects yet — sync your OBS account or add one manually'**
+  String get subjectsEmptyStateMessage;
+
+  /// No description provided for @subjectsEmptyStateManualButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add manually'**
+  String get subjectsEmptyStateManualButton;
+
+  /// No description provided for @scheduleEmptyStateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No classes imported yet — sync your OBS account to fill in your class schedule'**
+  String get scheduleEmptyStateMessage;
 }
 
 class _AppLocalizationsDelegate

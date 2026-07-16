@@ -262,5 +262,120 @@
     "suggested": "Suggestions",
     "notesOrCustomName": "Or create a custom notebook",
     "search": "Search...",
-    "notesSearchEmpty": "No notes found"
+    "notesSearchEmpty": "No notes found",
+    "apiSettingsTitle": "API settings",
+    "apiSettingsBaseUrlLabel": "Backend base URL",
+    "apiSettingsBaseUrlHint": "https://my-app.onrender.com",
+    "apiSettingsApiKeyLabel": "API key (X-API-Key)",
+    "apiSettingsApiKeyHint": "Your API key",
+    "apiSettingsInvalidUrl": "Enter a valid URL starting with http:// or https://",
+    "apiSettingsSaved": "API settings saved",
+    "apiSettingsLoadError": "Could not load API settings: {error}",
+    "@apiSettingsLoadError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "apiSettingsSaveError": "Could not save API settings: {error}",
+    "@apiSettingsSaveError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "apiSettingsTestButton": "Test connection",
+    "apiSettingsTestSuccess": "Connection successful",
+    "apiSettingsTestInvalidKey": "Invalid API key",
+    "apiSettingsTestHttpError": "Server error ({statusCode})",
+    "@apiSettingsTestHttpError": {
+        "placeholders": {
+            "statusCode": {}
+        }
+    },
+    "apiSettingsTestNetworkError": "Backend unreachable: {error}",
+    "@apiSettingsTestNetworkError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "fullSyncButton": "Synchronize",
+    "fullSyncProfileUpdated": "Profile updated",
+    "fullSyncProfileNotUpdated": "Profile unchanged",
+    "fullSyncSubjectsCount": "{count} subject(s) synced",
+    "@fullSyncSubjectsCount": {
+        "placeholders": {
+            "count": {}
+        }
+    },
+    "fullSyncCoursesCount": "{created} course(s) created, {updated} updated",
+    "@fullSyncCoursesCount": {
+        "placeholders": {
+            "created": {},
+            "updated": {}
+        }
+    },
+    "scheduleSyncSkippedInfo": "{skipped} entry(ies) ignored (unexpected format)",
+    "@scheduleSyncSkippedInfo": {
+        "placeholders": {
+            "skipped": {}
+        }
+    },
+    "scheduleSyncSampleDialogTitle": "Ignored entry (raw data)",
+    "scheduleSyncSampleDialogHint": "This is the JSON received for one of the ignored entries. Share this with the developer so the expected format can be fixed.",
+    "close": "Close",
+    "onboardingChoiceTitle": "How do you want to get started?",
+    "onboardingChoiceObsTitle": "Set up from my OBS account",
+    "onboardingChoiceObsDescription": "Automatically import your profile, subjects and class schedule.",
+    "onboardingChoiceManualTitle": "Manual setup",
+    "onboardingChoiceManualDescription": "Fill in your profile and courses yourself.",
+    "obsSetupTitle": "OBS account",
+    "obsSetupDescription": "Enter your backend URL and API key to automatically sync your profile, subjects and class schedule.",
+    "obsSetupConnectButton": "Connect and sync",
+    "obsSetupNoProfileError": "Could not retrieve your profile from this account. Check the URL and API key.",
+    "completeProfileTitle": "Last step",
+    "completeProfileDescription": "Enter your school and class to finish setting up.",
+    "completeProfileContinueButton": "Finish",
+    "syncStepProfile": "Profile",
+    "syncStepSubjects": "Subjects",
+    "syncStepSchedule": "Class schedule",
+    "syncErrorInvalidApiKey": "Invalid API key, check your settings configuration",
+    "syncErrorSessionExpired": "The OBS session expired on the server side, a manual re-sync is needed on your end",
+    "syncErrorObsUnreachable": "The university system isn't responding right now, try again later",
+    "syncErrorDatabaseUnavailable": "The backend server has a temporary issue, try again later",
+    "syncErrorTimeout": "The server is taking a while to respond (it may have been asleep), try again in a minute.",
+    "syncErrorNetwork": "Could not reach the server, check your connection and the configured URL",
+    "syncErrorMissingConfig": "The backend URL and API key must be configured.",
+    "syncErrorInvalidResponse": "Unreadable server response.",
+    "syncErrorInvalidFormat": "Unexpected response format from the server.",
+    "syncProgressProfile": "Syncing profile...",
+    "syncProgressSubjects": "Syncing subjects...",
+    "syncProgressSchedule": "Syncing class schedule...",
+    "lastSyncLabel": "Last sync: {value}",
+    "@lastSyncLabel": {
+        "placeholders": {
+            "value": {}
+        }
+    },
+    "lastSyncNever": "never",
+    "lastSyncJustNow": "just now",
+    "lastSyncMinutesAgo": "{minutes} min ago",
+    "@lastSyncMinutesAgo": {
+        "placeholders": {
+            "minutes": {}
+        }
+    },
+    "lastSyncHoursAgo": "{hours} h ago",
+    "@lastSyncHoursAgo": {
+        "placeholders": {
+            "hours": {}
+        }
+    },
+    "lastSyncDaysAgo": "{days} d ago",
+    "@lastSyncDaysAgo": {
+        "placeholders": {
+            "days": {}
+        }
+    },
+    "subjectsEmptyStateMessage": "No subjects yet — sync your OBS account or add one manually",
+    "subjectsEmptyStateManualButton": "Add manually",
+    "scheduleEmptyStateMessage": "No classes imported yet — sync your OBS account to fill in your class schedule"
 }

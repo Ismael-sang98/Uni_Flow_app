@@ -8,8 +8,6 @@ import '../providers/notes_provider.dart';
 /// Affiche le dialogue de création d'un cahier (à partir d'une matière du
 /// profil ou d'un nom personnalisé).
 Future<void> showCreateNotebookDialog(BuildContext context) async {
-  final l10n = AppLocalizations.of(context)!;
-
   final settingsBox = Hive.box('settings');
   final profile = settingsBox.get('profile') as StudentProfile?;
   final profileSubjects = profile?.subjects ?? <String>[];
@@ -22,121 +20,147 @@ Future<void> showCreateNotebookDialog(BuildContext context) async {
       .where((subject) => !existingNotebooks.contains(subject))
       .toList();
 
-  String? selectedSubject;
-  final customNameController = TextEditingController();
+  await showDialog<void>(
+    context: context,
+    builder: (dialogContext) =>
+        _CreateNotebookDialog(availableSubjects: availableSubjects),
+  );
+}
 
-  try {
-    if (availableSubjects.isEmpty) {
-      await showDialog<void>(
-        context: context,
-        builder: (dialogContext) => AlertDialog(
-          title: Text(l10n.notesCreateNotebook),
-          content: TextField(
-            controller: customNameController,
-            autofocus: true,
-            decoration: InputDecoration(labelText: l10n.notesNotebookName),
+/// Widget (et non simple fonction+`showDialog`) afin que le
+/// `TextEditingController` soit créé/détruit via le cycle de vie normal de
+/// [State] : le disposer manuellement juste après `await showDialog(...)`
+/// entre en course avec l'animation de fermeture du dialogue (qui reconstruit
+/// encore le champ pendant quelques frames), et provoque une erreur
+/// "TextEditingController was used after being disposed".
+class _CreateNotebookDialog extends StatefulWidget {
+  final List<String> availableSubjects;
+
+  const _CreateNotebookDialog({required this.availableSubjects});
+
+  @override
+  State<_CreateNotebookDialog> createState() => _CreateNotebookDialogState();
+}
+
+class _CreateNotebookDialogState extends State<_CreateNotebookDialog> {
+  late final TextEditingController _customNameController;
+  String? _selectedSubject;
+
+  @override
+  void initState() {
+    super.initState();
+    _customNameController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _customNameController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit(String rawName) async {
+    final name = rawName.trim();
+    if (name.isEmpty) return;
+    await context.read<NotesProvider>().createNotebook(name);
+    if (!mounted) return;
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    if (widget.availableSubjects.isEmpty) {
+      return AlertDialog(
+        title: Text(l10n.notesCreateNotebook),
+        content: TextField(
+          controller: _customNameController,
+          autofocus: true,
+          decoration: InputDecoration(labelText: l10n.notesNotebookName),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.rejet),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext),
-              child: Text(l10n.rejet),
+          ElevatedButton(
+            onPressed: () => _submit(_customNameController.text),
+            child: Text(l10n.ajt),
+          ),
+        ],
+      );
+    }
+
+    return AlertDialog(
+      title: Text(l10n.notesCreateNotebook),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${l10n.notesNotebook} (${l10n.suggested})',
+              style: const TextStyle(
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                final name = customNameController.text.trim();
-                if (name.isEmpty) return;
-                await context.read<NotesProvider>().createNotebook(name);
-                if (!dialogContext.mounted) return;
-                Navigator.pop(dialogContext);
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: widget.availableSubjects.map((subject) {
+                final isSelected = _selectedSubject == subject;
+                return ChoiceChip(
+                  label: Text(subject),
+                  selected: isSelected,
+                  onSelected: (selected) {
+                    setState(() {
+                      _selectedSubject = selected ? subject : null;
+                      _customNameController.clear();
+                    });
+                  },
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 16),
+            const Divider(),
+            const SizedBox(height: 8),
+            Text(
+              l10n.notesOrCustomName,
+              style: const TextStyle(
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: _customNameController,
+              autofocus: _selectedSubject == null,
+              onChanged: (_) {
+                setState(() => _selectedSubject = null);
               },
-              child: Text(l10n.ajt),
+              decoration: InputDecoration(
+                labelText: l10n.notesNotebookName,
+                enabled: _selectedSubject == null,
+              ),
             ),
           ],
         ),
-      );
-    } else {
-      await showDialog<void>(
-        context: context,
-        builder: (dialogContext) => StatefulBuilder(
-          builder: (context, setState) => AlertDialog(
-            title: Text(l10n.notesCreateNotebook),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${l10n.notesNotebook} (${l10n.suggested})',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: availableSubjects.map((subject) {
-                    final isSelected = selectedSubject == subject;
-                    return ChoiceChip(
-                      label: Text(subject),
-                      selected: isSelected,
-                      onSelected: (selected) {
-                        setState(() {
-                          selectedSubject = selected ? subject : null;
-                          customNameController.clear();
-                        });
-                      },
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 16),
-                const Divider(),
-                const SizedBox(height: 8),
-                Text(
-                  l10n.notesOrCustomName,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: customNameController,
-                  autofocus: selectedSubject == null,
-                  onChanged: (_) {
-                    setState(() => selectedSubject = null);
-                  },
-                  decoration: InputDecoration(
-                    labelText: l10n.notesNotebookName,
-                    enabled: selectedSubject == null,
-                  ),
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(dialogContext),
-                child: Text(l10n.rejet),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  final name = (selectedSubject ?? customNameController.text)
-                      .trim();
-                  if (name.isEmpty) return;
-                  await context.read<NotesProvider>().createNotebook(name);
-                  if (!dialogContext.mounted) return;
-                  Navigator.pop(dialogContext);
-                },
-                child: Text(l10n.ajt),
-              ),
-            ],
-          ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(l10n.rejet),
         ),
-      );
-    }
-  } finally {
-    customNameController.dispose();
+        ElevatedButton(
+          onPressed: () =>
+              _submit(_selectedSubject ?? _customNameController.text),
+          child: Text(l10n.ajt),
+        ),
+      ],
+    );
   }
 }

@@ -4,9 +4,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mon_temps/screens/home_page.dart';
 import 'package:provider/provider.dart';
+import '../constants/ui_constants.dart';
 import '../models/student_profile.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/theme_provider.dart';
+import 'api_settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -51,16 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final profile = _settingsBox.get('profile') as StudentProfile?;
 
     if (profile != null) {
-      // Profil existant
-      _nameController.text = profile.name;
-      _classController.text = profile.className;
-      _schoolController.text = profile.schoolName;
-      _facultyController.text = profile.faculty;
-      _profileImagePath = profile.profilePicturePath;
-
-      // On charge les matières existantes
-      _subjects = List.from(profile.subjects);
-
+      _refreshControllersFromProfile();
       setState(() {
         _isEditing = false;
         _isFirstTime = false;
@@ -73,6 +66,23 @@ class _ProfilePageState extends State<ProfilePage> {
         // On peut mettre des matières par défaut pour aider l'utilisateur];
       });
     }
+  }
+
+  /// Recharge les contrôleurs d'édition depuis le profil Hive courant, sans
+  /// toucher à `_isEditing`. Appelé avant de passer en mode édition (voir le
+  /// bouton crayon dans `_buildViewMode`) pour ne jamais éditer — et donc
+  /// risquer d'écraser au "Enregistrer" — des données obsolètes si le profil
+  /// a été mis à jour entre-temps par une synchronisation OBS (le mode
+  /// lecture, lui, est déjà réactif via `ValueListenableBuilder`).
+  void _refreshControllersFromProfile() {
+    final profile = _settingsBox.get('profile') as StudentProfile?;
+    if (profile == null) return;
+    _nameController.text = profile.name;
+    _classController.text = profile.className;
+    _schoolController.text = profile.schoolName;
+    _facultyController.text = profile.faculty;
+    _profileImagePath = profile.profilePicturePath;
+    _subjects = List.from(profile.subjects);
   }
 
   @override
@@ -248,178 +258,291 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           IconButton(
+            icon: const Icon(Icons.api_outlined),
+            tooltip: l10n.apiSettingsTitle,
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ApiSettingsPage()),
+            ),
+          ),
+          IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () => setState(() => _isEditing = true),
+            onPressed: () {
+              _refreshControllersFromProfile();
+              setState(() => _isEditing = true);
+            },
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // --- header PROFIL AVEC DÉGRADÉ ---
-            Container(
-              decoration: BoxDecoration(
-                color:
-                    Theme.of(context).appBarTheme.backgroundColor ??
-                    const Color(0xFF6C63FF),
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(30),
+      body: ValueListenableBuilder(
+        // Réactif à toute écriture dans la box `settings` (profil ET
+        // last_sync_at) : ce mode lecture reflète toujours l'état le plus
+        // récent, y compris juste après une synchro OBS lancée depuis
+        // ApiSettingsPage (retour en arrière sans recréer ce widget).
+        valueListenable: _settingsBox.listenable(),
+        builder: (context, Box box, _) {
+          final profile = box.get('profile') as StudentProfile?;
+          final name = profile?.name ?? _nameController.text;
+          final schoolName = profile?.schoolName ?? _schoolController.text;
+          final faculty = profile?.faculty ?? _facultyController.text;
+          final className = profile?.className ?? _classController.text;
+          final profileImagePath =
+              profile?.profilePicturePath ?? _profileImagePath;
+          final subjects = profile?.subjects ?? _subjects;
+          final lastSyncAt = box.get('last_sync_at') as DateTime?;
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                // --- header PROFIL AVEC DÉGRADÉ ---
+                Container(
+                  decoration: BoxDecoration(
+                    color:
+                        Theme.of(context).appBarTheme.backgroundColor ??
+                        const Color(0xFF6C63FF),
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.circular(30),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 30,
+                      horizontal: 20,
+                    ),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 3),
+                              boxShadow: [
+                                BoxShadow(
+                                  // ignore: deprecated_member_use
+                                  color: Colors.black.withValues(alpha: 0.2),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: CircleAvatar(
+                              radius: 65,
+                              backgroundColor: Colors.white24,
+                              backgroundImage:
+                                  (profileImagePath != null &&
+                                      profileImagePath.isNotEmpty)
+                                  ? FileImage(File(profileImagePath))
+                                  : null,
+                              child:
+                                  (profileImagePath == null ||
+                                      profileImagePath.isEmpty)
+                                  ? const Icon(
+                                      Icons.person,
+                                      size: 65,
+                                      color: Colors.white,
+                                    )
+                                  : null,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            name,
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: UIConstants.spacing8 / 2),
+                          Text(
+                            _formatLastSync(l10n, lastSyncAt),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.white70,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 30,
-                  horizontal: 20,
-                ),
-                child: Center(
+
+                const SizedBox(height: 30),
+
+                // --- INFOS PRINCIPALES (Cards) ---
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 3),
-                          boxShadow: [
-                            BoxShadow(
-                              // ignore: deprecated_member_use
-                              color: Colors.black.withValues(alpha: 0.2),
-                              blurRadius: 12,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: CircleAvatar(
-                          radius: 65,
-                          backgroundColor: Colors.white24,
-                          backgroundImage:
-                              (_profileImagePath != null &&
-                                  _profileImagePath!.isNotEmpty)
-                              ? FileImage(File(_profileImagePath!))
-                              : null,
-                          child:
-                              (_profileImagePath == null ||
-                                  _profileImagePath!.isEmpty)
-                              ? const Icon(
-                                  Icons.person,
-                                  size: 65,
-                                  color: Colors.white,
-                                )
-                              : null,
-                        ),
+                      _buildInfoCard(
+                        icon: Icons.school,
+                        label: l10n.labEc,
+                        value: schoolName,
                       ),
-                      const SizedBox(height: 20),
-                      Text(
-                        _nameController.text,
-                        style: const TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                      const SizedBox(height: 12),
+                      _buildInfoCard(
+                        icon: Icons.account_balance,
+                        label: l10n.labFkt,
+                        value: faculty,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildInfoCard(
+                        icon: Icons.class_,
+                        label: l10n.labCl,
+                        value: className,
                       ),
                     ],
                   ),
                 ),
-              ),
-            ),
 
-            const SizedBox(height: 30),
+                const SizedBox(height: 30),
 
-            // --- INFOS PRINCIPALES (Cards) ---
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  _buildInfoCard(
-                    icon: Icons.school,
-                    label: l10n.labEc,
-                    value: _schoolController.text,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildInfoCard(
-                    icon: Icons.account_balance,
-                    label: l10n.labFkt,
-                    value: _facultyController.text,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildInfoCard(
-                    icon: Icons.class_,
-                    label: l10n.labCl,
-                    value: _classController.text,
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 30),
-
-            // --- SECTION MATIÈRES ---
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.labMatiere,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  _subjects.isEmpty
-                      ? Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Text(
-                              l10n.aucuneMatiere,
-                              style: TextStyle(
-                                color: Colors.grey.shade600,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        )
-                      : Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: _subjects
-                              .map(
-                                (sub) => Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 10,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(
-                                      0xFF6C63FF,
-                                      // ignore: deprecated_member_use
-                                    ).withValues(alpha: 0.1),
-                                    border: Border.all(
-                                      color: const Color(
-                                        0xFF6C63FF,
-                                        // ignore: deprecated_member_use
-                                      ).withValues(alpha: 0.3),
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Text(
-                                    sub,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xFF6C63FF),
-                                    ),
-                                  ),
-                                ),
-                              )
-                              .toList(),
+                // --- SECTION MATIÈRES ---
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.labMatiere,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
-                ],
-              ),
-            ),
+                      ),
+                      const SizedBox(height: 16),
+                      subjects.isEmpty
+                          ? (lastSyncAt == null
+                                ? _buildSubjectsEmptyStateWithCta(l10n)
+                                : Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 20,
+                                      ),
+                                      child: Text(
+                                        l10n.aucuneMatiere,
+                                        style: TextStyle(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                  ))
+                          : Wrap(
+                              spacing: 10,
+                              runSpacing: 10,
+                              children: subjects
+                                  .map(
+                                    (sub) => Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 10,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: const Color(
+                                          0xFF6C63FF,
+                                          // ignore: deprecated_member_use
+                                        ).withValues(alpha: 0.1),
+                                        border: Border.all(
+                                          color: const Color(
+                                            0xFF6C63FF,
+                                            // ignore: deprecated_member_use
+                                          ).withValues(alpha: 0.3),
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Text(
+                                        sub,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xFF6C63FF),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                    ],
+                  ),
+                ),
 
-            const SizedBox(height: 30),
-          ],
-        ),
+                const SizedBox(height: 30),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  /// "Dernière synchronisation : il y a 2 heures" (ou "jamais" si
+  /// `last_sync_at` n'a jamais été renseigné).
+  String _formatLastSync(AppLocalizations l10n, DateTime? lastSync) {
+    if (lastSync == null) return l10n.lastSyncLabel(l10n.lastSyncNever);
+
+    final diff = DateTime.now().difference(lastSync);
+    final String relative;
+    if (diff.inMinutes < 1) {
+      relative = l10n.lastSyncJustNow;
+    } else if (diff.inMinutes < 60) {
+      relative = l10n.lastSyncMinutesAgo(diff.inMinutes);
+    } else if (diff.inHours < 24) {
+      relative = l10n.lastSyncHoursAgo(diff.inHours);
+    } else {
+      relative = l10n.lastSyncDaysAgo(diff.inDays);
+    }
+    return l10n.lastSyncLabel(relative);
+  }
+
+  /// Affiché à la place du simple message "Aucune matière" uniquement quand
+  /// aucune synchro n'a jamais eu lieu ET que la liste est vide : propose
+  /// explicitement les deux façons de peupler ses matières plutôt que de
+  /// laisser une section vide silencieuse.
+  Widget _buildSubjectsEmptyStateWithCta(AppLocalizations l10n) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: UIConstants.spacing16),
+      child: Column(
+        children: [
+          Icon(
+            Icons.menu_book_outlined,
+            size: UIConstants.emptyStateIconSize,
+            color: Colors.grey.shade400,
+          ),
+          SizedBox(height: UIConstants.spacing12),
+          Text(
+            l10n.subjectsEmptyStateMessage,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.grey.shade600,
+              fontSize: UIConstants.fontSize15,
+            ),
+          ),
+          SizedBox(height: UIConstants.spacing16),
+          Wrap(
+            spacing: UIConstants.spacing8,
+            runSpacing: UIConstants.spacing8,
+            alignment: WrapAlignment.center,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ApiSettingsPage()),
+                ),
+                icon: const Icon(Icons.sync),
+                label: Text(l10n.fullSyncButton),
+              ),
+              OutlinedButton.icon(
+                onPressed: () {
+                  _refreshControllersFromProfile();
+                  setState(() => _isEditing = true);
+                },
+                icon: const Icon(Icons.add),
+                label: Text(l10n.subjectsEmptyStateManualButton),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

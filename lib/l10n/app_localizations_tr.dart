@@ -540,4 +540,219 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get notesSearchEmpty => 'Hiç not bulunamadı';
+
+  @override
+  String get apiSettingsTitle => 'API ayarları';
+
+  @override
+  String get apiSettingsBaseUrlLabel => 'Backend temel URL\'si';
+
+  @override
+  String get apiSettingsBaseUrlHint => 'https://uygulamam.onrender.com';
+
+  @override
+  String get apiSettingsApiKeyLabel => 'API anahtarı (X-API-Key)';
+
+  @override
+  String get apiSettingsApiKeyHint => 'API anahtarınız';
+
+  @override
+  String get apiSettingsInvalidUrl =>
+      'http:// veya https:// ile başlayan geçerli bir URL girin';
+
+  @override
+  String get apiSettingsSaved => 'API ayarları kaydedildi';
+
+  @override
+  String apiSettingsLoadError(Object error) {
+    return 'API ayarları yüklenemedi: $error';
+  }
+
+  @override
+  String apiSettingsSaveError(Object error) {
+    return 'API ayarları kaydedilemedi: $error';
+  }
+
+  @override
+  String get apiSettingsTestButton => 'Bağlantıyı test et';
+
+  @override
+  String get apiSettingsTestSuccess => 'Bağlantı başarılı';
+
+  @override
+  String get apiSettingsTestInvalidKey => 'Geçersiz API anahtarı';
+
+  @override
+  String apiSettingsTestHttpError(Object statusCode) {
+    return 'Sunucu hatası ($statusCode)';
+  }
+
+  @override
+  String apiSettingsTestNetworkError(Object error) {
+    return 'Backend\'e ulaşılamıyor: $error';
+  }
+
+  @override
+  String get fullSyncButton => 'Senkronize et';
+
+  @override
+  String get fullSyncProfileUpdated => 'Profil güncellendi';
+
+  @override
+  String get fullSyncProfileNotUpdated => 'Profil değişmedi';
+
+  @override
+  String fullSyncSubjectsCount(Object count) {
+    return '$count ders senkronize edildi';
+  }
+
+  @override
+  String fullSyncCoursesCount(Object created, Object updated) {
+    return '$created ders oluşturuldu, $updated güncellendi';
+  }
+
+  @override
+  String scheduleSyncSkippedInfo(Object skipped) {
+    return '$skipped giriş yok sayıldı (beklenmeyen format)';
+  }
+
+  @override
+  String get scheduleSyncSampleDialogTitle => 'Yok sayılan giriş (ham veri)';
+
+  @override
+  String get scheduleSyncSampleDialogHint =>
+      'Yok sayılan girişlerden birine ait JSON verisi. Beklenen formatın düzeltilmesi için bunu geliştiriciyle paylaş.';
+
+  @override
+  String get close => 'Kapat';
+
+  @override
+  String get onboardingChoiceTitle => 'Nasıl başlamak istersin?';
+
+  @override
+  String get onboardingChoiceObsTitle => 'OBS hesabımdan yapılandır';
+
+  @override
+  String get onboardingChoiceObsDescription =>
+      'Profilini, derslerini ve ders programını otomatik olarak içe aktar.';
+
+  @override
+  String get onboardingChoiceManualTitle => 'Manuel yapılandırma';
+
+  @override
+  String get onboardingChoiceManualDescription =>
+      'Profilini ve derslerini kendin gir.';
+
+  @override
+  String get obsSetupTitle => 'OBS hesabı';
+
+  @override
+  String get obsSetupDescription =>
+      'Profilini, derslerini ve ders programını otomatik senkronize etmek için backend URL\'ni ve API anahtarını gir.';
+
+  @override
+  String get obsSetupConnectButton => 'Bağlan ve senkronize et';
+
+  @override
+  String get obsSetupNoProfileError =>
+      'Bu hesaptan profilin alınamadı. URL\'yi ve API anahtarını kontrol et.';
+
+  @override
+  String get completeProfileTitle => 'Son adım';
+
+  @override
+  String get completeProfileDescription =>
+      'Yapılandırmayı tamamlamak için okulunu ve sınıfını gir.';
+
+  @override
+  String get completeProfileContinueButton => 'Bitir';
+
+  @override
+  String get syncStepProfile => 'Profil';
+
+  @override
+  String get syncStepSubjects => 'Dersler';
+
+  @override
+  String get syncStepSchedule => 'Ders programı';
+
+  @override
+  String get syncErrorInvalidApiKey =>
+      'Geçersiz API anahtarı, ayarlarındaki yapılandırmanı kontrol et';
+
+  @override
+  String get syncErrorSessionExpired =>
+      'OBS oturumu sunucu tarafında sona erdi, senin tarafında manuel bir yeniden senkronizasyon gerekiyor';
+
+  @override
+  String get syncErrorObsUnreachable =>
+      'Üniversite sistemi şu anda yanıt vermiyor, daha sonra tekrar dene';
+
+  @override
+  String get syncErrorDatabaseUnavailable =>
+      'Backend sunucusunda geçici bir sorun var, daha sonra tekrar dene';
+
+  @override
+  String get syncErrorTimeout =>
+      'Sunucu yanıt vermekte gecikiyor (uykuda olabilir), bir dakika içinde tekrar dene.';
+
+  @override
+  String get syncErrorNetwork =>
+      'Sunucuya ulaşılamadı, bağlantını ve yapılandırılan URL\'yi kontrol et';
+
+  @override
+  String get syncErrorMissingConfig =>
+      'Backend URL\'si ve API anahtarı yapılandırılmalıdır.';
+
+  @override
+  String get syncErrorInvalidResponse => 'Sunucu yanıtı okunamıyor.';
+
+  @override
+  String get syncErrorInvalidFormat => 'Sunucudan beklenmeyen yanıt formatı.';
+
+  @override
+  String get syncProgressProfile => 'Profil senkronize ediliyor...';
+
+  @override
+  String get syncProgressSubjects => 'Dersler senkronize ediliyor...';
+
+  @override
+  String get syncProgressSchedule => 'Ders programı senkronize ediliyor...';
+
+  @override
+  String lastSyncLabel(Object value) {
+    return 'Son senkronizasyon: $value';
+  }
+
+  @override
+  String get lastSyncNever => 'hiçbir zaman';
+
+  @override
+  String get lastSyncJustNow => 'az önce';
+
+  @override
+  String lastSyncMinutesAgo(Object minutes) {
+    return '$minutes dakika önce';
+  }
+
+  @override
+  String lastSyncHoursAgo(Object hours) {
+    return '$hours saat önce';
+  }
+
+  @override
+  String lastSyncDaysAgo(Object days) {
+    return '$days gün önce';
+  }
+
+  @override
+  String get subjectsEmptyStateMessage =>
+      'Henüz ders yok — OBS hesabını senkronize et veya manuel olarak ekle';
+
+  @override
+  String get subjectsEmptyStateManualButton => 'Manuel ekle';
+
+  @override
+  String get scheduleEmptyStateMessage =>
+      'Henüz ders programı içe aktarılmadı — ders programını doldurmak için OBS hesabını senkronize et';
 }
