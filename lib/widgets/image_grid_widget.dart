@@ -48,7 +48,7 @@ class ImageGridWidget extends StatelessWidget {
         // ignore: deprecated_member_use
         color: Theme.of(
           context,
-        ).colorScheme.onSurface.withOpacity(UIConstants.opacity60),
+        ).colorScheme.onSurface.withValues(alpha: UIConstants.opacity60),
       ),
     );
   }
@@ -111,7 +111,7 @@ class ImageGridWidget extends StatelessWidget {
               fontSize: 11,
               color: Theme.of(
                 context,
-              ).colorScheme.onSurface.withOpacity(UIConstants.opacity60),
+              ).colorScheme.onSurface.withValues(alpha: UIConstants.opacity60),
             ),
           ),
         ],

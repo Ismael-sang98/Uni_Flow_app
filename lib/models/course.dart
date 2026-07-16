@@ -21,12 +21,10 @@ class Course {
   @HiveField(6)
   final DateTime endTime;
 
-
-
   Course({
     required this.id,
     required this.title,
-     this.location,
+    this.location,
     required this.color,
     required this.dayOfWeeks,
     required this.startTime,

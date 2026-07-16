@@ -142,6 +142,12 @@ abstract class AppLocalizations {
   /// **'Add at least one more material!'**
   String get ajoutMatiereErreur;
 
+  /// No description provided for @profileSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save profile: {error}'**
+  String profileSaveError(Object error);
+
   /// No description provided for @profilEnregistre.
   ///
   /// In en, this message translates to:
@@ -1005,6 +1011,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Caption'**
   String get noteImageCaptionLabel;
+
+  /// No description provided for @noteImageCaptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g.: Results chart...'**
+  String get noteImageCaptionHint;
 
   /// No description provided for @optional.
   ///

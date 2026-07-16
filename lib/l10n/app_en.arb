@@ -6,6 +6,12 @@
     "welcomeSubtitle": "Classes, homework, exams...\nYour entire schedule in your pocket.",
     "getStartedButton": "Start now",
     "ajoutMatiereErreur": "Add at least one more material!",
+    "profileSaveError": "Could not save profile: {error}",
+    "@profileSaveError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
     "profilEnregistre": "Profile updated!",
     "labProfil": "My Profile",
     "labMatiere": "My Recorded Lessons",
@@ -250,6 +256,7 @@
     "noteNoFiles": "No files added.",
     "noteImageCaptionTitle": "Photo caption",
     "noteImageCaptionLabel": "Caption",
+    "noteImageCaptionHint": "E.g.: Results chart...",
     "optional": "optional",
     "skip": "Skip",
     "suggested": "Suggestions",

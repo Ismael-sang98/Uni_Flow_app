@@ -253,7 +253,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
     _persistCourse(course, l10n);
     await _scheduleNotification(course, startDateTime, l10n);
 
-    // ignore: use_build_context_synchronously
+    if (!mounted) return;
     Navigator.pop(context);
   }
 
@@ -348,7 +348,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
       }
     } catch (e) {
       debugPrint('Notification scheduling error: $e');
-      if (context.mounted) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(l10n.notificationError(e.toString())),

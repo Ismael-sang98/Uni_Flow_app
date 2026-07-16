@@ -46,7 +46,7 @@ class WeeklyScheduleView extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     // ignore: deprecated_member_use
-                    color: const Color(0xFF6C63FF).withOpacity(0.3),
+                    color: const Color(0xFF6C63FF).withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),

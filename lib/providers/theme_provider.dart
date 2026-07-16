@@ -15,6 +15,6 @@ class ThemeProvider with ChangeNotifier {
   // 3. La fonction pour changer de thème
   void toggleTheme(bool isOn) {
     _box.put('isDarkMode', isOn); // Sauvegarde
-    notifyListeners();            // Mise à jour de l'app
+    notifyListeners(); // Mise à jour de l'app
   }
 }

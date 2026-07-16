@@ -35,7 +35,7 @@ class CourseCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               // ignore: deprecated_member_use
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               blurRadius: 15,
               offset: const Offset(0, 8),
             ),
@@ -67,7 +67,7 @@ class CourseCard extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             // ignore: deprecated_member_use
-                            color: color.withOpacity(0.1),
+                            color: color.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Row(

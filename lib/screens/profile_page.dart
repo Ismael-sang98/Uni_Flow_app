@@ -130,7 +130,14 @@ class _ProfilePageState extends State<ProfilePage> {
         subjects: _subjects, // On sauvegarde la liste
       );
 
-      _settingsBox.put('profile', newProfile);
+      try {
+        _settingsBox.put('profile', newProfile);
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.profileSaveError('$e'))));
+        return;
+      }
 
       if (_isFirstTime) {
         Navigator.pushAndRemoveUntil(
@@ -157,6 +164,57 @@ class _ProfilePageState extends State<ProfilePage> {
     } else {
       return _buildViewMode();
     }
+  }
+
+  Widget _buildInfoCard({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Card(
+      elevation: 0,
+      color: Theme.of(context).cardColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFF6C63FF).withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: const Color(0xFF6C63FF), size: 24),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    value,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   // --- VUE 1 : MODE LECTURE ---
@@ -223,7 +281,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           boxShadow: [
                             BoxShadow(
                               // ignore: deprecated_member_use
-                              color: Colors.black.withOpacity(0.2),
+                              color: Colors.black.withValues(alpha: 0.2),
                               blurRadius: 12,
                               offset: const Offset(0, 4),
                             ),
@@ -270,165 +328,22 @@ class _ProfilePageState extends State<ProfilePage> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  // École
-                  Card(
-                    elevation: 0,
-                    color: Theme.of(context).cardColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              // ignore: deprecated_member_use
-                              color: const Color(0xFF6C63FF).withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.school,
-                              color: Color(0xFF6C63FF),
-                              size: 24,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  l10n.labEc,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey.shade600,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _schoolController.text,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  _buildInfoCard(
+                    icon: Icons.school,
+                    label: l10n.labEc,
+                    value: _schoolController.text,
                   ),
                   const SizedBox(height: 12),
-
-                  // Faculté
-                  Card(
-                    elevation: 0,
-                    color: Theme.of(context).cardColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              // ignore: deprecated_member_use
-                              color: const Color(0xFF6C63FF).withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.account_balance,
-                              color: Color(0xFF6C63FF),
-                              size: 24,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  l10n.labFkt,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey.shade600,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _facultyController.text,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  _buildInfoCard(
+                    icon: Icons.account_balance,
+                    label: l10n.labFkt,
+                    value: _facultyController.text,
                   ),
                   const SizedBox(height: 12),
-
-                  // Classe
-                  Card(
-                    elevation: 0,
-                    color: Theme.of(context).cardColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              // ignore: deprecated_member_use
-                              color: const Color(0xFF6C63FF).withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.class_,
-                              color: Color(0xFF6C63FF),
-                              size: 24,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  l10n.labCl,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey.shade600,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _classController.text,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  _buildInfoCard(
+                    icon: Icons.class_,
+                    label: l10n.labCl,
+                    value: _classController.text,
                   ),
                 ],
               ),
@@ -477,12 +392,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                     color: const Color(
                                       0xFF6C63FF,
                                       // ignore: deprecated_member_use
-                                    ).withOpacity(0.1),
+                                    ).withValues(alpha: 0.1),
                                     border: Border.all(
                                       color: const Color(
                                         0xFF6C63FF,
                                         // ignore: deprecated_member_use
-                                      ).withOpacity(0.3),
+                                      ).withValues(alpha: 0.3),
                                     ),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
@@ -552,7 +467,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   prefixIcon: Icon(Icons.person),
                 ),
-                validator: (v) => v!.isEmpty ? 'Requis' : null,
+                validator: (v) => v!.isEmpty ? l10n.requiredField : null,
               ),
               const SizedBox(height: 10),
               TextFormField(

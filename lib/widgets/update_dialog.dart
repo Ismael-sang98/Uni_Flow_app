@@ -42,7 +42,7 @@ class UpdateDialog extends StatelessWidget {
                 style: TextStyle(
                   color: Theme.of(
                     context,
-                  ).colorScheme.onSurface.withOpacity(0.7),
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
                   fontSize: 14,
                 ),
               ),
@@ -76,7 +76,7 @@ class UpdateDialog extends StatelessWidget {
                     border: Border.all(
                       color: Theme.of(
                         context,
-                      ).colorScheme.outline.withOpacity(0.3),
+                      ).colorScheme.outline.withValues(alpha: 0.3),
                     ),
                   ),
                   child: Text(

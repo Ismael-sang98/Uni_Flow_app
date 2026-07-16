@@ -6,6 +6,12 @@
     "welcomeSubtitle": "Dersler, ödevler, sınavlar...\nTüm programınız cebinizde.",
     "getStartedButton": "Şimdi başla",
     "ajoutMatiereErreur": "En az bir malzeme daha ekleyin!",
+    "profileSaveError": "Profil kaydedilemedi: {error}",
+    "@profileSaveError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
     "profilEnregistre": "Profil güncellendi!",
     "labProfil": "Profilim",
     "labMatiere": "Kaydettiğim Dersler",
@@ -250,6 +256,7 @@
     "noteNoFiles": "Eklenmiş dosya yok.",
     "noteImageCaptionTitle": "Fotoğraf açıklaması",
     "noteImageCaptionLabel": "Açıklama",
+    "noteImageCaptionHint": "Örn: Sonuç grafiği...",
     "optional": "isteğe bağlı",
     "skip": "Atla",
     "suggested": "Öneriler",

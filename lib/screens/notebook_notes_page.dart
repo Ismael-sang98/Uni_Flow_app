@@ -135,7 +135,7 @@ class _NotebookNotesPageState extends State<NotebookNotesPage> {
                           size: 48,
                           color: Theme.of(
                             context,
-                          ).colorScheme.onSurface.withOpacity(0.3),
+                          ).colorScheme.onSurface.withValues(alpha: 0.3),
                         ),
                         const SizedBox(height: 12),
                         Text(
@@ -143,7 +143,7 @@ class _NotebookNotesPageState extends State<NotebookNotesPage> {
                           style: TextStyle(
                             color: Theme.of(
                               context,
-                            ).colorScheme.onSurface.withOpacity(0.6),
+                            ).colorScheme.onSurface.withValues(alpha: 0.6),
                           ),
                         ),
                       ],

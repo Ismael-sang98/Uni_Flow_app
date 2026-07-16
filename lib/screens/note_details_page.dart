@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
@@ -13,9 +13,9 @@ import '../models/study_note.dart';
 import '../providers/notes_provider.dart';
 import '../services/confirm_deletion.dart';
 import '../services/image_manager.dart';
+import '../widgets/image_caption_dialog.dart';
 import '../widgets/image_grid_widget.dart';
-
-// ignore_for_file: deprecated_member_use
+import '../widgets/image_preview_dialog.dart';
 
 class NoteDetailsPage extends StatefulWidget {
   final StudyNote note;
@@ -120,18 +120,36 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final settingsBox = Hive.box('settings');
-    final profile = settingsBox.get('profile') as StudentProfile?;
-    final providerNotebooks = context.watch<NotesProvider>().notebooks;
-    final availableSubjects = <String>{
-      ...(profile?.subjects ?? <String>[]),
-      ...providerNotebooks,
-    }.toList()..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
-    final createdAt = DateFormat('dd/MM/yyyy').format(widget.note.createdAt);
-    final updatedAt = widget.note.updatedAt == null
-        ? null
-        : DateFormat('dd/MM/yyyy').format(widget.note.updatedAt!);
+    // Ne reconstruit cette page que si la liste des cahiers change vraiment,
+    // pas à chaque notification du provider (ex: édition d'une autre note).
+    return Selector<NotesProvider, List<String>>(
+      selector: (_, provider) => provider.notebooks,
+      shouldRebuild: (previous, next) => !listEquals(previous, next),
+      builder: (context, providerNotebooks, _) {
+        final settingsBox = Hive.box('settings');
+        final profile = settingsBox.get('profile') as StudentProfile?;
+        final availableSubjects = <String>{
+          ...(profile?.subjects ?? <String>[]),
+          ...providerNotebooks,
+        }.toList()..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+        final createdAt = DateFormat(
+          'dd/MM/yyyy',
+        ).format(widget.note.createdAt);
+        final updatedAt = widget.note.updatedAt == null
+            ? null
+            : DateFormat('dd/MM/yyyy').format(widget.note.updatedAt!);
 
+        return _buildScaffold(l10n, availableSubjects, createdAt, updatedAt);
+      },
+    );
+  }
+
+  Widget _buildScaffold(
+    AppLocalizations l10n,
+    List<String> availableSubjects,
+    String createdAt,
+    String? updatedAt,
+  ) {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.noteDetails),
@@ -188,7 +206,12 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
                   imageCaptions: _imageCaptions,
                   isEditable: false,
                   emptyMessage: l10n.noImagesYet,
-                  onImageTap: _showImagePreview,
+                  onImageTap: (path) => showImagePreviewDialog(
+                    context,
+                    imagePaths: _imagePaths,
+                    initialPath: path,
+                    imageCaptions: _imageCaptions,
+                  ),
                   onShareTap: _shareImage,
                 ),
               ],
@@ -253,19 +276,25 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
               decoration: InputDecoration(
                 labelText: l10n.noteTitle,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(
+                    UIConstants.borderRadius14,
+                  ),
                   borderSide: BorderSide(
                     color: titleEmpty
-                        ? Colors.red.withOpacity(0.3)
-                        : Colors.green.withOpacity(0.3),
+                        ? Colors.red.withValues(alpha: UIConstants.opacity30)
+                        : Colors.green.withValues(alpha: UIConstants.opacity30),
                   ),
                 ),
                 suffixIcon: titleEmpty
-                    ? const Icon(Icons.clear, color: Colors.red, size: 20)
+                    ? const Icon(
+                        Icons.clear,
+                        color: Colors.red,
+                        size: UIConstants.iconSize20,
+                      )
                     : const Icon(
                         Icons.check_circle,
                         color: Colors.green,
-                        size: 20,
+                        size: UIConstants.iconSize20,
                       ),
               ),
             );
@@ -276,7 +305,9 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
           initialValue: _selectedSubject,
           decoration: InputDecoration(
             labelText: l10n.notesNotebook,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(UIConstants.borderRadius14),
+            ),
           ),
           items: availableSubjects.isEmpty
               ? null
@@ -302,7 +333,7 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: UIConstants.opacity04),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -330,11 +361,13 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
               decoration: InputDecoration(
                 labelText: l10n.noteContent,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(
+                    UIConstants.borderRadius14,
+                  ),
                   borderSide: BorderSide(
                     color: contentEmpty
-                        ? Colors.red.withOpacity(0.3)
-                        : Colors.green.withOpacity(0.3),
+                        ? Colors.red.withValues(alpha: UIConstants.opacity30)
+                        : Colors.green.withValues(alpha: UIConstants.opacity30),
                   ),
                 ),
               ),
@@ -349,10 +382,9 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
                     return Text(
                       l10n.charactersCount(length),
                       style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSurface.withOpacity(0.6),
+                        fontSize: UIConstants.fontSize12,
+                        color: Theme.of(context).colorScheme.onSurface
+                            .withValues(alpha: UIConstants.opacity60),
                       ),
                     );
                   },
@@ -361,13 +393,19 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
                   Text(
                     l10n.requiredField,
                     style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.red.withOpacity(0.7),
+                      fontSize: UIConstants.fontSize12,
+                      color: Colors.red.withValues(
+                        alpha: UIConstants.opacity70,
+                      ),
                       fontWeight: FontWeight.w500,
                     ),
                   )
                 else
-                  const Icon(Icons.check_circle, color: Colors.green, size: 16),
+                  const Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                    size: UIConstants.iconSize16,
+                  ),
               ],
             ),
           ],
@@ -382,7 +420,9 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
       decoration: InputDecoration(
         labelText: l10n.noteTags,
         helperText: l10n.noteTagsHelp,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(UIConstants.borderRadius14),
+        ),
       ),
     );
   }
@@ -402,13 +442,15 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
             (tag) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.12),
+                color: Theme.of(
+                  context,
+                ).colorScheme.primary.withValues(alpha: UIConstants.opacity12),
                 borderRadius: BorderRadius.circular(18),
               ),
               child: Text(
                 tag,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: UIConstants.fontSize12,
                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.w600,
                 ),
@@ -436,7 +478,11 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
                 final newImages = await _imageManager.pickImagesFromGallery();
                 if (newImages.isEmpty) return;
                 for (final path in newImages) {
-                  final caption = await _promptCaptionDialog(path);
+                  if (!mounted) return;
+                  final caption = await showImageCaptionDialog(
+                    context,
+                    imagePath: path,
+                  );
                   if (caption == null) continue; // User clicked Cancel
                   _imageCaptions[path] = caption; // caption can be empty
                   _imagePaths.add(path);
@@ -455,9 +501,12 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
               tooltip: l10n.addFromCamera,
               onPressed: () async {
                 final newImage = await _imageManager.pickImageFromCamera();
-                if (newImage == null) return;
-                final caption = await _promptCaptionDialog(newImage);
-                if (caption == null) return; // User clicked Cancel
+                if (newImage == null || !mounted) return;
+                final caption = await showImageCaptionDialog(
+                  context,
+                  imagePath: newImage,
+                );
+                if (!mounted || caption == null) return; // User clicked Cancel
                 setState(() {
                   _imageCaptions[newImage] = caption; // caption can be empty
                   _imagePaths.add(newImage);
@@ -486,16 +535,20 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
             _imagePaths.remove(path);
             _imageCaptions.remove(path);
           }),
-          onImageTap: _showImagePreview,
+          onImageTap: (path) => showImagePreviewDialog(
+            context,
+            imagePaths: _imagePaths,
+            initialPath: path,
+            imageCaptions: _imageCaptions,
+          ),
           onEditCaptionTap: (path) async {
-            final updated = await _promptCaptionDialog(
-              path,
+            final updated = await showImageCaptionDialog(
+              context,
+              imagePath: path,
               initialCaption: _imageCaptions[path],
             );
-            if (updated == null) return; // User clicked Cancel
-            setState(
-              () => _imageCaptions[path] = updated,
-            ); // caption can be empty
+            if (!mounted || updated == null) return; // User clicked Cancel
+            setState(() => _imageCaptions[path] = updated);
           },
           onShareTap: _shareImage,
         ),
@@ -519,77 +572,28 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
     );
   }
 
-  void _showImagePreview(String path) {
-    final initialIndex = _imagePaths.indexOf(path);
-    final pageController = PageController(
-      initialPage: initialIndex < 0 ? 0 : initialIndex,
-    );
-
-    showDialog(
-      context: context,
-      useSafeArea: false,
-      builder: (context) => Dialog.fullscreen(
-        child: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () => Navigator.pop(context),
-            ),
-            backgroundColor: Colors.black87,
-            elevation: 0,
-          ),
-          backgroundColor: Colors.black,
-          body: PageView.builder(
-            controller: pageController,
-            itemCount: _imagePaths.length,
-            itemBuilder: (context, index) {
-              final imagePath = _imagePaths[index];
-              return Column(
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: InteractiveViewer(
-                        maxScale: 5.0,
-                        minScale: 1.0,
-                        child: Image.file(File(imagePath), fit: BoxFit.contain),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    color: Colors.black87,
-                    child: Text(
-                      _imageCaptions[imagePath] ?? '',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildPill({required IconData icon, required String label}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary.withOpacity(0.12),
+        color: Theme.of(
+          context,
+        ).colorScheme.primary.withValues(alpha: UIConstants.opacity12),
         borderRadius: BorderRadius.circular(18),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: Theme.of(context).colorScheme.primary),
+          Icon(
+            icon,
+            size: UIConstants.iconSize14,
+            color: Theme.of(context).colorScheme.primary,
+          ),
           const SizedBox(width: 6),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: UIConstants.fontSize12,
               color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.w600,
             ),
@@ -602,54 +606,6 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
   void _shareImage(String path) {
     final l10n = AppLocalizations.of(context)!;
     _imageManager.shareImage(path, text: l10n.shareNoteImage);
-  }
-
-  Future<String?> _promptCaptionDialog(
-    String imagePath, {
-    String? initialCaption,
-  }) async {
-    final l10n = AppLocalizations.of(context)!;
-    final controller = TextEditingController(text: initialCaption ?? '');
-    return showDialog<String>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(l10n.noteImageCaptionTitle),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '${l10n.noteImageCaptionLabel} (${l10n.optional})',
-              style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: controller,
-              autofocus: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                hintText: 'Ex: Graphique des résultats...',
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext, ''),
-            child: Text(l10n.skip),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final value = controller.text.trim();
-              Navigator.pop(dialogContext, value);
-            },
-            child: Text(l10n.save),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _buildAttachmentsViewer(AppLocalizations l10n) {

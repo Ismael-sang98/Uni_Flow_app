@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../models/course.dart';
 import '../providers/course_provider.dart';
+import '../services/confirm_deletion.dart';
 import 'add_course_page.dart';
 import '../l10n/app_localizations.dart';
 
@@ -14,14 +15,21 @@ class CourseDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Consumer<CourseProvider>(
-      builder: (context, provider, child) {
-        // On cherche la version la plus récente du cours dans le provider
-        // (au cas où on vient de le modifier)
-        final Course? course = provider.courses
-            .where((c) => c.id == courseId)
-            .firstOrNull;
-
+    // Selector plutôt que Consumer : ne reconstruit cette page que si CE
+    // cours change vraiment, pas quand un autre cours est ajouté/modifié.
+    return Selector<CourseProvider, Course?>(
+      selector: (_, provider) =>
+          provider.courses.where((c) => c.id == courseId).firstOrNull,
+      shouldRebuild: (previous, next) {
+        if (previous == null || next == null) return previous != next;
+        return previous.title != next.title ||
+            previous.location != next.location ||
+            previous.color != next.color ||
+            previous.dayOfWeeks != next.dayOfWeeks ||
+            previous.startTime != next.startTime ||
+            previous.endTime != next.endTime;
+      },
+      builder: (context, course, child) {
         // Si le cours a été supprimé entre temps (cas rare), on ferme la page
         if (course == null) {
           return Scaffold(body: Center(child: Text(l10n.courseNotFound)));
@@ -52,7 +60,11 @@ class CourseDetailsPage extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
-                  _confirmDelete(context, provider, course);
+                  _confirmDelete(
+                    context,
+                    context.read<CourseProvider>(),
+                    course,
+                  );
                 },
               ),
             ],
@@ -170,7 +182,7 @@ class CourseDetailsPage extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             // ignore: deprecated_member_use
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(15),
           ),
           child: Icon(icon, color: color, size: 28),
@@ -193,36 +205,14 @@ class CourseDetailsPage extends StatelessWidget {
     );
   }
 
-  void _confirmDelete(
+  Future<void> _confirmDelete(
     BuildContext context,
     CourseProvider provider,
     Course course,
-  ) {
-    final l10n = AppLocalizations.of(context)!;
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l10n.confirmSupprTitle),
-        content: Text(l10n.deleteCourseMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(l10n.rejet),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              provider.deleteCourse(course.id);
-              Navigator.pop(ctx); // Ferme dialogue
-              Navigator.pop(context); // Ferme page détails
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
-            ),
-            child: Text(l10n.supp),
-          ),
-        ],
-      ),
-    );
+  ) async {
+    final confirmed = await confirmDeletion(context, course.title);
+    if (!confirmed || !context.mounted) return;
+    provider.deleteCourse(course.id);
+    Navigator.pop(context); // Ferme page détails
   }
 }

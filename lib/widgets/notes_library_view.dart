@@ -1,153 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
-import '../models/student_profile.dart';
 import '../providers/notes_provider.dart';
 import '../screens/notebook_notes_page.dart';
+import 'create_notebook_dialog.dart';
 
 class NotesLibraryView extends StatelessWidget {
   const NotesLibraryView({super.key});
-
-  Future<void> _createNotebookDialog(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
-
-    // Get available subjects from profile
-    final settingsBox = Hive.box('settings');
-    final profile = settingsBox.get('profile') as StudentProfile?;
-    final profileSubjects = profile?.subjects ?? <String>[];
-
-    // Get existing notebooks
-    final notesProvider = context.read<NotesProvider>();
-    final existingNotebooks = notesProvider.notebooks;
-
-    // Available subjects = profile subjects not yet used as notebooks
-    final availableSubjects = profileSubjects
-        .where((subject) => !existingNotebooks.contains(subject))
-        .toList();
-
-    String? selectedSubject;
-    final customNameController = TextEditingController();
-
-    if (availableSubjects.isEmpty) {
-      // No subjects available - show simple text input
-      await showDialog<void>(
-        context: context,
-        builder: (dialogContext) => AlertDialog(
-          title: Text(l10n.notesCreateNotebook),
-          content: TextField(
-            controller: customNameController,
-            autofocus: true,
-            decoration: InputDecoration(
-              labelText: l10n.notesNotebookName,
-              hintText: 'Mon cahier...',
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext),
-              child: Text(l10n.rejet),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final name = customNameController.text.trim();
-                if (name.isEmpty) return;
-                await context.read<NotesProvider>().createNotebook(name);
-                if (!dialogContext.mounted) return;
-                Navigator.pop(dialogContext);
-              },
-              child: Text(l10n.ajt),
-            ),
-          ],
-        ),
-      );
-    } else {
-      // Show selection dialog with subjects first
-      await showDialog<void>(
-        context: context,
-        builder: (dialogContext) => StatefulBuilder(
-          builder: (context, setState) => AlertDialog(
-            title: Text(l10n.notesCreateNotebook),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Show available subjects
-                Text(
-                  '${l10n.notesNotebook} (${l10n.suggested})',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: availableSubjects.map((subject) {
-                    final isSelected = selectedSubject == subject;
-                    return ChoiceChip(
-                      label: Text(subject),
-                      selected: isSelected,
-                      onSelected: (selected) {
-                        setState(() {
-                          selectedSubject = selected ? subject : null;
-                          customNameController.clear();
-                        });
-                      },
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 16),
-                const Divider(),
-                const SizedBox(height: 8),
-                // Or custom name
-                Text(
-                  l10n.notesOrCustomName,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: customNameController,
-                  autofocus: selectedSubject == null,
-                  onChanged: (_) {
-                    setState(() => selectedSubject = null);
-                  },
-                  decoration: InputDecoration(
-                    labelText: l10n.notesNotebookName,
-                    //hintText: 'Mon cahier perso...',
-                    enabled: selectedSubject == null,
-                  ),
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(dialogContext),
-                child: Text(l10n.rejet),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  final name = (selectedSubject ?? customNameController.text)
-                      .trim();
-                  if (name.isEmpty) return;
-                  await context.read<NotesProvider>().createNotebook(name);
-                  if (!dialogContext.mounted) return;
-                  Navigator.pop(dialogContext);
-                },
-                child: Text(l10n.ajt),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-  }
 
   Future<void> _deleteNotebookDialog(BuildContext context, String name) async {
     final l10n = AppLocalizations.of(context)!;
@@ -194,21 +53,21 @@ class NotesLibraryView extends StatelessWidget {
                   Icons.note_alt_outlined,
                   size: 72,
                   // ignore: deprecated_member_use
-                  color: colorScheme.primary.withOpacity(0.2),
+                  color: colorScheme.primary.withValues(alpha: 0.2),
                 ),
                 const SizedBox(height: 12),
                 Text(
                   l10n.notesNoNotebook,
                   style: TextStyle(
                     // ignore: deprecated_member_use
-                    color: colorScheme.onSurface.withOpacity(0.6),
+                    color: colorScheme.onSurface.withValues(alpha: 0.6),
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 12),
                 ElevatedButton.icon(
-                  onPressed: () => _createNotebookDialog(context),
+                  onPressed: () => showCreateNotebookDialog(context),
                   icon: const Icon(Icons.create_new_folder_outlined),
                   label: Text(l10n.notesCreateNotebook),
                 ),
@@ -224,7 +83,7 @@ class NotesLibraryView extends StatelessWidget {
           itemBuilder: (context, index) {
             if (index == 0) {
               return OutlinedButton.icon(
-                onPressed: () => _createNotebookDialog(context),
+                onPressed: () => showCreateNotebookDialog(context),
                 icon: const Icon(Icons.create_new_folder_outlined),
                 label: Text(l10n.notesCreateNotebook),
               );
@@ -241,7 +100,7 @@ class NotesLibraryView extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     // ignore: deprecated_member_use
-                    color: Colors.black.withOpacity(0.04),
+                    color: Colors.black.withValues(alpha: 0.04),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),

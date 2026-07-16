@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -34,7 +35,7 @@ class UpdateChecker {
         }
       }
     } catch (e) {
-      print('Erreur vérification mise à jour: $e');
+      debugPrint('Erreur vérification mise à jour: $e');
     }
     return null;
   }
@@ -60,7 +61,7 @@ class UpdateChecker {
         }
       }
     } catch (e) {
-      print('Erreur récupération URL: $e');
+      debugPrint('Erreur récupération URL: $e');
     }
     return '';
   }
@@ -79,7 +80,7 @@ class UpdateChecker {
         if (latestNum < currentNum) return false;
       }
     } catch (e) {
-      print('Erreur comparaison version: $e');
+      debugPrint('Erreur comparaison version: $e');
     }
     return false;
   }

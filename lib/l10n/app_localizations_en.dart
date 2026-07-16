@@ -31,6 +31,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ajoutMatiereErreur => 'Add at least one more material!';
 
   @override
+  String profileSaveError(Object error) {
+    return 'Could not save profile: $error';
+  }
+
+  @override
   String get profilEnregistre => 'Profile updated!';
 
   @override
@@ -514,6 +519,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noteImageCaptionLabel => 'Caption';
+
+  @override
+  String get noteImageCaptionHint => 'E.g.: Results chart...';
 
   @override
   String get optional => 'optional';

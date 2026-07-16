@@ -31,6 +31,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get ajoutMatiereErreur => 'En az bir malzeme daha ekleyin!';
 
   @override
+  String profileSaveError(Object error) {
+    return 'Profil kaydedilemedi: $error';
+  }
+
+  @override
   String get profilEnregistre => 'Profil güncellendi!';
 
   @override
@@ -514,6 +519,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get noteImageCaptionLabel => 'Açıklama';
+
+  @override
+  String get noteImageCaptionHint => 'Örn: Sonuç grafiği...';
 
   @override
   String get optional => 'isteğe bağlı';

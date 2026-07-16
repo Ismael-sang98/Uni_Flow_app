@@ -6,6 +6,12 @@
     "welcomeSubtitle": "Cours, devoirs, examens...\nTout votre planning dans votre poche.",
     "getStartedButton": "Commencer maintenant",
     "ajoutMatiereErreur": "Ajoutez au moins une matière !",
+    "profileSaveError": "Impossible d'enregistrer le profil : {error}",
+    "@profileSaveError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
     "profilEnregistre": "Profil mis à jour !",
     "labProfil": "Mon Profil",
     "labMatiere": "Mes Matières Enregistrées",
@@ -250,6 +256,7 @@
     "noteNoFiles": "Aucun fichier ajouté.",
     "noteImageCaptionTitle": "Légende de la photo",
     "noteImageCaptionLabel": "Légende",
+    "noteImageCaptionHint": "Ex: Graphique des résultats...",
     "optional": "optionnel",
     "skip": "Ignorer",
     "suggested": "Suggestions",
