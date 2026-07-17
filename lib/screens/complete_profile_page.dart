@@ -51,6 +51,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
       faculty: widget.syncedProfile.faculty,
       profilePicturePath: widget.syncedProfile.profilePicturePath,
       subjects: widget.syncedProfile.subjects,
+      department: widget.syncedProfile.department,
     );
     await Hive.box('settings').put('profile', finalProfile);
     if (!mounted) return;

@@ -155,6 +155,7 @@ class FullSyncService {
 
       final nomComplet = profileData['nom_complet']?.toString().trim();
       final faculte = profileData['faculte']?.toString().trim();
+      final departement = profileData['departement']?.toString().trim();
 
       if ((nomComplet == null || nomComplet.isEmpty) &&
           (faculte == null || faculte.isEmpty)) {
@@ -187,6 +188,9 @@ class FullSyncService {
             : (existing?.faculty ?? ''),
         profilePicturePath: existing?.profilePicturePath,
         subjects: existing?.subjects ?? const [],
+        department: (departement != null && departement.isNotEmpty)
+            ? departement
+            : existing?.department,
       );
       await settingsBox.put('profile', updated);
       return true;
@@ -248,6 +252,7 @@ class FullSyncService {
         faculty: existing?.faculty ?? '',
         profilePicturePath: existing?.profilePicturePath,
         subjects: subjectsList, // remplacement total, pas de fusion
+        department: existing?.department,
       );
       await settingsBox.put('profile', updated);
       return subjectsList.length;
@@ -405,7 +410,13 @@ class FullSyncService {
       final existing = _findMatchingCourse(box, parsed);
 
       if (existing != null) {
-        final course = parsed.toCourse(id: existing.id);
+        // Le rappel est un réglage local (jamais renvoyé par le backend) :
+        // on le préserve à travers les resynchros au lieu de l'écraser avec
+        // la valeur par défaut.
+        final course = parsed.toCourse(
+          id: existing.id,
+          reminderMinutesBefore: existing.reminderMinutesBefore,
+        );
         await box.put(existing.id, course);
         updatedCourses.add(course);
         updated++;
@@ -662,7 +673,7 @@ class _ParsedCourse {
     required this.endMinute,
   });
 
-  Course toCourse({required String id}) {
+  Course toCourse({required String id, int reminderMinutesBefore = 10}) {
     final now = DateTime.now();
     return Course(
       id: id,
@@ -673,6 +684,7 @@ class _ParsedCourse {
       dayOfWeeks: dayOfWeeks,
       startTime: DateTime(now.year, now.month, now.day, startHour, startMinute),
       endTime: DateTime(now.year, now.month, now.day, endHour, endMinute),
+      reminderMinutesBefore: reminderMinutesBefore,
     );
   }
 }

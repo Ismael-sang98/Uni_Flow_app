@@ -63,6 +63,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get labFkt => 'Bölüm';
 
   @override
+  String get labDept => 'Bölüm';
+
+  @override
   String get labCl => 'Sınıf';
 
   @override
@@ -309,8 +312,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get courseReminderTitle => 'Ders hatirlatması!';
 
   @override
-  String courseReminderBody(Object courseTitle, Object locationSuffix) {
-    return '$courseTitle dersiniz 10 dakika sonra basliyor$locationSuffix.';
+  String courseReminderBody(
+    Object courseTitle,
+    Object locationSuffix,
+    int minutes,
+  ) {
+    return '$courseTitle dersiniz $minutes dakika sonra basliyor$locationSuffix.';
   }
 
   @override
@@ -345,8 +352,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get weeklyNotificationScheduled => '✓ Haftalık bildirim programlandı';
 
   @override
-  String weeklyReminderMessage(Object courseName, Object date) {
-    return '\"$courseName\" dersinden 10 dakika önce her hafta hatırlatma: $date';
+  String weeklyReminderMessage(Object courseName, Object date, int minutes) {
+    return '\"$courseName\" dersinden $minutes dakika önce her hafta hatırlatma: $date';
   }
 
   @override
@@ -602,6 +609,176 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get notesGlobalSearchPrompt => 'Tüm defterlerde not arayın';
+
+  @override
+  String get backupRestoreTitle => 'Yedekleme ve geri yükleme';
+
+  @override
+  String get backupExportButton => 'Verilerimi dışa aktar';
+
+  @override
+  String get backupExportDescription =>
+      'Tüm derslerinizi, notlarınızı ve görsellerinizi istediğiniz yerde (Drive, e-posta...) saklayabileceğiniz tek bir dosyaya kaydedin. Ücretsiz, hesap gerektirmez.';
+
+  @override
+  String get backupExportShareText => 'UniFlow yedeği';
+
+  @override
+  String backupExportError(Object error) {
+    return 'Dışa aktarma başarısız: $error';
+  }
+
+  @override
+  String get backupImportButton => 'Yedekten geri yükle';
+
+  @override
+  String get backupImportDescription =>
+      'Daha önce dışa aktarılmış bir yedek dosyasından derslerinizi, notlarınızı ve profilinizi geri yükleyin.';
+
+  @override
+  String get backupImportConfirmTitle => 'Mevcut veriler değiştirilsin mi?';
+
+  @override
+  String get backupImportConfirmMessage =>
+      'Bu yedeği geri yüklemek, mevcut tüm derslerinizin, notlarınızın ve profilinizin yerini kalıcı olarak yedek dosyasının içeriğiyle değiştirecek. Bu işlem geri alınamaz.';
+
+  @override
+  String get backupImportConfirmButton => 'Değiştir ve geri yükle';
+
+  @override
+  String backupImportSuccess(int courses, int notes, int deadlines) {
+    return '$courses ders, $notes not ve $deadlines son tarih geri yüklendi.';
+  }
+
+  @override
+  String get deadlinesTabLabel => 'Son Tarihler';
+
+  @override
+  String get deadlineTypeExam => 'Sınav';
+
+  @override
+  String get deadlineTypeHomework => 'Ödev';
+
+  @override
+  String get deadlineTypeOther => 'Diğer';
+
+  @override
+  String get deadlineTypeLabel => 'Tür';
+
+  @override
+  String get addDeadlineTitle => 'Yeni son tarih';
+
+  @override
+  String get editDeadlineTitle => 'Son tarihi düzenle';
+
+  @override
+  String get deadlineDetailsTitle => 'Son tarih detayları';
+
+  @override
+  String get deadlineDueDateLabel => 'Tarih ve saat';
+
+  @override
+  String get deadlineReminderLabel => 'Hatırlatma';
+
+  @override
+  String get deadlineNotesLabel => 'Notlar (opsiyonel)';
+
+  @override
+  String get deadlineNoSubject => 'Ders yok';
+
+  @override
+  String get deadlineNotFound => 'Son tarih bulunamadı';
+
+  @override
+  String get deadlineMarkComplete => 'Tamamlandı olarak işaretle';
+
+  @override
+  String get deadlineMarkIncomplete => 'Tamamlanmadı olarak işaretle';
+
+  @override
+  String get deadlinesFilterUpcoming => 'Yaklaşan';
+
+  @override
+  String get deadlinesFilterLate => 'Gecikmiş';
+
+  @override
+  String get deadlinesFilterCompleted => 'Tamamlanan';
+
+  @override
+  String get deadlinesEmptyUpcoming => 'Yaklaşan son tarih yok';
+
+  @override
+  String get deadlinesEmptyLate => 'Gecikmiş son tarih yok';
+
+  @override
+  String get deadlinesEmptyCompleted => 'Tamamlanmış son tarih yok';
+
+  @override
+  String get deadlineDueToday => 'Bugün';
+
+  @override
+  String get deadlineDueTomorrow => 'Yarın';
+
+  @override
+  String deadlineDueInDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'gün',
+      one: 'gün',
+    );
+    return '$days $_temp0 sonra';
+  }
+
+  @override
+  String deadlineOverdueDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'gün',
+      one: 'gün',
+    );
+    return '$days $_temp0 gecikti';
+  }
+
+  @override
+  String get reminderNone => 'Hatırlatma yok';
+
+  @override
+  String reminderMinutesBefore(int minutes) {
+    return '$minutes dakika önce';
+  }
+
+  @override
+  String reminderHoursBefore(int hours) {
+    return '$hours saat önce';
+  }
+
+  @override
+  String reminderDaysBefore(int days) {
+    return '$days gün önce';
+  }
+
+  @override
+  String deadlineNotificationTitle(Object title) {
+    return 'Son tarih: $title';
+  }
+
+  @override
+  String deadlineNotificationBody(Object date) {
+    return 'Son tarih: $date';
+  }
+
+  @override
+  String backupImportError(Object error) {
+    return 'Geri yükleme başarısız: $error';
+  }
+
+  @override
+  String get switchToLightMode => 'Açık moda geç';
+
+  @override
+  String get switchToDarkMode => 'Koyu moda geç';
 
   @override
   String get apiSettingsTitle => 'API ayarları';

@@ -5,8 +5,8 @@ import 'notification_service.dart';
 
 /// Calcule la prochaine occurrence du jour/heure d'un [Course] et programme
 /// (ou reprogramme — un même `id` remplace la programmation précédente pour
-/// cet id) son rappel hebdomadaire 10 minutes avant le début, via
-/// [NotificationService]. Même algorithme de date que
+/// cet id) son rappel hebdomadaire [Course.reminderMinutesBefore] minutes
+/// avant le début, via [NotificationService]. Même algorithme de date que
 /// `AddCoursePage._adjustToNextSelectedDay` (création manuelle d'un cours).
 ///
 /// Contrairement au flux de création manuelle, n'affiche aucune notification
@@ -33,7 +33,7 @@ Future<void> scheduleCourseReminder(
       course.startTime,
     );
     final notificationTime = nextOccurrence.subtract(
-      const Duration(minutes: 10),
+      Duration(minutes: course.reminderMinutesBefore),
     );
 
     final notificationId = NotificationService.notificationIdFromCourseId(
@@ -46,7 +46,11 @@ Future<void> scheduleCourseReminder(
     await NotificationService().scheduleWeeklyNotification(
       id: notificationId,
       title: l10n.courseReminderTitle,
-      body: l10n.courseReminderBody(course.title, locationSuffix),
+      body: l10n.courseReminderBody(
+        course.title,
+        locationSuffix,
+        course.reminderMinutesBefore,
+      ),
       scheduledDate: notificationTime,
     );
   } catch (e) {

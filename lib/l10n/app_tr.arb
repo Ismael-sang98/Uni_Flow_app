@@ -21,6 +21,7 @@
     "btMod": "Düzenleme",
     "labNom" : "Ad Soyad",
     "labFkt" : "Bölüm",
+    "labDept" : "Bölüm",
     "labCl" : "Sınıf",
     "labEc" : "Okul",
     "labSsMat": "Derslerinizi girin",
@@ -110,11 +111,14 @@
     "later": "Sonra",
     "openSettings": "Ayarları açın",
     "courseReminderTitle": "Ders hatirlatması!",
-    "courseReminderBody": "{courseTitle} dersiniz 10 dakika sonra basliyor{locationSuffix}.",
+    "courseReminderBody": "{courseTitle} dersiniz {minutes} dakika sonra basliyor{locationSuffix}.",
     "@courseReminderBody": {
         "placeholders": {
             "courseTitle": {},
-            "locationSuffix": {}
+            "locationSuffix": {},
+            "minutes": {
+                "type": "int"
+            }
         }
     },
     "courseReminderLocationSuffix": " {room} odasında",
@@ -136,11 +140,14 @@
     },
     "madeWithLoveBy": "Sevgiyle hazırlandı: ",
     "weeklyNotificationScheduled": "✓ Haftalık bildirim programlandı",
-    "weeklyReminderMessage": "\"{courseName}\" dersinden 10 dakika önce her hafta hatırlatma: {date}",
+    "weeklyReminderMessage": "\"{courseName}\" dersinden {minutes} dakika önce her hafta hatırlatma: {date}",
     "@weeklyReminderMessage": {
         "placeholders": {
             "courseName": {},
-            "date": {}
+            "date": {},
+            "minutes": {
+                "type": "int"
+            }
         }
     },
     "courseTooClose": "Ders çok yakın",
@@ -292,6 +299,119 @@
     "notesGlobalSearchTitle": "Tüm defterlerde ara",
     "notesGlobalSearchHint": "Notlarda ara...",
     "notesGlobalSearchPrompt": "Tüm defterlerde not arayın",
+    "backupRestoreTitle": "Yedekleme ve geri yükleme",
+    "backupExportButton": "Verilerimi dışa aktar",
+    "backupExportDescription": "Tüm derslerinizi, notlarınızı ve görsellerinizi istediğiniz yerde (Drive, e-posta...) saklayabileceğiniz tek bir dosyaya kaydedin. Ücretsiz, hesap gerektirmez.",
+    "backupExportShareText": "UniFlow yedeği",
+    "backupExportError": "Dışa aktarma başarısız: {error}",
+    "@backupExportError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "backupImportButton": "Yedekten geri yükle",
+    "backupImportDescription": "Daha önce dışa aktarılmış bir yedek dosyasından derslerinizi, notlarınızı ve profilinizi geri yükleyin.",
+    "backupImportConfirmTitle": "Mevcut veriler değiştirilsin mi?",
+    "backupImportConfirmMessage": "Bu yedeği geri yüklemek, mevcut tüm derslerinizin, notlarınızın ve profilinizin yerini kalıcı olarak yedek dosyasının içeriğiyle değiştirecek. Bu işlem geri alınamaz.",
+    "backupImportConfirmButton": "Değiştir ve geri yükle",
+    "backupImportSuccess": "{courses} ders, {notes} not ve {deadlines} son tarih geri yüklendi.",
+    "@backupImportSuccess": {
+        "placeholders": {
+            "courses": {
+                "type": "int"
+            },
+            "notes": {
+                "type": "int"
+            },
+            "deadlines": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlinesTabLabel": "Son Tarihler",
+    "deadlineTypeExam": "Sınav",
+    "deadlineTypeHomework": "Ödev",
+    "deadlineTypeOther": "Diğer",
+    "deadlineTypeLabel": "Tür",
+    "addDeadlineTitle": "Yeni son tarih",
+    "editDeadlineTitle": "Son tarihi düzenle",
+    "deadlineDetailsTitle": "Son tarih detayları",
+    "deadlineDueDateLabel": "Tarih ve saat",
+    "deadlineReminderLabel": "Hatırlatma",
+    "deadlineNotesLabel": "Notlar (opsiyonel)",
+    "deadlineNoSubject": "Ders yok",
+    "deadlineNotFound": "Son tarih bulunamadı",
+    "deadlineMarkComplete": "Tamamlandı olarak işaretle",
+    "deadlineMarkIncomplete": "Tamamlanmadı olarak işaretle",
+    "deadlinesFilterUpcoming": "Yaklaşan",
+    "deadlinesFilterLate": "Gecikmiş",
+    "deadlinesFilterCompleted": "Tamamlanan",
+    "deadlinesEmptyUpcoming": "Yaklaşan son tarih yok",
+    "deadlinesEmptyLate": "Gecikmiş son tarih yok",
+    "deadlinesEmptyCompleted": "Tamamlanmış son tarih yok",
+    "deadlineDueToday": "Bugün",
+    "deadlineDueTomorrow": "Yarın",
+    "deadlineDueInDays": "{days} {days, plural, =1{gün} other{gün}} sonra",
+    "@deadlineDueInDays": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineOverdueDays": "{days} {days, plural, =1{gün} other{gün}} gecikti",
+    "@deadlineOverdueDays": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "reminderNone": "Hatırlatma yok",
+    "reminderMinutesBefore": "{minutes} dakika önce",
+    "@reminderMinutesBefore": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "reminderHoursBefore": "{hours} saat önce",
+    "@reminderHoursBefore": {
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "reminderDaysBefore": "{days} gün önce",
+    "@reminderDaysBefore": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineNotificationTitle": "Son tarih: {title}",
+    "@deadlineNotificationTitle": {
+        "placeholders": {
+            "title": {}
+        }
+    },
+    "deadlineNotificationBody": "Son tarih: {date}",
+    "@deadlineNotificationBody": {
+        "placeholders": {
+            "date": {}
+        }
+    },
+    "backupImportError": "Geri yükleme başarısız: {error}",
+    "@backupImportError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "switchToLightMode": "Açık moda geç",
+    "switchToDarkMode": "Koyu moda geç",
     "apiSettingsTitle": "API ayarları",
     "apiSettingsBaseUrlLabel": "Backend temel URL'si",
     "apiSettingsBaseUrlHint": "https://uygulamam.onrender.com",

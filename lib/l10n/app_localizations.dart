@@ -202,6 +202,12 @@ abstract class AppLocalizations {
   /// **'Faculty'**
   String get labFkt;
 
+  /// No description provided for @labDept.
+  ///
+  /// In en, this message translates to:
+  /// **'Department'**
+  String get labDept;
+
   /// No description provided for @labCl.
   ///
   /// In en, this message translates to:
@@ -247,7 +253,7 @@ abstract class AppLocalizations {
   /// No description provided for @notesLibrary.
   ///
   /// In en, this message translates to:
-  /// **'Notes Library'**
+  /// **'Notes'**
   String get notesLibrary;
 
   /// No description provided for @addNote.
@@ -679,8 +685,12 @@ abstract class AppLocalizations {
   /// No description provided for @courseReminderBody.
   ///
   /// In en, this message translates to:
-  /// **'Your course of {courseTitle} starts in 10 minutes{locationSuffix}.'**
-  String courseReminderBody(Object courseTitle, Object locationSuffix);
+  /// **'Your course of {courseTitle} starts in {minutes} minutes{locationSuffix}.'**
+  String courseReminderBody(
+    Object courseTitle,
+    Object locationSuffix,
+    int minutes,
+  );
 
   /// No description provided for @courseReminderLocationSuffix.
   ///
@@ -739,8 +749,8 @@ abstract class AppLocalizations {
   /// No description provided for @weeklyReminderMessage.
   ///
   /// In en, this message translates to:
-  /// **'Reminder every week 10 min before \"{courseName}\" on {date}'**
-  String weeklyReminderMessage(Object courseName, Object date);
+  /// **'Reminder every week {minutes} min before \"{courseName}\" on {date}'**
+  String weeklyReminderMessage(Object courseName, Object date, int minutes);
 
   /// No description provided for @courseTooClose.
   ///
@@ -1143,6 +1153,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search notes across all notebooks'**
   String get notesGlobalSearchPrompt;
+
+  /// No description provided for @backupRestoreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup & restore'**
+  String get backupRestoreTitle;
+
+  /// No description provided for @backupExportButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Export my data'**
+  String get backupExportButton;
+
+  /// No description provided for @backupExportDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Save all your courses, notes and images into a single file you can store anywhere (Drive, email, ...). Free, no account needed.'**
+  String get backupExportDescription;
+
+  /// No description provided for @backupExportShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'UniFlow backup'**
+  String get backupExportShareText;
+
+  /// No description provided for @backupExportError.
+  ///
+  /// In en, this message translates to:
+  /// **'Export failed: {error}'**
+  String backupExportError(Object error);
+
+  /// No description provided for @backupImportButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from a backup'**
+  String get backupImportButton;
+
+  /// No description provided for @backupImportDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore your courses, notes and profile from a previously exported backup file.'**
+  String get backupImportDescription;
+
+  /// No description provided for @backupImportConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace current data?'**
+  String get backupImportConfirmTitle;
+
+  /// No description provided for @backupImportConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring this backup will permanently replace all your current courses, notes and profile with the content of the backup file. This cannot be undone.'**
+  String get backupImportConfirmMessage;
+
+  /// No description provided for @backupImportConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace and restore'**
+  String get backupImportConfirmButton;
+
+  /// No description provided for @backupImportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored {courses} courses, {notes} notes and {deadlines} deadlines.'**
+  String backupImportSuccess(int courses, int notes, int deadlines);
+
+  /// No description provided for @deadlinesTabLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadlines'**
+  String get deadlinesTabLabel;
+
+  /// No description provided for @deadlineTypeExam.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam'**
+  String get deadlineTypeExam;
+
+  /// No description provided for @deadlineTypeHomework.
+  ///
+  /// In en, this message translates to:
+  /// **'Homework'**
+  String get deadlineTypeHomework;
+
+  /// No description provided for @deadlineTypeOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get deadlineTypeOther;
+
+  /// No description provided for @deadlineTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get deadlineTypeLabel;
+
+  /// No description provided for @addDeadlineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New deadline'**
+  String get addDeadlineTitle;
+
+  /// No description provided for @editDeadlineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit deadline'**
+  String get editDeadlineTitle;
+
+  /// No description provided for @deadlineDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline details'**
+  String get deadlineDetailsTitle;
+
+  /// No description provided for @deadlineDueDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date and time'**
+  String get deadlineDueDateLabel;
+
+  /// No description provided for @deadlineReminderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get deadlineReminderLabel;
+
+  /// No description provided for @deadlineNotesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes (optional)'**
+  String get deadlineNotesLabel;
+
+  /// No description provided for @deadlineNoSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'No subject'**
+  String get deadlineNoSubject;
+
+  /// No description provided for @deadlineNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline not found'**
+  String get deadlineNotFound;
+
+  /// No description provided for @deadlineMarkComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as done'**
+  String get deadlineMarkComplete;
+
+  /// No description provided for @deadlineMarkIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as not done'**
+  String get deadlineMarkIncomplete;
+
+  /// No description provided for @deadlinesFilterUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get deadlinesFilterUpcoming;
+
+  /// No description provided for @deadlinesFilterLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Late'**
+  String get deadlinesFilterLate;
+
+  /// No description provided for @deadlinesFilterCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get deadlinesFilterCompleted;
+
+  /// No description provided for @deadlinesEmptyUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming deadlines'**
+  String get deadlinesEmptyUpcoming;
+
+  /// No description provided for @deadlinesEmptyLate.
+  ///
+  /// In en, this message translates to:
+  /// **'No late deadlines'**
+  String get deadlinesEmptyLate;
+
+  /// No description provided for @deadlinesEmptyCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'No completed deadlines'**
+  String get deadlinesEmptyCompleted;
+
+  /// No description provided for @deadlineDueToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get deadlineDueToday;
+
+  /// No description provided for @deadlineDueTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get deadlineDueTomorrow;
+
+  /// No description provided for @deadlineDueInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'In {days} {days, plural, =1{day} other{days}}'**
+  String deadlineDueInDays(int days);
+
+  /// No description provided for @deadlineOverdueDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Late by {days} {days, plural, =1{day} other{days}}'**
+  String deadlineOverdueDays(int days);
+
+  /// No description provided for @reminderNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminder'**
+  String get reminderNone;
+
+  /// No description provided for @reminderMinutesBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} minutes before'**
+  String reminderMinutesBefore(int minutes);
+
+  /// No description provided for @reminderHoursBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} {hours, plural, =1{hour} other{hours}} before'**
+  String reminderHoursBefore(int hours);
+
+  /// No description provided for @reminderDaysBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} {days, plural, =1{day} other{days}} before'**
+  String reminderDaysBefore(int days);
+
+  /// No description provided for @deadlineNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline: {title}'**
+  String deadlineNotificationTitle(Object title);
+
+  /// No description provided for @deadlineNotificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Due {date}'**
+  String deadlineNotificationBody(Object date);
+
+  /// No description provided for @backupImportError.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore failed: {error}'**
+  String backupImportError(Object error);
+
+  /// No description provided for @switchToLightMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to light mode'**
+  String get switchToLightMode;
+
+  /// No description provided for @switchToDarkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to dark mode'**
+  String get switchToDarkMode;
 
   /// No description provided for @apiSettingsTitle.
   ///

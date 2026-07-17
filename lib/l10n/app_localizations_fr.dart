@@ -63,6 +63,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get labFkt => 'Faculté';
 
   @override
+  String get labDept => 'Département';
+
+  @override
   String get labCl => 'Classe';
 
   @override
@@ -84,7 +87,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get taskTitle => 'Titre';
 
   @override
-  String get notesLibrary => 'Bibliothèque de notes';
+  String get notesLibrary => 'Notes';
 
   @override
   String get addNote => 'Nouvelle note';
@@ -308,8 +311,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get courseReminderTitle => 'Rappel de cours !';
 
   @override
-  String courseReminderBody(Object courseTitle, Object locationSuffix) {
-    return 'Votre cours de $courseTitle commence dans 10 minutes$locationSuffix.';
+  String courseReminderBody(
+    Object courseTitle,
+    Object locationSuffix,
+    int minutes,
+  ) {
+    return 'Votre cours de $courseTitle commence dans $minutes minutes$locationSuffix.';
   }
 
   @override
@@ -345,8 +352,8 @@ class AppLocalizationsFr extends AppLocalizations {
       '✓ Notification hebdomadaire programmée';
 
   @override
-  String weeklyReminderMessage(Object courseName, Object date) {
-    return 'Rappel chaque semaine 10 min avant \"$courseName\" le $date';
+  String weeklyReminderMessage(Object courseName, Object date, int minutes) {
+    return 'Rappel chaque semaine $minutes min avant \"$courseName\" le $date';
   }
 
   @override
@@ -604,6 +611,188 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get notesGlobalSearchPrompt =>
       'Recherchez une note dans tous les cahiers';
+
+  @override
+  String get backupRestoreTitle => 'Sauvegarde et restauration';
+
+  @override
+  String get backupExportButton => 'Exporter mes données';
+
+  @override
+  String get backupExportDescription =>
+      'Enregistre tous vos cours, notes et images dans un seul fichier que vous pouvez stocker où vous voulez (Drive, email, ...). Gratuit, sans compte.';
+
+  @override
+  String get backupExportShareText => 'Sauvegarde UniFlow';
+
+  @override
+  String backupExportError(Object error) {
+    return 'Échec de l\'export : $error';
+  }
+
+  @override
+  String get backupImportButton => 'Restaurer une sauvegarde';
+
+  @override
+  String get backupImportDescription =>
+      'Restaure vos cours, notes et profil à partir d\'un fichier de sauvegarde exporté précédemment.';
+
+  @override
+  String get backupImportConfirmTitle => 'Remplacer les données actuelles ?';
+
+  @override
+  String get backupImportConfirmMessage =>
+      'Restaurer cette sauvegarde va remplacer définitivement tous vos cours, notes et profil actuels par le contenu du fichier de sauvegarde. Cette action est irréversible.';
+
+  @override
+  String get backupImportConfirmButton => 'Remplacer et restaurer';
+
+  @override
+  String backupImportSuccess(int courses, int notes, int deadlines) {
+    return '$courses cours, $notes notes et $deadlines échéances restaurés.';
+  }
+
+  @override
+  String get deadlinesTabLabel => 'Échéances';
+
+  @override
+  String get deadlineTypeExam => 'Examen';
+
+  @override
+  String get deadlineTypeHomework => 'Devoir';
+
+  @override
+  String get deadlineTypeOther => 'Autre';
+
+  @override
+  String get deadlineTypeLabel => 'Type';
+
+  @override
+  String get addDeadlineTitle => 'Nouvelle échéance';
+
+  @override
+  String get editDeadlineTitle => 'Modifier l\'échéance';
+
+  @override
+  String get deadlineDetailsTitle => 'Détails de l\'échéance';
+
+  @override
+  String get deadlineDueDateLabel => 'Date et heure';
+
+  @override
+  String get deadlineReminderLabel => 'Rappel';
+
+  @override
+  String get deadlineNotesLabel => 'Notes (optionnel)';
+
+  @override
+  String get deadlineNoSubject => 'Aucune matière';
+
+  @override
+  String get deadlineNotFound => 'Échéance introuvable';
+
+  @override
+  String get deadlineMarkComplete => 'Marquer comme terminé';
+
+  @override
+  String get deadlineMarkIncomplete => 'Marquer comme non terminé';
+
+  @override
+  String get deadlinesFilterUpcoming => 'À venir';
+
+  @override
+  String get deadlinesFilterLate => 'En retard';
+
+  @override
+  String get deadlinesFilterCompleted => 'Terminées';
+
+  @override
+  String get deadlinesEmptyUpcoming => 'Aucune échéance à venir';
+
+  @override
+  String get deadlinesEmptyLate => 'Aucune échéance en retard';
+
+  @override
+  String get deadlinesEmptyCompleted => 'Aucune échéance terminée';
+
+  @override
+  String get deadlineDueToday => 'Aujourd\'hui';
+
+  @override
+  String get deadlineDueTomorrow => 'Demain';
+
+  @override
+  String deadlineDueInDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'jours',
+      one: 'jour',
+    );
+    return 'Dans $days $_temp0';
+  }
+
+  @override
+  String deadlineOverdueDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'jours',
+      one: 'jour',
+    );
+    return 'En retard de $days $_temp0';
+  }
+
+  @override
+  String get reminderNone => 'Aucun rappel';
+
+  @override
+  String reminderMinutesBefore(int minutes) {
+    return '$minutes minutes avant';
+  }
+
+  @override
+  String reminderHoursBefore(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: 'heures',
+      one: 'heure',
+    );
+    return '$hours $_temp0 avant';
+  }
+
+  @override
+  String reminderDaysBefore(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'jours',
+      one: 'jour',
+    );
+    return '$days $_temp0 avant';
+  }
+
+  @override
+  String deadlineNotificationTitle(Object title) {
+    return 'Échéance : $title';
+  }
+
+  @override
+  String deadlineNotificationBody(Object date) {
+    return 'Prévu le $date';
+  }
+
+  @override
+  String backupImportError(Object error) {
+    return 'Échec de la restauration : $error';
+  }
+
+  @override
+  String get switchToLightMode => 'Passer en mode clair';
+
+  @override
+  String get switchToDarkMode => 'Passer en mode sombre';
 
   @override
   String get apiSettingsTitle => 'Réglages API';

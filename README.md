@@ -5,14 +5,16 @@
 ![Hive](https://img.shields.io/badge/Hive-Database-orange?style=for-the-badge)
 ![Provider](https://img.shields.io/badge/State-Provider-purple?style=for-the-badge)
 
-**UniFlow** is a comprehensive, offline-first mobile application designed to help students organize their academic life. It manages weekly class schedules with reminders, a full notebook-based note-taking system, and a student profile — all working 100% offline via a local database, with an optional one-tap sync from an OBS account and full multi-language support.
+**UniFlow** is a comprehensive, offline-first mobile application designed to help students organize their academic life. It manages weekly class schedules with reminders, one-off deadlines (exams, homework), a full notebook-based note-taking system, and a student profile — all working 100% offline via a local database, with an optional one-tap sync from an OBS account, free local backup/restore, and full multi-language support.
 
 ---
 
 ## ✨ Main Features
 
-* 📅 **Weekly Planner:** Clear view of classes day by day (Monday to Sunday), with classes that already ended today automatically dimmed so you can see what's still ahead.
-* 🔄 **Optional OBS Account Sync:** Connect your OBS backend account once to pull in your profile, subjects, and full class schedule automatically — no manual data entry required. Manual setup remains available for anyone without an OBS account.
+* 📅 **Weekly Planner:** Clear view of classes day by day (Monday to Sunday), with classes that already ended today automatically dimmed so you can see what's still ahead. The reminder delay before each class is configurable per course (5 min to 1 hour before).
+* ✅ **Deadlines (exams, homework, other):** A dedicated tab to track one-off deadlines separately from the recurring weekly schedule — with type, optional subject, due date/time, and a configurable reminder. Filter by upcoming / late / done, with relative due labels ("Tomorrow", "In 3 days", "Late by 2 days") and one-tap complete.
+* 🔄 **Optional OBS Account Sync:** Connect your OBS backend account once to pull in your profile (including department), subjects, and full class schedule automatically — no manual data entry required. Manual setup remains available for anyone without an OBS account.
+* 🗄️ **Backup & Restore:** Export all your courses, notes, deadlines, profile and images into a single file you can store anywhere (Drive, email, ...) and restore later — 100% free, no cloud account required.
 * 📚 **Notes Library — a real digital notebook:**
   * Organize notes into cahiers (notebooks), each with its own consistent color
   * Ruled-paper look for writing and reading notes, just like a real notebook page
@@ -23,8 +25,8 @@
   * Attach multiple images (gallery or camera) and files, with captions and full-screen zoomable preview
   * Share images directly from a note
   * Real-time form validation with a live character counter
-* 👤 **Student Profile:** Customize your name, school, class, and profile picture.
-* 🔔 **Smart Notifications:** Recurring weekly reminders before every class — including classes imported through OBS sync.
+* 👤 **Student Profile:** Customize your name, school, class, department and profile picture.
+* 🔔 **Smart Notifications:** Recurring weekly reminders before every class (including classes imported through OBS sync) and one-time reminders before each deadline — all with a configurable delay.
 * 🎨 **Dynamic Themes:** Full support for **Dark Mode** and **Light Mode**.
 * 🌍 **Multilingual:** Available in **French 🇫🇷**, **English 🇺🇸**, and **Turkish 🇹🇷**.
 * 🆕 **In-App Update Checker:** Automatically checks GitHub releases and prompts you to update when a new version is available.
@@ -58,6 +60,7 @@
 * **Secure Storage:** [flutter_secure_storage](https://pub.dev/packages/flutter_secure_storage) (OBS backend URL & API key)
 * **Networking:** [http](https://pub.dev/packages/http) (OBS account sync)
 * **Image & File Management:** [image_picker](https://pub.dev/packages/image_picker), [file_picker](https://pub.dev/packages/file_picker), [open_filex](https://pub.dev/packages/open_filex)
+* **Backup:** [archive](https://pub.dev/packages/archive) (zip export/import of all local data)
 * **Sharing:** [share_plus](https://pub.dev/packages/share_plus)
 * **Internationalization:** flutter_localizations & intl (French, English, Turkish)
 * **Notifications:** [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications) + [flutter_timezone](https://pub.dev/packages/flutter_timezone)
@@ -65,13 +68,20 @@
 * **Design:** Google Fonts, Hero Animations, custom-painted ruled-paper notebook UI
 * **Architecture:**
   * Clean code with reusable components (`UIConstants`, services, mixins, widgets)
-  * Singleton services (`ImageManager`, `NotificationService`, `ApiConfigService`, `FullSyncService`)
+  * Singleton services (`ImageManager`, `NotificationService`, `ApiConfigService`, `FullSyncService`, `BackupService`)
   * Mixin-based form validation
   * Modular, testable widget architecture with unit test coverage on the sync logic
 
 ---
 
 ## 🎯 Recent Improvements
+
+### Deadlines, Backup & Configurable Reminders (July 2026)
+* **New "Deadlines" tab** for one-off exams/homework/other deadlines, separate from the recurring weekly schedule, with upcoming/late/done filters and relative due labels
+* **Backup & restore:** free, local, zip-based export/import covering courses, notes, deadlines, profile and all attached files
+* **Department field** synced from the OBS backend and shown on the profile (falls back to faculty for manually-created profiles)
+* **Configurable reminder delay** per course (previously hardcoded to 10 minutes) and per deadline
+* **Bottom navigation redesigned** for the new 3-tab layout: shorter, consistent labels and the floating action button moved off-center so it no longer overlaps a tab icon
 
 ### Notes Library Overhaul (July 2026)
 * **Trash & restore:** notes are soft-deleted first and auto-purged after 30 days, with an "Undo" snackbar and a dedicated trash screen
@@ -156,6 +166,9 @@ dependencies:
   open_filex: ^4.5.0
   path_provider: ^2.1.5
   share_plus: ^10.1.0
+
+  # Backup (zip export/import)
+  archive: ^4.0.9
 
   # UI
   google_fonts: ^8.0.0

@@ -31,6 +31,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
   TimeOfDay _startTime = const TimeOfDay(hour: 8, minute: 0);
   TimeOfDay _endTime = const TimeOfDay(hour: 10, minute: 0);
   int _selectedColor = 0xFFF44336;
+  int _reminderMinutesBefore = 10;
 
   String? _selectedSubject; // La matière choisie
   List<String> _availableSubjects = []; // La liste venant du profil
@@ -71,6 +72,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
     _startTime = TimeOfDay.fromDateTime(course.startTime);
     _endTime = TimeOfDay.fromDateTime(course.endTime);
     _selectedSubject = course.title;
+    _reminderMinutesBefore = course.reminderMinutesBefore;
   }
 
   void _initializeDefaults() {
@@ -289,6 +291,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
       color: _selectedColor,
       startTime: startDateTime,
       endTime: endDateTime,
+      reminderMinutesBefore: _reminderMinutesBefore,
     );
   }
 
@@ -322,9 +325,9 @@ class _AddCoursePageState extends State<AddCoursePage> {
     try {
       await _ensureNotificationPermissions();
 
-      // On programme la notification 15 minutes avant le début du cours
+      // Délai configurable par cours (voir Course.reminderMinutesBefore).
       final notificationTime = startDateTime.subtract(
-        const Duration(minutes: 10),
+        Duration(minutes: course.reminderMinutesBefore),
       );
 
       final int notificationId = NotificationService.notificationIdFromCourseId(
@@ -338,7 +341,11 @@ class _AddCoursePageState extends State<AddCoursePage> {
         await NotificationService().scheduleWeeklyNotification(
           id: notificationId,
           title: l10n.courseReminderTitle,
-          body: l10n.courseReminderBody(course.title, locationSuffix),
+          body: l10n.courseReminderBody(
+            course.title,
+            locationSuffix,
+            course.reminderMinutesBefore,
+          ),
           scheduledDate: notificationTime,
         );
 
@@ -347,6 +354,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
           body: l10n.weeklyReminderMessage(
             course.title,
             _formatDate(notificationTime),
+            course.reminderMinutesBefore,
           ),
         );
       } else {
@@ -429,6 +437,8 @@ class _AddCoursePageState extends State<AddCoursePage> {
               const SizedBox(height: 16),
               _buildTimeRow(l10n),
               const SizedBox(height: 16),
+              _buildReminderDropdown(l10n),
+              const SizedBox(height: 16),
               _buildColorPicker(l10n),
               const SizedBox(height: 30),
               _buildSaveButton(l10n),
@@ -451,6 +461,34 @@ class _AddCoursePageState extends State<AddCoursePage> {
         return DropdownMenuItem<String>(value: subject, child: Text(subject));
       }).toList(),
       onChanged: (val) => setState(() => _selectedSubject = val),
+    );
+  }
+
+  String _reminderLabel(AppLocalizations l10n, int minutes) {
+    return minutes < 60
+        ? l10n.reminderMinutesBefore(minutes)
+        : l10n.reminderHoursBefore(minutes ~/ 60);
+  }
+
+  Widget _buildReminderDropdown(AppLocalizations l10n) {
+    return DropdownButtonFormField<int>(
+      initialValue: _reminderMinutesBefore,
+      decoration: InputDecoration(
+        labelText: l10n.deadlineReminderLabel,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+        prefixIcon: const Icon(Icons.notifications_outlined),
+      ),
+      items: [5, 10, 15, 30, 60]
+          .map(
+            (minutes) => DropdownMenuItem(
+              value: minutes,
+              child: Text(_reminderLabel(l10n, minutes)),
+            ),
+          )
+          .toList(),
+      onChanged: (val) {
+        if (val != null) setState(() => _reminderMinutesBefore = val);
+      },
     );
   }
 

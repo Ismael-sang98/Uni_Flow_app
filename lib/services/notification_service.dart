@@ -22,6 +22,13 @@ class NotificationService {
     return courseId.hashCode & 0x7fffffff;
   }
 
+  /// Même principe que [notificationIdFromCourseId] mais avec un préfixe
+  /// distinct dans le hash source, pour qu'un cours et une échéance ne
+  /// puissent jamais collider sur le même id malgré des uuid différents.
+  static int notificationIdFromDeadlineId(String deadlineId) {
+    return 'deadline_$deadlineId'.hashCode & 0x7fffffff;
+  }
+
   Future<void> init() async {
     tz.initializeTimeZones();
 
@@ -217,6 +224,10 @@ class NotificationService {
 
   Future<void> cancelNotification(int id) async {
     await flutterLocalNotificationsPlugin.cancel(id: id);
+  }
+
+  Future<void> cancelAll() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
   }
 
   Future<List<PendingNotificationRequest>> getPendingNotifications() async {

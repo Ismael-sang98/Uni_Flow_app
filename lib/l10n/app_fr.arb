@@ -21,6 +21,7 @@
     "btMod": "Modifier",
     "labNom" : "Nom complet",
     "labFkt" : "Faculté",
+    "labDept" : "Département",
     "labCl" : "Classe",
     "labEc" : "École",
     "labSsMat": "Saisissez vos matières",
@@ -28,7 +29,7 @@
     "btnEnregistrerProfil": "Enregistrer le profil",
     "addTask": "Nouveau Devoir",
     "taskTitle": "Titre",
-    "notesLibrary": "Bibliothèque de notes",
+    "notesLibrary": "Notes",
     "addNote": "Nouvelle note",
     "noteTitle": "Titre",
     "noteSubject": "Matière",
@@ -110,11 +111,14 @@
     "later": "Plus tard",
     "openSettings": "Ouvrir les réglages",
     "courseReminderTitle": "Rappel de cours !",
-    "courseReminderBody": "Votre cours de {courseTitle} commence dans 10 minutes{locationSuffix}.",
+    "courseReminderBody": "Votre cours de {courseTitle} commence dans {minutes} minutes{locationSuffix}.",
     "@courseReminderBody": {
         "placeholders": {
             "courseTitle": {},
-            "locationSuffix": {}
+            "locationSuffix": {},
+            "minutes": {
+                "type": "int"
+            }
         }
     },
     "courseReminderLocationSuffix": " en salle {room}",
@@ -136,11 +140,14 @@
     },
     "madeWithLoveBy": "Fait avec amour par ",
     "weeklyNotificationScheduled": "✓ Notification hebdomadaire programmée",
-    "weeklyReminderMessage": "Rappel chaque semaine 10 min avant \"{courseName}\" le {date}",
+    "weeklyReminderMessage": "Rappel chaque semaine {minutes} min avant \"{courseName}\" le {date}",
     "@weeklyReminderMessage": {
         "placeholders": {
             "courseName": {},
-            "date": {}
+            "date": {},
+            "minutes": {
+                "type": "int"
+            }
         }
     },
     "courseTooClose": "Cours trop proche",
@@ -292,6 +299,119 @@
     "notesGlobalSearchTitle": "Rechercher dans tous les cahiers",
     "notesGlobalSearchHint": "Rechercher des notes...",
     "notesGlobalSearchPrompt": "Recherchez une note dans tous les cahiers",
+    "backupRestoreTitle": "Sauvegarde et restauration",
+    "backupExportButton": "Exporter mes données",
+    "backupExportDescription": "Enregistre tous vos cours, notes et images dans un seul fichier que vous pouvez stocker où vous voulez (Drive, email, ...). Gratuit, sans compte.",
+    "backupExportShareText": "Sauvegarde UniFlow",
+    "backupExportError": "Échec de l'export : {error}",
+    "@backupExportError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "backupImportButton": "Restaurer une sauvegarde",
+    "backupImportDescription": "Restaure vos cours, notes et profil à partir d'un fichier de sauvegarde exporté précédemment.",
+    "backupImportConfirmTitle": "Remplacer les données actuelles ?",
+    "backupImportConfirmMessage": "Restaurer cette sauvegarde va remplacer définitivement tous vos cours, notes et profil actuels par le contenu du fichier de sauvegarde. Cette action est irréversible.",
+    "backupImportConfirmButton": "Remplacer et restaurer",
+    "backupImportSuccess": "{courses} cours, {notes} notes et {deadlines} échéances restaurés.",
+    "@backupImportSuccess": {
+        "placeholders": {
+            "courses": {
+                "type": "int"
+            },
+            "notes": {
+                "type": "int"
+            },
+            "deadlines": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlinesTabLabel": "Échéances",
+    "deadlineTypeExam": "Examen",
+    "deadlineTypeHomework": "Devoir",
+    "deadlineTypeOther": "Autre",
+    "deadlineTypeLabel": "Type",
+    "addDeadlineTitle": "Nouvelle échéance",
+    "editDeadlineTitle": "Modifier l'échéance",
+    "deadlineDetailsTitle": "Détails de l'échéance",
+    "deadlineDueDateLabel": "Date et heure",
+    "deadlineReminderLabel": "Rappel",
+    "deadlineNotesLabel": "Notes (optionnel)",
+    "deadlineNoSubject": "Aucune matière",
+    "deadlineNotFound": "Échéance introuvable",
+    "deadlineMarkComplete": "Marquer comme terminé",
+    "deadlineMarkIncomplete": "Marquer comme non terminé",
+    "deadlinesFilterUpcoming": "À venir",
+    "deadlinesFilterLate": "En retard",
+    "deadlinesFilterCompleted": "Terminées",
+    "deadlinesEmptyUpcoming": "Aucune échéance à venir",
+    "deadlinesEmptyLate": "Aucune échéance en retard",
+    "deadlinesEmptyCompleted": "Aucune échéance terminée",
+    "deadlineDueToday": "Aujourd'hui",
+    "deadlineDueTomorrow": "Demain",
+    "deadlineDueInDays": "Dans {days} {days, plural, =1{jour} other{jours}}",
+    "@deadlineDueInDays": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineOverdueDays": "En retard de {days} {days, plural, =1{jour} other{jours}}",
+    "@deadlineOverdueDays": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "reminderNone": "Aucun rappel",
+    "reminderMinutesBefore": "{minutes} minutes avant",
+    "@reminderMinutesBefore": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "reminderHoursBefore": "{hours} {hours, plural, =1{heure} other{heures}} avant",
+    "@reminderHoursBefore": {
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "reminderDaysBefore": "{days} {days, plural, =1{jour} other{jours}} avant",
+    "@reminderDaysBefore": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineNotificationTitle": "Échéance : {title}",
+    "@deadlineNotificationTitle": {
+        "placeholders": {
+            "title": {}
+        }
+    },
+    "deadlineNotificationBody": "Prévu le {date}",
+    "@deadlineNotificationBody": {
+        "placeholders": {
+            "date": {}
+        }
+    },
+    "backupImportError": "Échec de la restauration : {error}",
+    "@backupImportError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "switchToLightMode": "Passer en mode clair",
+    "switchToDarkMode": "Passer en mode sombre",
     "apiSettingsTitle": "Réglages API",
     "apiSettingsBaseUrlLabel": "URL de base du backend",
     "apiSettingsBaseUrlHint": "https://mon-app.onrender.com",

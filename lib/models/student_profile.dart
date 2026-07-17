@@ -22,6 +22,13 @@ class StudentProfile {
   @HiveField(5)
   final String? profilePicturePath;
 
+  /// Département (ex: "Yazılım Mühendisliği"), distinct de [faculty] (ex:
+  /// "Müh-Mim. Fak."). Renseigné uniquement via la synchro OBS (champ
+  /// `departement` de `GET /profil`) — jamais saisi manuellement, donc null
+  /// pour un profil créé sans compte OBS.
+  @HiveField(6)
+  final String? department;
+
   StudentProfile({
     required this.name,
     required this.className,
@@ -29,5 +36,6 @@ class StudentProfile {
     this.profilePicturePath,
     required this.faculty,
     this.subjects = const [],
+    this.department,
   });
 }

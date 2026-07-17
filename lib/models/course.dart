@@ -27,6 +27,12 @@ class Course {
   @HiveField(7)
   final String? externalCode;
 
+  /// Délai du rappel avant le début du cours, en minutes. defaultValue: 10
+  /// préserve le comportement des cours créés avant l'ajout de ce champ
+  /// (le rappel était alors fixé en dur à 10 minutes).
+  @HiveField(8, defaultValue: 10)
+  final int reminderMinutesBefore;
+
   Course({
     required this.id,
     required this.title,
@@ -36,5 +42,6 @@ class Course {
     required this.startTime,
     required this.endTime,
     this.externalCode,
+    this.reminderMinutesBefore = 10,
   });
 }

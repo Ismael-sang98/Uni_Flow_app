@@ -9,7 +9,9 @@ import 'package:mon_temps/widgets/notes_library_view.dart';
 import 'package:mon_temps/widgets/weekly_schedule_view.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/create_notebook_dialog.dart';
+import '../widgets/deadlines_view.dart';
 import '../widgets/update_dialog.dart';
+import 'add_deadline_page.dart';
 
 // --- PAGE D'ACCUEIL PRINCIPALE ---
 class HomePage extends StatefulWidget {
@@ -121,7 +123,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          profile?.faculty ?? "",
+                          profile?.department ?? "",
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w400,
@@ -170,9 +172,11 @@ class _HomePageState extends State<HomePage> {
           child: _buildAppBarTitle(context, l10n),
         ),
       ),
-      body: _selectedIndex == 0
-          ? const WeeklyScheduleView()
-          : const NotesLibraryView(),
+      body: switch (_selectedIndex) {
+        0 => const WeeklyScheduleView(),
+        1 => const DeadlinesView(),
+        _ => const NotesLibraryView(),
+      },
       bottomNavigationBar: Container(
         margin: const EdgeInsets.all(20),
         decoration: BoxDecoration(
@@ -212,6 +216,11 @@ class _HomePageState extends State<HomePage> {
                 label: l10n.planning,
               ),
               NavigationDestination(
+                icon: Icon(Icons.event_outlined),
+                selectedIcon: Icon(Icons.event, color: Color(0xFF6C63FF)),
+                label: l10n.deadlinesTabLabel,
+              ),
+              NavigationDestination(
                 icon: Icon(Icons.note_alt),
                 selectedIcon: Icon(Icons.note_alt, color: Color(0xFF6C63FF)),
                 label: l10n.notesLibrary,
@@ -220,20 +229,29 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // endFloat plutôt que centerDocked : avec 3 onglets, un FAB centré
+      // recouvre directement l'icône de l'onglet du milieu (Échéances) —
+      // en bas à droite, il ne chevauche plus aucun onglet.
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         elevation: 4,
         backgroundColor: const Color(0xFF6C63FF),
         foregroundColor: Colors.white,
         shape: const CircleBorder(),
         onPressed: () {
-          if (_selectedIndex == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const AddCoursePage()),
-            );
-          } else {
-            showCreateNotebookDialog(context);
+          switch (_selectedIndex) {
+            case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AddCoursePage()),
+              );
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AddDeadlinePage()),
+              );
+            default:
+              showCreateNotebookDialog(context);
           }
         },
         child: const Icon(Icons.add, size: 32),

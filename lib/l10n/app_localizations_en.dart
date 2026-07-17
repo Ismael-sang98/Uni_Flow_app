@@ -63,6 +63,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labFkt => 'Faculty';
 
   @override
+  String get labDept => 'Department';
+
+  @override
   String get labCl => 'Class';
 
   @override
@@ -84,7 +87,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get taskTitle => 'Title';
 
   @override
-  String get notesLibrary => 'Notes Library';
+  String get notesLibrary => 'Notes';
 
   @override
   String get addNote => 'New Note';
@@ -309,8 +312,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get courseReminderTitle => 'Course reminder!';
 
   @override
-  String courseReminderBody(Object courseTitle, Object locationSuffix) {
-    return 'Your course of $courseTitle starts in 10 minutes$locationSuffix.';
+  String courseReminderBody(
+    Object courseTitle,
+    Object locationSuffix,
+    int minutes,
+  ) {
+    return 'Your course of $courseTitle starts in $minutes minutes$locationSuffix.';
   }
 
   @override
@@ -345,8 +352,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get weeklyNotificationScheduled => '✓ Weekly notification scheduled';
 
   @override
-  String weeklyReminderMessage(Object courseName, Object date) {
-    return 'Reminder every week 10 min before \"$courseName\" on $date';
+  String weeklyReminderMessage(Object courseName, Object date, int minutes) {
+    return 'Reminder every week $minutes min before \"$courseName\" on $date';
   }
 
   @override
@@ -602,6 +609,188 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notesGlobalSearchPrompt => 'Search notes across all notebooks';
+
+  @override
+  String get backupRestoreTitle => 'Backup & restore';
+
+  @override
+  String get backupExportButton => 'Export my data';
+
+  @override
+  String get backupExportDescription =>
+      'Save all your courses, notes and images into a single file you can store anywhere (Drive, email, ...). Free, no account needed.';
+
+  @override
+  String get backupExportShareText => 'UniFlow backup';
+
+  @override
+  String backupExportError(Object error) {
+    return 'Export failed: $error';
+  }
+
+  @override
+  String get backupImportButton => 'Restore from a backup';
+
+  @override
+  String get backupImportDescription =>
+      'Restore your courses, notes and profile from a previously exported backup file.';
+
+  @override
+  String get backupImportConfirmTitle => 'Replace current data?';
+
+  @override
+  String get backupImportConfirmMessage =>
+      'Restoring this backup will permanently replace all your current courses, notes and profile with the content of the backup file. This cannot be undone.';
+
+  @override
+  String get backupImportConfirmButton => 'Replace and restore';
+
+  @override
+  String backupImportSuccess(int courses, int notes, int deadlines) {
+    return 'Restored $courses courses, $notes notes and $deadlines deadlines.';
+  }
+
+  @override
+  String get deadlinesTabLabel => 'Deadlines';
+
+  @override
+  String get deadlineTypeExam => 'Exam';
+
+  @override
+  String get deadlineTypeHomework => 'Homework';
+
+  @override
+  String get deadlineTypeOther => 'Other';
+
+  @override
+  String get deadlineTypeLabel => 'Type';
+
+  @override
+  String get addDeadlineTitle => 'New deadline';
+
+  @override
+  String get editDeadlineTitle => 'Edit deadline';
+
+  @override
+  String get deadlineDetailsTitle => 'Deadline details';
+
+  @override
+  String get deadlineDueDateLabel => 'Date and time';
+
+  @override
+  String get deadlineReminderLabel => 'Reminder';
+
+  @override
+  String get deadlineNotesLabel => 'Notes (optional)';
+
+  @override
+  String get deadlineNoSubject => 'No subject';
+
+  @override
+  String get deadlineNotFound => 'Deadline not found';
+
+  @override
+  String get deadlineMarkComplete => 'Mark as done';
+
+  @override
+  String get deadlineMarkIncomplete => 'Mark as not done';
+
+  @override
+  String get deadlinesFilterUpcoming => 'Upcoming';
+
+  @override
+  String get deadlinesFilterLate => 'Late';
+
+  @override
+  String get deadlinesFilterCompleted => 'Done';
+
+  @override
+  String get deadlinesEmptyUpcoming => 'No upcoming deadlines';
+
+  @override
+  String get deadlinesEmptyLate => 'No late deadlines';
+
+  @override
+  String get deadlinesEmptyCompleted => 'No completed deadlines';
+
+  @override
+  String get deadlineDueToday => 'Today';
+
+  @override
+  String get deadlineDueTomorrow => 'Tomorrow';
+
+  @override
+  String deadlineDueInDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'days',
+      one: 'day',
+    );
+    return 'In $days $_temp0';
+  }
+
+  @override
+  String deadlineOverdueDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'days',
+      one: 'day',
+    );
+    return 'Late by $days $_temp0';
+  }
+
+  @override
+  String get reminderNone => 'No reminder';
+
+  @override
+  String reminderMinutesBefore(int minutes) {
+    return '$minutes minutes before';
+  }
+
+  @override
+  String reminderHoursBefore(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: 'hours',
+      one: 'hour',
+    );
+    return '$hours $_temp0 before';
+  }
+
+  @override
+  String reminderDaysBefore(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'days',
+      one: 'day',
+    );
+    return '$days $_temp0 before';
+  }
+
+  @override
+  String deadlineNotificationTitle(Object title) {
+    return 'Deadline: $title';
+  }
+
+  @override
+  String deadlineNotificationBody(Object date) {
+    return 'Due $date';
+  }
+
+  @override
+  String backupImportError(Object error) {
+    return 'Restore failed: $error';
+  }
+
+  @override
+  String get switchToLightMode => 'Switch to light mode';
+
+  @override
+  String get switchToDarkMode => 'Switch to dark mode';
 
   @override
   String get apiSettingsTitle => 'API settings';

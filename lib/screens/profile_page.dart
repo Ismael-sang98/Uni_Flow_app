@@ -9,6 +9,7 @@ import '../models/student_profile.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/theme_provider.dart';
 import 'api_settings_page.dart';
+import 'backup_restore_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -131,6 +132,12 @@ class _ProfilePageState extends State<ProfilePage> {
         return;
       }
 
+      // department n'est jamais saisi manuellement (uniquement rempli par la
+      // synchro OBS, voir StudentProfile.department) : on le préserve donc
+      // depuis le profil existant plutôt que de le perdre à chaque édition.
+      final existingDepartment =
+          (_settingsBox.get('profile') as StudentProfile?)?.department;
+
       final newProfile = StudentProfile(
         name: _nameController.text,
         className: _classController.text,
@@ -138,6 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
         profilePicturePath: _profileImagePath ?? '',
         faculty: _facultyController.text,
         subjects: _subjects, // On sauvegarde la liste
+        department: existingDepartment,
       );
 
       try {
@@ -244,29 +252,53 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         actions: [
-          // --- BOUTON DE CHANGEMENT DE THÈME ---
-          Row(
-            children: [
-              Icon(isDark ? Icons.dark_mode : Icons.light_mode, size: 20),
-              Switch(
-                value: isDark,
-                activeThumbColor: const Color(0xFF6C63FF),
-                onChanged: (val) {
-                  context.read<ThemeProvider>().toggleTheme(val);
-                },
+          // Bascule de thème : une seule icône plutôt qu'icône+Switch, pour
+          // ne pas surcharger la barre à côté des autres actions.
+          IconButton(
+            icon: Icon(isDark ? Icons.dark_mode : Icons.light_mode),
+            tooltip: isDark
+                ? l10n.switchToLightMode
+                : l10n.switchToDarkMode,
+            onPressed: () =>
+                context.read<ThemeProvider>().toggleTheme(!isDark),
+          ),
+          // Réglages API et sauvegarde regroupés dans un menu : ce sont des
+          // actions de configuration ponctuelles, pas besoin qu'elles soient
+          // toutes deux visibles en permanence à côté de l'action principale
+          // (modifier le profil).
+          PopupMenuButton<VoidCallback>(
+            icon: const Icon(Icons.more_vert),
+            onSelected: (action) => action(),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ApiSettingsPage()),
+                ),
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.api_outlined),
+                  title: Text(l10n.apiSettingsTitle),
+                ),
+              ),
+              PopupMenuItem(
+                value: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const BackupRestorePage(),
+                  ),
+                ),
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.backup_outlined),
+                  title: Text(l10n.backupRestoreTitle),
+                ),
               ),
             ],
           ),
           IconButton(
-            icon: const Icon(Icons.api_outlined),
-            tooltip: l10n.apiSettingsTitle,
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const ApiSettingsPage()),
-            ),
-          ),
-          IconButton(
             icon: const Icon(Icons.edit),
+            tooltip: l10n.labMdPr,
             onPressed: () {
               _refreshControllersFromProfile();
               setState(() => _isEditing = true);
@@ -285,6 +317,8 @@ class _ProfilePageState extends State<ProfilePage> {
           final name = profile?.name ?? _nameController.text;
           final schoolName = profile?.schoolName ?? _schoolController.text;
           final faculty = profile?.faculty ?? _facultyController.text;
+          final department = profile?.department?.trim();
+          final hasDepartment = department != null && department.isNotEmpty;
           final className = profile?.className ?? _classController.text;
           final profileImagePath =
               profile?.profilePicturePath ?? _profileImagePath;
@@ -382,8 +416,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       const SizedBox(height: 12),
                       _buildInfoCard(
                         icon: Icons.account_balance,
-                        label: l10n.labFkt,
-                        value: faculty,
+                        label: hasDepartment ? l10n.labDept : l10n.labFkt,
+                        value: hasDepartment ? department : faculty,
                       ),
                       const SizedBox(height: 12),
                       _buildInfoCard(

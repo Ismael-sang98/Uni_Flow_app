@@ -21,6 +21,7 @@
     "btMod": "Edit",
     "labNom" : "Full name",
     "labFkt" : "Faculty",
+    "labDept" : "Department",
     "labCl" : "Class",
     "labEc" : "School",
     "labSsMat": "Enter your lessons",
@@ -28,7 +29,7 @@
     "btnEnregistrerProfil": "Save profile",
     "addTask": "New Duty",
     "taskTitle": "Title",
-    "notesLibrary": "Notes Library",
+    "notesLibrary": "Notes",
     "addNote": "New Note",
     "noteTitle": "Title",
     "noteSubject": "Subject",
@@ -110,11 +111,14 @@
     "later": "Later",
     "openSettings": "Open settings",
     "courseReminderTitle": "Course reminder!",
-    "courseReminderBody": "Your course of {courseTitle} starts in 10 minutes{locationSuffix}.",
+    "courseReminderBody": "Your course of {courseTitle} starts in {minutes} minutes{locationSuffix}.",
     "@courseReminderBody": {
         "placeholders": {
             "courseTitle": {},
-            "locationSuffix": {}
+            "locationSuffix": {},
+            "minutes": {
+                "type": "int"
+            }
         }
     },
     "courseReminderLocationSuffix": " in room {room}",
@@ -136,11 +140,14 @@
     },
     "madeWithLoveBy": "Made with love by ",
     "weeklyNotificationScheduled": "✓ Weekly notification scheduled",
-    "weeklyReminderMessage": "Reminder every week 10 min before \"{courseName}\" on {date}",
+    "weeklyReminderMessage": "Reminder every week {minutes} min before \"{courseName}\" on {date}",
     "@weeklyReminderMessage": {
         "placeholders": {
             "courseName": {},
-            "date": {}
+            "date": {},
+            "minutes": {
+                "type": "int"
+            }
         }
     },
     "courseTooClose": "Course too close",
@@ -292,6 +299,119 @@
     "notesGlobalSearchTitle": "Search all notebooks",
     "notesGlobalSearchHint": "Search notes...",
     "notesGlobalSearchPrompt": "Search notes across all notebooks",
+    "backupRestoreTitle": "Backup & restore",
+    "backupExportButton": "Export my data",
+    "backupExportDescription": "Save all your courses, notes and images into a single file you can store anywhere (Drive, email, ...). Free, no account needed.",
+    "backupExportShareText": "UniFlow backup",
+    "backupExportError": "Export failed: {error}",
+    "@backupExportError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "backupImportButton": "Restore from a backup",
+    "backupImportDescription": "Restore your courses, notes and profile from a previously exported backup file.",
+    "backupImportConfirmTitle": "Replace current data?",
+    "backupImportConfirmMessage": "Restoring this backup will permanently replace all your current courses, notes and profile with the content of the backup file. This cannot be undone.",
+    "backupImportConfirmButton": "Replace and restore",
+    "backupImportSuccess": "Restored {courses} courses, {notes} notes and {deadlines} deadlines.",
+    "@backupImportSuccess": {
+        "placeholders": {
+            "courses": {
+                "type": "int"
+            },
+            "notes": {
+                "type": "int"
+            },
+            "deadlines": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlinesTabLabel": "Deadlines",
+    "deadlineTypeExam": "Exam",
+    "deadlineTypeHomework": "Homework",
+    "deadlineTypeOther": "Other",
+    "deadlineTypeLabel": "Type",
+    "addDeadlineTitle": "New deadline",
+    "editDeadlineTitle": "Edit deadline",
+    "deadlineDetailsTitle": "Deadline details",
+    "deadlineDueDateLabel": "Date and time",
+    "deadlineReminderLabel": "Reminder",
+    "deadlineNotesLabel": "Notes (optional)",
+    "deadlineNoSubject": "No subject",
+    "deadlineNotFound": "Deadline not found",
+    "deadlineMarkComplete": "Mark as done",
+    "deadlineMarkIncomplete": "Mark as not done",
+    "deadlinesFilterUpcoming": "Upcoming",
+    "deadlinesFilterLate": "Late",
+    "deadlinesFilterCompleted": "Done",
+    "deadlinesEmptyUpcoming": "No upcoming deadlines",
+    "deadlinesEmptyLate": "No late deadlines",
+    "deadlinesEmptyCompleted": "No completed deadlines",
+    "deadlineDueToday": "Today",
+    "deadlineDueTomorrow": "Tomorrow",
+    "deadlineDueInDays": "In {days} {days, plural, =1{day} other{days}}",
+    "@deadlineDueInDays": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineOverdueDays": "Late by {days} {days, plural, =1{day} other{days}}",
+    "@deadlineOverdueDays": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "reminderNone": "No reminder",
+    "reminderMinutesBefore": "{minutes} minutes before",
+    "@reminderMinutesBefore": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "reminderHoursBefore": "{hours} {hours, plural, =1{hour} other{hours}} before",
+    "@reminderHoursBefore": {
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "reminderDaysBefore": "{days} {days, plural, =1{day} other{days}} before",
+    "@reminderDaysBefore": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineNotificationTitle": "Deadline: {title}",
+    "@deadlineNotificationTitle": {
+        "placeholders": {
+            "title": {}
+        }
+    },
+    "deadlineNotificationBody": "Due {date}",
+    "@deadlineNotificationBody": {
+        "placeholders": {
+            "date": {}
+        }
+    },
+    "backupImportError": "Restore failed: {error}",
+    "@backupImportError": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "switchToLightMode": "Switch to light mode",
+    "switchToDarkMode": "Switch to dark mode",
     "apiSettingsTitle": "API settings",
     "apiSettingsBaseUrlLabel": "Backend base URL",
     "apiSettingsBaseUrlHint": "https://my-app.onrender.com",
