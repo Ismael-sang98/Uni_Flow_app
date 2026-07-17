@@ -40,6 +40,7 @@
     "addFromCamera": "Caméra",
     "noImagesYet": "Aucune image pour l'instant.",
     "noteTagsHelp": "Les tags servent à classer et retrouver les notes (ex: examen, chapitre).",
+    "noteTagsAddMore": "Ajouter un tag...",
     "notesEmpty": "Aucune note pour l'instant.",
     "noteDetails": "Détails de la note",
     "editNote": "Modifier la note",
@@ -263,6 +264,34 @@
     "notesOrCustomName": "Ou créer un cahier personnalisé",
     "search": "Rechercher...",
     "notesSearchEmpty": "Aucune note trouvée",
+    "undo": "Annuler",
+    "notePin": "Épingler la note",
+    "noteUnpin": "Désépingler la note",
+    "moveToTrash": "Déplacer vers la corbeille",
+    "noteMovedToTrashMessage": "Note déplacée vers la corbeille",
+    "notesTrashTitle": "Corbeille",
+    "notesEmptyTrash": "Vider la corbeille",
+    "notesEmptyTrashPrompt": "Supprimer définitivement {count} {count, plural, =1{note} other{notes}} de la corbeille ? Cette action est irréversible.",
+    "@notesEmptyTrashPrompt": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "notesTrashEmpty": "La corbeille est vide",
+    "notesTrashDaysLeft": "{days, plural, =0{Moins d'un jour avant suppression définitive} =1{1 jour avant suppression définitive} other{{days} jours avant suppression définitive}}",
+    "@notesTrashDaysLeft": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "notesRestoreNote": "Restaurer",
+    "notesGlobalSearchTitle": "Rechercher dans tous les cahiers",
+    "notesGlobalSearchHint": "Rechercher des notes...",
+    "notesGlobalSearchPrompt": "Recherchez une note dans tous les cahiers",
     "apiSettingsTitle": "Réglages API",
     "apiSettingsBaseUrlLabel": "URL de base du backend",
     "apiSettingsBaseUrlHint": "https://mon-app.onrender.com",

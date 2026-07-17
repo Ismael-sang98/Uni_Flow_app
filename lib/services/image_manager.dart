@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart' as fp;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import '../models/study_note.dart';
 
 /// Service de gestion centralisée des images
 class ImageManager {
@@ -106,6 +107,19 @@ class ImageManager {
       savedPaths.add(saved.path);
     }
     return savedPaths;
+  }
+
+  /// Supprime du disque les fichiers (images + pièces jointes) d'une note
+  /// purgée définitivement (corbeille vidée ou purge automatique après
+  /// [kTrashRetentionDuration]) — sans ça, ces fichiers resteraient
+  /// orphelins indéfiniment dans le dossier documents de l'app.
+  Future<void> deleteNoteFiles(StudyNote note) async {
+    for (final path in [...note.imagePaths, ...note.attachmentPaths]) {
+      final file = File(path);
+      if (await file.exists()) {
+        await file.delete();
+      }
+    }
   }
 
   /// Partager une image

@@ -1,8 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Requis pour les appels réseau (ApiConfigService/FullSyncService,
+         GitHub UpdateChecker) : sans elle, l'app n'a JAMAIS accès à internet
+         en build release. Flutter l'ajoute automatiquement aux builds
+         debug/profile pour son propre canal hot-reload, ce qui masque son
+         absence tant qu'on ne teste qu'en debug. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <!-- AJOUTER CES LIGNES POUR LES NOTIFICATIONS -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />

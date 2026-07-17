@@ -11,11 +11,14 @@ import '../mixins/form_validation_mixin.dart';
 import '../models/student_profile.dart';
 import '../models/study_note.dart';
 import '../providers/notes_provider.dart';
-import '../services/confirm_deletion.dart';
 import '../services/image_manager.dart';
+import '../utils/notebook_color.dart';
 import '../widgets/image_caption_dialog.dart';
 import '../widgets/image_grid_widget.dart';
 import '../widgets/image_preview_dialog.dart';
+import '../widgets/notebook_picker.dart';
+import '../widgets/ruled_paper_background.dart';
+import '../widgets/tag_input_field.dart';
 
 class NoteDetailsPage extends StatefulWidget {
   final StudyNote note;
@@ -30,21 +33,23 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
     with FormValidationMixin {
   late TextEditingController _titleController;
   late TextEditingController _contentController;
-  late TextEditingController _tagsController;
   final ImageManager _imageManager = ImageManager();
   String? _selectedSubject;
   bool _isEditing = false;
+  bool _isPinned = false;
   List<String> _imagePaths = [];
   List<String> _attachmentPaths = [];
   Map<String, String> _imageCaptions = {};
+  List<String> _tags = [];
 
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.note.title);
     _contentController = TextEditingController(text: widget.note.content);
-    _tagsController = TextEditingController(text: widget.note.tags.join(', '));
+    _tags = List<String>.from(widget.note.tags);
     _selectedSubject = widget.note.subject;
+    _isPinned = widget.note.isPinned;
     _imagePaths = List<String>.from(widget.note.imagePaths);
     _attachmentPaths = List<String>.from(widget.note.attachmentPaths);
     _imageCaptions = Map<String, String>.from(widget.note.imageCaptions);
@@ -65,7 +70,6 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
     _contentController.removeListener(_onFormChanged);
     _titleController.dispose();
     _contentController.dispose();
-    _tagsController.dispose();
     disposeFormValidation();
     super.dispose();
   }
@@ -84,12 +88,6 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
 
     // Note: Image captions are now optional - validation removed
 
-    final tags = _tagsController.text
-        .split(',')
-        .map((tag) => tag.trim())
-        .where((tag) => tag.isNotEmpty)
-        .toList();
-
     final updatedNote = StudyNote(
       id: widget.note.id,
       title: title,
@@ -97,10 +95,11 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
       subject: _selectedSubject,
       createdAt: widget.note.createdAt,
       updatedAt: DateTime.now(),
-      tags: tags,
+      tags: _tags,
       imagePaths: _imagePaths,
       attachmentPaths: _attachmentPaths,
       imageCaptions: _imageCaptions,
+      isPinned: _isPinned,
     );
 
     await context.read<NotesProvider>().updateNote(updatedNote);
@@ -108,13 +107,34 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
     setState(() => _isEditing = false);
   }
 
-  Future<void> _deleteNote() async {
-    final confirmed = await confirmDeletion(context, widget.note.title);
-    if (!confirmed) return;
+  Future<void> _togglePin() async {
+    await context.read<NotesProvider>().togglePin(widget.note.id);
     if (!mounted) return;
-    await context.read<NotesProvider>().deleteNote(widget.note.id);
+    setState(() => _isPinned = !_isPinned);
+  }
+
+  Future<void> _deleteNote() async {
+    final l10n = AppLocalizations.of(context)!;
+    // Capturés avant le pop : le messenger appartient à l'écran parent (donc
+    // reste valide après la fermeture de cette page), et le provider est un
+    // ChangeNotifier applicatif dont la référence n'a pas besoin de context.
+    final messenger = ScaffoldMessenger.of(context);
+    final notesProvider = context.read<NotesProvider>();
+    final noteId = widget.note.id;
+
+    await notesProvider.softDeleteNote(noteId);
     if (!mounted) return;
     Navigator.pop(context);
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(l10n.noteMovedToTrashMessage),
+        duration: UIConstants.snackBarDuration,
+        action: SnackBarAction(
+          label: l10n.undo,
+          onPressed: () => notesProvider.restoreNote(noteId),
+        ),
+      ),
+    );
   }
 
   @override
@@ -154,6 +174,11 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
       appBar: AppBar(
         title: Text(l10n.noteDetails),
         actions: [
+          IconButton(
+            onPressed: _togglePin,
+            icon: Icon(_isPinned ? Icons.push_pin : Icons.push_pin_outlined),
+            tooltip: _isPinned ? l10n.noteUnpin : l10n.notePin,
+          ),
           if (_isEditing)
             ValueListenableBuilder<bool>(
               valueListenable: isValidNotifier,
@@ -195,7 +220,7 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
               _buildDisplayHeader(l10n, createdAt, updatedAt),
               const SizedBox(height: 16),
               _buildContentViewer(),
-              if (_tagsController.text.trim().isNotEmpty) ...[
+              if (_tags.isNotEmpty) ...[
                 const SizedBox(height: 16),
                 _buildTagChips(),
               ],
@@ -245,7 +270,11 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
           runSpacing: 8,
           children: [
             if (subject != null && subject.isNotEmpty)
-              _buildPill(icon: Icons.school_rounded, label: subject),
+              _buildPill(
+                icon: Icons.school_rounded,
+                label: subject,
+                color: notebookColorFor(subject),
+              ),
             _buildPill(
               icon: Icons.calendar_today_rounded,
               label: l10n.noteCreatedAt(createdAt),
@@ -265,7 +294,9 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
     AppLocalizations l10n,
     List<String> availableSubjects,
   ) {
+    final accentColor = notebookColorFor(_selectedSubject);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ValueListenableBuilder<bool>(
           valueListenable: isValidNotifier,
@@ -273,80 +304,69 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
             final titleEmpty = _titleController.text.trim().isEmpty;
             return TextField(
               controller: _titleController,
+              style: const TextStyle(
+                fontSize: UIConstants.fontSize22,
+                fontWeight: FontWeight.w700,
+              ),
               decoration: InputDecoration(
-                labelText: l10n.noteTitle,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    UIConstants.borderRadius14,
-                  ),
+                hintText: l10n.noteTitle,
+                border: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: titleEmpty
                         ? Colors.red.withValues(alpha: UIConstants.opacity30)
-                        : Colors.green.withValues(alpha: UIConstants.opacity30),
+                        : accentColor.withValues(alpha: UIConstants.opacity60),
+                    width: 2,
                   ),
                 ),
-                suffixIcon: titleEmpty
-                    ? const Icon(
-                        Icons.clear,
-                        color: Colors.red,
-                        size: UIConstants.iconSize20,
-                      )
-                    : const Icon(
-                        Icons.check_circle,
-                        color: Colors.green,
-                        size: UIConstants.iconSize20,
-                      ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: accentColor, width: 2),
+                ),
               ),
             );
           },
         ),
         const SizedBox(height: 16),
-        DropdownButtonFormField<String>(
-          initialValue: _selectedSubject,
-          decoration: InputDecoration(
-            labelText: l10n.notesNotebook,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(UIConstants.borderRadius14),
-            ),
+        Text(
+          l10n.notesNotebook,
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: UIConstants.fontSize12,
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: UIConstants.opacity70),
           ),
-          items: availableSubjects.isEmpty
-              ? null
-              : availableSubjects
-                    .map(
-                      (title) =>
-                          DropdownMenuItem(value: title, child: Text(title)),
-                    )
-                    .toList(),
-          onChanged: (val) => setState(() => _selectedSubject = val),
-          hint: availableSubjects.isEmpty ? Text(l10n.notesNoNotebook) : null,
+        ),
+        const SizedBox(height: UIConstants.spacing8),
+        NotebookPicker(
+          availableNotebooks: availableSubjects,
+          selected: _selectedSubject,
+          onSelected: (value) => setState(() => _selectedSubject = value),
         ),
       ],
     );
   }
 
   Widget _buildContentViewer() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: UIConstants.opacity04),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+    final accentColor = notebookColorFor(_selectedSubject);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(UIConstants.borderRadius16),
+      child: RuledPaperBackground(
+        accentColor: accentColor,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(36, 16, 16, 16),
+          color: Theme.of(context).cardColor,
+          child: SelectableText(
+            _contentController.text,
+            style: const TextStyle(height: 1.75, fontSize: 16),
           ),
-        ],
-      ),
-      child: SelectableText(
-        _contentController.text,
-        style: const TextStyle(height: 1.5, fontSize: 15),
+        ),
       ),
     );
   }
 
   Widget _buildContentEditor(AppLocalizations l10n) {
+    final accentColor = notebookColorFor(_selectedSubject);
     return ValueListenableBuilder<bool>(
       valueListenable: isValidNotifier,
       builder: (context, isValid, _) {
@@ -354,20 +374,34 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              controller: _contentController,
-              minLines: 8,
-              maxLines: null,
-              decoration: InputDecoration(
-                labelText: l10n.noteContent,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    UIConstants.borderRadius14,
-                  ),
-                  borderSide: BorderSide(
-                    color: contentEmpty
-                        ? Colors.red.withValues(alpha: UIConstants.opacity30)
-                        : Colors.green.withValues(alpha: UIConstants.opacity30),
+            Container(
+              constraints: const BoxConstraints(minHeight: 220),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.circular(UIConstants.borderRadius14),
+                border: Border.all(
+                  color: contentEmpty
+                      ? Colors.red.withValues(alpha: UIConstants.opacity30)
+                      : accentColor.withValues(alpha: UIConstants.opacity30),
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(UIConstants.borderRadius14),
+                child: RuledPaperBackground(
+                  accentColor: accentColor,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(36, 8, 12, 8),
+                    child: TextField(
+                      controller: _contentController,
+                      minLines: 8,
+                      maxLines: null,
+                      style: const TextStyle(fontSize: 16, height: 1.75),
+                      decoration: InputDecoration(
+                        hintText: l10n.noteContent,
+                        border: InputBorder.none,
+                        isCollapsed: true,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -415,29 +449,32 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
   }
 
   Widget _buildTagsEditor(AppLocalizations l10n) {
-    return TextField(
-      controller: _tagsController,
-      decoration: InputDecoration(
-        labelText: l10n.noteTags,
-        helperText: l10n.noteTagsHelp,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(UIConstants.borderRadius14),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.noteTagsHelp,
+          style: TextStyle(
+            fontSize: UIConstants.fontSize12,
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: UIConstants.opacity60),
+          ),
         ),
-      ),
+        const SizedBox(height: UIConstants.spacing8),
+        TagInputField(
+          initialTags: _tags,
+          onChanged: (tags) => _tags = tags,
+        ),
+      ],
     );
   }
 
   Widget _buildTagChips() {
-    final tags = _tagsController.text
-        .split(',')
-        .map((tag) => tag.trim())
-        .where((tag) => tag.isNotEmpty)
-        .toList();
-
     return Wrap(
       spacing: 8,
       runSpacing: 8,
-      children: tags
+      children: _tags
           .map(
             (tag) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -572,29 +609,28 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
     );
   }
 
-  Widget _buildPill({required IconData icon, required String label}) {
+  Widget _buildPill({
+    required IconData icon,
+    required String label,
+    Color? color,
+  }) {
+    final pillColor = color ?? Theme.of(context).colorScheme.primary;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Theme.of(
-          context,
-        ).colorScheme.primary.withValues(alpha: UIConstants.opacity12),
+        color: pillColor.withValues(alpha: UIConstants.opacity12),
         borderRadius: BorderRadius.circular(18),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            size: UIConstants.iconSize14,
-            color: Theme.of(context).colorScheme.primary,
-          ),
+          Icon(icon, size: UIConstants.iconSize14, color: pillColor),
           const SizedBox(width: 6),
           Text(
             label,
             style: TextStyle(
               fontSize: UIConstants.fontSize12,
-              color: Theme.of(context).colorScheme.primary,
+              color: pillColor,
               fontWeight: FontWeight.w600,
             ),
           ),

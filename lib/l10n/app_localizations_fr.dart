@@ -121,6 +121,9 @@ class AppLocalizationsFr extends AppLocalizations {
       'Les tags servent à classer et retrouver les notes (ex: examen, chapitre).';
 
   @override
+  String get noteTagsAddMore => 'Ajouter un tag...';
+
+  @override
   String get notesEmpty => 'Aucune note pour l\'instant.';
 
   @override
@@ -541,6 +544,66 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get notesSearchEmpty => 'Aucune note trouvée';
+
+  @override
+  String get undo => 'Annuler';
+
+  @override
+  String get notePin => 'Épingler la note';
+
+  @override
+  String get noteUnpin => 'Désépingler la note';
+
+  @override
+  String get moveToTrash => 'Déplacer vers la corbeille';
+
+  @override
+  String get noteMovedToTrashMessage => 'Note déplacée vers la corbeille';
+
+  @override
+  String get notesTrashTitle => 'Corbeille';
+
+  @override
+  String get notesEmptyTrash => 'Vider la corbeille';
+
+  @override
+  String notesEmptyTrashPrompt(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'notes',
+      one: 'note',
+    );
+    return 'Supprimer définitivement $count $_temp0 de la corbeille ? Cette action est irréversible.';
+  }
+
+  @override
+  String get notesTrashEmpty => 'La corbeille est vide';
+
+  @override
+  String notesTrashDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days jours avant suppression définitive',
+      one: '1 jour avant suppression définitive',
+      zero: 'Moins d\'un jour avant suppression définitive',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get notesRestoreNote => 'Restaurer';
+
+  @override
+  String get notesGlobalSearchTitle => 'Rechercher dans tous les cahiers';
+
+  @override
+  String get notesGlobalSearchHint => 'Rechercher des notes...';
+
+  @override
+  String get notesGlobalSearchPrompt =>
+      'Recherchez une note dans tous les cahiers';
 
   @override
   String get apiSettingsTitle => 'Réglages API';

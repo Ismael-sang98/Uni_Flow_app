@@ -121,6 +121,9 @@ class AppLocalizationsTr extends AppLocalizations {
       'Etiketler notları gruplar ve aramayı kolaylaştırır (or: sınav, konu).';
 
   @override
+  String get noteTagsAddMore => 'Etiket ekle...';
+
+  @override
   String get notesEmpty => 'Henuz not yok.';
 
   @override
@@ -540,6 +543,65 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get notesSearchEmpty => 'Hiç not bulunamadı';
+
+  @override
+  String get undo => 'Geri al';
+
+  @override
+  String get notePin => 'Notu sabitle';
+
+  @override
+  String get noteUnpin => 'Sabitlemeyi kaldır';
+
+  @override
+  String get moveToTrash => 'Çöp kutusuna taşı';
+
+  @override
+  String get noteMovedToTrashMessage => 'Not çöp kutusuna taşındı';
+
+  @override
+  String get notesTrashTitle => 'Çöp kutusu';
+
+  @override
+  String get notesEmptyTrash => 'Çöp kutusunu boşalt';
+
+  @override
+  String notesEmptyTrashPrompt(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'not',
+      one: 'not',
+    );
+    return 'Çöp kutusundaki $count $_temp0 kalıcı olarak silinsin mi? Bu işlem geri alınamaz.';
+  }
+
+  @override
+  String get notesTrashEmpty => 'Çöp kutusu boş';
+
+  @override
+  String notesTrashDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Kalıcı silinmeden önce $days gün kaldı',
+      one: 'Kalıcı silinmeden önce 1 gün kaldı',
+      zero: 'Kalıcı silinmeden önce bir günden az kaldı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get notesRestoreNote => 'Geri yükle';
+
+  @override
+  String get notesGlobalSearchTitle => 'Tüm defterlerde ara';
+
+  @override
+  String get notesGlobalSearchHint => 'Notlarda ara...';
+
+  @override
+  String get notesGlobalSearchPrompt => 'Tüm defterlerde not arayın';
 
   @override
   String get apiSettingsTitle => 'API ayarları';

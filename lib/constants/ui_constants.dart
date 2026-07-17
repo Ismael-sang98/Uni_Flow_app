@@ -37,6 +37,7 @@ class UIConstants {
   static const double opacity06 = 0.06;
   static const double opacity12 = 0.12;
   static const double opacity30 = 0.30;
+  static const double opacity50 = 0.50;
   static const double opacity60 = 0.60;
   static const double opacity70 = 0.70;
 }

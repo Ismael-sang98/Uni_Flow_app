@@ -316,6 +316,12 @@ abstract class AppLocalizations {
   /// **'Tags help you group and search notes (e.g. exam, chapter).'**
   String get noteTagsHelp;
 
+  /// No description provided for @noteTagsAddMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a tag...'**
+  String get noteTagsAddMore;
+
   /// No description provided for @notesEmpty.
   ///
   /// In en, this message translates to:
@@ -1053,6 +1059,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No notes found'**
   String get notesSearchEmpty;
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @notePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin note'**
+  String get notePin;
+
+  /// No description provided for @noteUnpin.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpin note'**
+  String get noteUnpin;
+
+  /// No description provided for @moveToTrash.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to trash'**
+  String get moveToTrash;
+
+  /// No description provided for @noteMovedToTrashMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Note moved to trash'**
+  String get noteMovedToTrashMessage;
+
+  /// No description provided for @notesTrashTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Trash'**
+  String get notesTrashTitle;
+
+  /// No description provided for @notesEmptyTrash.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty trash'**
+  String get notesEmptyTrash;
+
+  /// No description provided for @notesEmptyTrashPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently delete {count} {count, plural, =1{note} other{notes}} from the trash? This cannot be undone.'**
+  String notesEmptyTrashPrompt(int count);
+
+  /// No description provided for @notesTrashEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Trash is empty'**
+  String get notesTrashEmpty;
+
+  /// No description provided for @notesTrashDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{Less than a day left before permanent deletion} =1{1 day left before permanent deletion} other{{days} days left before permanent deletion}}'**
+  String notesTrashDaysLeft(int days);
+
+  /// No description provided for @notesRestoreNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get notesRestoreNote;
+
+  /// No description provided for @notesGlobalSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search all notebooks'**
+  String get notesGlobalSearchTitle;
+
+  /// No description provided for @notesGlobalSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search notes...'**
+  String get notesGlobalSearchHint;
+
+  /// No description provided for @notesGlobalSearchPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Search notes across all notebooks'**
+  String get notesGlobalSearchPrompt;
 
   /// No description provided for @apiSettingsTitle.
   ///

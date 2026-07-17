@@ -40,6 +40,7 @@
     "addFromCamera": "Camera",
     "noImagesYet": "No images yet.",
     "noteTagsHelp": "Tags help you group and search notes (e.g. exam, chapter).",
+    "noteTagsAddMore": "Add a tag...",
     "notesEmpty": "No notes yet.",
     "noteDetails": "Note details",
     "editNote": "Edit note",
@@ -263,6 +264,34 @@
     "notesOrCustomName": "Or create a custom notebook",
     "search": "Search...",
     "notesSearchEmpty": "No notes found",
+    "undo": "Undo",
+    "notePin": "Pin note",
+    "noteUnpin": "Unpin note",
+    "moveToTrash": "Move to trash",
+    "noteMovedToTrashMessage": "Note moved to trash",
+    "notesTrashTitle": "Trash",
+    "notesEmptyTrash": "Empty trash",
+    "notesEmptyTrashPrompt": "Permanently delete {count} {count, plural, =1{note} other{notes}} from the trash? This cannot be undone.",
+    "@notesEmptyTrashPrompt": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "notesTrashEmpty": "Trash is empty",
+    "notesTrashDaysLeft": "{days, plural, =0{Less than a day left before permanent deletion} =1{1 day left before permanent deletion} other{{days} days left before permanent deletion}}",
+    "@notesTrashDaysLeft": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "notesRestoreNote": "Restore",
+    "notesGlobalSearchTitle": "Search all notebooks",
+    "notesGlobalSearchHint": "Search notes...",
+    "notesGlobalSearchPrompt": "Search notes across all notebooks",
     "apiSettingsTitle": "API settings",
     "apiSettingsBaseUrlLabel": "Backend base URL",
     "apiSettingsBaseUrlHint": "https://my-app.onrender.com",

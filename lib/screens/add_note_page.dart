@@ -11,9 +11,13 @@ import '../models/student_profile.dart';
 import '../models/study_note.dart';
 import '../providers/notes_provider.dart';
 import '../services/image_manager.dart';
+import '../utils/notebook_color.dart';
 import '../widgets/image_caption_dialog.dart';
 import '../widgets/image_grid_widget.dart';
 import '../widgets/image_preview_dialog.dart';
+import '../widgets/notebook_picker.dart';
+import '../widgets/ruled_paper_background.dart';
+import '../widgets/tag_input_field.dart';
 
 class AddNotePage extends StatefulWidget {
   final String? initialNotebook;
@@ -27,10 +31,10 @@ class AddNotePage extends StatefulWidget {
 class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
-  final TextEditingController _tagsController = TextEditingController();
   final List<String> _imagePaths = [];
   final List<String> _attachmentPaths = [];
   final Map<String, String> _imageCaptions = {};
+  List<String> _tags = [];
   final ImageManager _imageManager = ImageManager();
   String? _selectedSubject;
 
@@ -53,7 +57,6 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
     _contentController.removeListener(_onFormChanged);
     _titleController.dispose();
     _contentController.dispose();
-    _tagsController.dispose();
     disposeFormValidation();
     super.dispose();
   }
@@ -83,21 +86,13 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
       return;
     }
 
-    final tags = _tagsController.text
-        .split(',')
-        .map((tag) => tag.trim())
-        .where((tag) => tag.isNotEmpty)
-        .toList();
-
-    // Note: Image captions are now optional - validation removed
-
     final newNote = StudyNote(
       id: const Uuid().v4(),
       title: title,
       content: content,
       subject: _selectedSubject!.trim(),
       createdAt: DateTime.now(),
-      tags: tags,
+      tags: _tags,
       imagePaths: _imagePaths,
       attachmentPaths: _attachmentPaths,
       imageCaptions: _imageCaptions,
@@ -130,6 +125,8 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
   }
 
   Widget _buildScaffold(AppLocalizations l10n, List<String> availableSubjects) {
+    final accentColor = notebookColorFor(_selectedSubject);
+
     return Scaffold(
       appBar: AppBar(title: Text(l10n.addNote)),
       body: SingleChildScrollView(
@@ -142,6 +139,23 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              l10n.notesNotebook,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: UIConstants.fontSize12,
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: UIConstants.opacity70),
+              ),
+            ),
+            const SizedBox(height: UIConstants.spacing8),
+            NotebookPicker(
+              availableNotebooks: availableSubjects,
+              selected: _selectedSubject,
+              onSelected: (value) => setState(() => _selectedSubject = value),
+            ),
+            const SizedBox(height: UIConstants.spacing24),
             ValueListenableBuilder<bool>(
               valueListenable: isValidNotifier,
               builder: (context, isValid, _) {
@@ -149,147 +163,45 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
                 return TextField(
                   controller: _titleController,
                   textInputAction: TextInputAction.next,
+                  style: const TextStyle(
+                    fontSize: UIConstants.fontSize22,
+                    fontWeight: FontWeight.w700,
+                  ),
                   decoration: InputDecoration(
-                    labelText: l10n.noteTitle,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                        UIConstants.borderRadius14,
-                      ),
+                    hintText: l10n.noteTitle,
+                    filled: false,
+                    border: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: titleEmpty
-                            ? Colors.red.withValues(
-                                alpha: UIConstants.opacity30,
-                              )
-                            : Colors.green.withValues(
-                                alpha: UIConstants.opacity30,
-                              ),
+                            ? Colors.red.withValues(alpha: UIConstants.opacity30)
+                            : accentColor.withValues(alpha: UIConstants.opacity60),
+                        width: 2,
                       ),
                     ),
-                    suffixIcon: titleEmpty
-                        ? const Icon(
-                            Icons.clear,
-                            color: Colors.red,
-                            size: UIConstants.iconSize20,
-                          )
-                        : const Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                            size: UIConstants.iconSize20,
-                          ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: accentColor, width: 2),
+                    ),
                   ),
                 );
               },
             ),
             const SizedBox(height: UIConstants.spacing16),
-            DropdownButtonFormField<String>(
-              initialValue: _selectedSubject,
-              decoration: InputDecoration(
-                labelText: l10n.notesNotebook,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    UIConstants.borderRadius14,
-                  ),
-                ),
-              ),
-              items: availableSubjects.isEmpty
-                  ? null
-                  : availableSubjects
-                        .map(
-                          (title) => DropdownMenuItem(
-                            value: title,
-                            child: Text(title),
-                          ),
-                        )
-                        .toList(),
-              onChanged: (val) => setState(() => _selectedSubject = val),
-              hint: availableSubjects.isEmpty
-                  ? Text(l10n.notesNoNotebook)
-                  : null,
-            ),
+            _buildPaperContentEditor(l10n, accentColor),
             const SizedBox(height: UIConstants.spacing16),
-            ValueListenableBuilder<bool>(
-              valueListenable: isValidNotifier,
-              builder: (context, isValid, _) {
-                final contentEmpty = _contentController.text.trim().isEmpty;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextField(
-                      controller: _contentController,
-                      textInputAction: TextInputAction.newline,
-                      minLines: 8,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                        labelText: l10n.noteContent,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            UIConstants.borderRadius14,
-                          ),
-                          borderSide: BorderSide(
-                            color: contentEmpty
-                                ? Colors.red.withValues(
-                                    alpha: UIConstants.opacity30,
-                                  )
-                                : Colors.green.withValues(
-                                    alpha: UIConstants.opacity30,
-                                  ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: UIConstants.spacing8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ValueListenableBuilder<int>(
-                          valueListenable: contentLengthNotifier,
-                          builder: (context, length, _) {
-                            return Text(
-                              l10n.charactersCount(length),
-                              style: TextStyle(
-                                fontSize: UIConstants.fontSize12,
-                                color: Theme.of(context).colorScheme.onSurface
-                                    .withValues(alpha: UIConstants.opacity60),
-                              ),
-                            );
-                          },
-                        ),
-                        if (contentEmpty)
-                          Text(
-                            l10n.requiredField,
-                            style: TextStyle(
-                              fontSize: UIConstants.fontSize12,
-                              color: Colors.red.withValues(
-                                alpha: UIConstants.opacity70,
-                              ),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )
-                        else
-                          const Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                            size: UIConstants.iconSize16,
-                          ),
-                      ],
-                    ),
-                  ],
-                );
-              },
-            ),
-            const SizedBox(height: UIConstants.spacing16),
-            TextField(
-              controller: _tagsController,
-              textInputAction: TextInputAction.done,
-              decoration: InputDecoration(
-                labelText: l10n.noteTags,
-                helperText: l10n.noteTagsHelp,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    UIConstants.borderRadius14,
-                  ),
-                ),
+            Text(
+              l10n.noteTags,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: UIConstants.fontSize12,
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: UIConstants.opacity70),
               ),
+            ),
+            const SizedBox(height: UIConstants.spacing8),
+            TagInputField(
+              initialTags: _tags,
+              onChanged: (tags) => _tags = tags,
             ),
             const SizedBox(height: UIConstants.spacing16),
             _buildAttachmentsSection(l10n),
@@ -317,6 +229,11 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
                   icon: const Icon(Icons.save_outlined),
                   label: Text(l10n.save),
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: accentColor,
+                    foregroundColor: Colors.white,
+                    disabledBackgroundColor: accentColor.withValues(
+                      alpha: UIConstants.opacity30,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                         UIConstants.borderRadius16,
@@ -329,6 +246,91 @@ class _AddNotePageState extends State<AddNotePage> with FormValidationMixin {
           );
         },
       ),
+    );
+  }
+
+  /// Zone de contenu façon page de cahier : lignes horizontales + marge
+  /// rouge derrière le TextField, hauteur de ligne du texte calée sur
+  /// l'espacement des lignes dessinées pour que le texte "pose" dessus.
+  Widget _buildPaperContentEditor(AppLocalizations l10n, Color accentColor) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: isValidNotifier,
+      builder: (context, isValid, _) {
+        final contentEmpty = _contentController.text.trim().isEmpty;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              constraints: const BoxConstraints(minHeight: 220),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.circular(UIConstants.borderRadius14),
+                border: Border.all(
+                  color: contentEmpty
+                      ? Colors.red.withValues(alpha: UIConstants.opacity30)
+                      : accentColor.withValues(alpha: UIConstants.opacity30),
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(UIConstants.borderRadius14),
+                child: RuledPaperBackground(
+                  accentColor: accentColor,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(36, 8, 12, 8),
+                    child: TextField(
+                      controller: _contentController,
+                      minLines: 8,
+                      maxLines: null,
+                      style: const TextStyle(fontSize: 16, height: 1.75),
+                      decoration: InputDecoration(
+                        hintText: l10n.noteContent,
+                        border: InputBorder.none,
+                        isCollapsed: true,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ValueListenableBuilder<int>(
+                  valueListenable: contentLengthNotifier,
+                  builder: (context, length, _) {
+                    return Text(
+                      l10n.charactersCount(length),
+                      style: TextStyle(
+                        fontSize: UIConstants.fontSize12,
+                        color: Theme.of(context).colorScheme.onSurface
+                            .withValues(alpha: UIConstants.opacity60),
+                      ),
+                    );
+                  },
+                ),
+                if (contentEmpty)
+                  Text(
+                    l10n.requiredField,
+                    style: TextStyle(
+                      fontSize: UIConstants.fontSize12,
+                      color: Colors.red.withValues(
+                        alpha: UIConstants.opacity70,
+                      ),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  )
+                else
+                  const Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                    size: UIConstants.iconSize16,
+                  ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 

@@ -40,6 +40,7 @@
     "addFromCamera": "Kamera",
     "noImagesYet": "Henuz gorsel yok.",
     "noteTagsHelp": "Etiketler notları gruplar ve aramayı kolaylaştırır (or: sınav, konu).",
+    "noteTagsAddMore": "Etiket ekle...",
     "notesEmpty": "Henuz not yok.",
     "noteDetails": "Not detayları",
     "editNote": "Notu düzenle",
@@ -263,6 +264,34 @@
     "notesOrCustomName": "Veya özel bir defter oluşturun",
     "search": "Ara...",
     "notesSearchEmpty": "Hiç not bulunamadı",
+    "undo": "Geri al",
+    "notePin": "Notu sabitle",
+    "noteUnpin": "Sabitlemeyi kaldır",
+    "moveToTrash": "Çöp kutusuna taşı",
+    "noteMovedToTrashMessage": "Not çöp kutusuna taşındı",
+    "notesTrashTitle": "Çöp kutusu",
+    "notesEmptyTrash": "Çöp kutusunu boşalt",
+    "notesEmptyTrashPrompt": "Çöp kutusundaki {count} {count, plural, =1{not} other{not}} kalıcı olarak silinsin mi? Bu işlem geri alınamaz.",
+    "@notesEmptyTrashPrompt": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "notesTrashEmpty": "Çöp kutusu boş",
+    "notesTrashDaysLeft": "{days, plural, =0{Kalıcı silinmeden önce bir günden az kaldı} =1{Kalıcı silinmeden önce 1 gün kaldı} other{Kalıcı silinmeden önce {days} gün kaldı}}",
+    "@notesTrashDaysLeft": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "notesRestoreNote": "Geri yükle",
+    "notesGlobalSearchTitle": "Tüm defterlerde ara",
+    "notesGlobalSearchHint": "Notlarda ara...",
+    "notesGlobalSearchPrompt": "Tüm defterlerde not arayın",
     "apiSettingsTitle": "API ayarları",
     "apiSettingsBaseUrlLabel": "Backend temel URL'si",
     "apiSettingsBaseUrlHint": "https://uygulamam.onrender.com",

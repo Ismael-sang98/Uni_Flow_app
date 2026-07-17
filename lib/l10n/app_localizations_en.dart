@@ -121,6 +121,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Tags help you group and search notes (e.g. exam, chapter).';
 
   @override
+  String get noteTagsAddMore => 'Add a tag...';
+
+  @override
   String get notesEmpty => 'No notes yet.';
 
   @override
@@ -540,6 +543,65 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notesSearchEmpty => 'No notes found';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String get notePin => 'Pin note';
+
+  @override
+  String get noteUnpin => 'Unpin note';
+
+  @override
+  String get moveToTrash => 'Move to trash';
+
+  @override
+  String get noteMovedToTrashMessage => 'Note moved to trash';
+
+  @override
+  String get notesTrashTitle => 'Trash';
+
+  @override
+  String get notesEmptyTrash => 'Empty trash';
+
+  @override
+  String notesEmptyTrashPrompt(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'notes',
+      one: 'note',
+    );
+    return 'Permanently delete $count $_temp0 from the trash? This cannot be undone.';
+  }
+
+  @override
+  String get notesTrashEmpty => 'Trash is empty';
+
+  @override
+  String notesTrashDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days left before permanent deletion',
+      one: '1 day left before permanent deletion',
+      zero: 'Less than a day left before permanent deletion',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get notesRestoreNote => 'Restore';
+
+  @override
+  String get notesGlobalSearchTitle => 'Search all notebooks';
+
+  @override
+  String get notesGlobalSearchHint => 'Search notes...';
+
+  @override
+  String get notesGlobalSearchPrompt => 'Search notes across all notebooks';
 
   @override
   String get apiSettingsTitle => 'API settings';

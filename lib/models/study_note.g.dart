@@ -27,13 +27,16 @@ class StudyNoteAdapter extends TypeAdapter<StudyNote> {
       imagePaths: (fields[7] as List?)?.cast<String>(),
       attachmentPaths: (fields[8] as List?)?.cast<String>(),
       imageCaptions: (fields[9] as Map?)?.cast<String, String>(),
+      isPinned: fields[10] == null ? false : fields[10] as bool,
+      isDeleted: fields[11] == null ? false : fields[11] as bool,
+      deletedAt: fields[12] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, StudyNote obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -53,7 +56,13 @@ class StudyNoteAdapter extends TypeAdapter<StudyNote> {
       ..writeByte(8)
       ..write(obj.attachmentPaths)
       ..writeByte(9)
-      ..write(obj.imageCaptions);
+      ..write(obj.imageCaptions)
+      ..writeByte(10)
+      ..write(obj.isPinned)
+      ..writeByte(11)
+      ..write(obj.isDeleted)
+      ..writeByte(12)
+      ..write(obj.deletedAt);
   }
 
   @override

@@ -34,6 +34,18 @@ class StudyNote {
   @HiveField(9)
   final Map<String, String> imageCaptions;
 
+  // defaultValue is required here so notes saved before this field existed
+  // (which have no byte 10/11 at all) deserialize as false instead of
+  // crashing on a null-as-bool cast.
+  @HiveField(10, defaultValue: false)
+  final bool isPinned;
+
+  @HiveField(11, defaultValue: false)
+  final bool isDeleted;
+
+  @HiveField(12)
+  final DateTime? deletedAt;
+
   StudyNote({
     required this.id,
     required this.title,
@@ -45,6 +57,9 @@ class StudyNote {
     List<String>? imagePaths,
     List<String>? attachmentPaths,
     Map<String, String>? imageCaptions,
+    this.isPinned = false,
+    this.isDeleted = false,
+    this.deletedAt,
   }) : imagePaths = imagePaths ?? const [],
        attachmentPaths = attachmentPaths ?? const [],
        imageCaptions = imageCaptions ?? const {};
@@ -60,6 +75,9 @@ class StudyNote {
     List<String>? imagePaths,
     List<String>? attachmentPaths,
     Map<String, String>? imageCaptions,
+    bool? isPinned,
+    bool? isDeleted,
+    DateTime? deletedAt,
   }) {
     return StudyNote(
       id: id ?? this.id,
@@ -72,6 +90,9 @@ class StudyNote {
       imagePaths: imagePaths ?? this.imagePaths,
       attachmentPaths: attachmentPaths ?? this.attachmentPaths,
       imageCaptions: imageCaptions ?? this.imageCaptions,
+      isPinned: isPinned ?? this.isPinned,
+      isDeleted: isDeleted ?? this.isDeleted,
+      deletedAt: deletedAt ?? this.deletedAt,
     );
   }
 }
